@@ -24,7 +24,28 @@
         <div class="sidebar-content">
             <div class="nav flex-column mt-2">
                 <a href="index.php" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                <a href="pages/manajemen_kejadian.php"><i class="bi bi-megaphone"></i> Manajemen Kejadian</a>
+                <a href="#menuManajemen" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-tools"></i> Manajemen Kejadian</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuManajemen">
+                    <a href="pages/input_laporan.php">Input Laporan</a>
+                    <a href="pages/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="pages/detail_kejadian.php">Detail Kejadian</a>
+                    <a href="pages/timeline_kronologi.php">Timeline Kronologi</a>
+                </div>
+
+                <a href="#menuSarpras" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-tools"></i> Sarpras</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuSarpras">
+                    <a href="pages/sarpras.php">Data Sarpras</a>
+                    <a href="pages/master_bidang.php">Master Bidang</a>
+                    <a href="pages/master_kategori.php">Master Kategori</a>
+                </div>
 
                 <a href="#menuOperasional" data-bs-toggle="collapse"
                     class="d-flex justify-content-between align-items-center">

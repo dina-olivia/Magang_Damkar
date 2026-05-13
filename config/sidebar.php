@@ -25,6 +25,17 @@ $base_url = str_repeat('../', $levels);
                 class="<?= $current_page == 'manajemen_kejadian.php' ? 'active' : '' ?>">
                 <i class="bi bi-megaphone"></i> Manajemen Kejadian
             </a>
+            <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_penanganan.php', 'timeline_kronologi.php']) ? 'show' : '' ?> sub-menu"
+                id="menuManajemen">
+                <a href="pages/input_laporan.php"
+                    class="<? $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
+                <a href="pages/monitoring_kejadian.php
+                class=" <? $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
+                <a href="pages/detail_kejadian.php"
+                    class="<? $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
+                <a href="pages/timeline_kronologi.php"
+                    class="<? $current_page == 'timeline_kronologi.php' ? 'active' : '' ?>">Timeline Kronologi</a>
+            </div>
 
             <a href="#menuOperasional" data-bs-toggle="collapse"
                 class="d-flex justify-content-between align-items-center">
