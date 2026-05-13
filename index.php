@@ -16,7 +16,7 @@
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-            <img src="assets/logo_damkar.png" alt="Logo" width="140" height="80"
+            <img src="assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
@@ -52,7 +52,7 @@
                     <a href="pages/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="pages/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                <a href="pages/dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
                 <a href="pages/pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
 
                 <a href="logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
