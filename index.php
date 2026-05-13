@@ -38,7 +38,17 @@
                     <a href="pages/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
-                <a href="pages/personil.php"><i class="bi bi-people"></i> Personil</a>
+                <a href="#menuPersonil" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-clipboard-check"></i> Personil</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuPersonil">
+                    <a href="pages/melani/personil.php">Data Personil</a>
+                    <a href="pages/melani/penempatan_pos.php">Penempatan Pos</a>
+                    <a href="pages/melani/jadwal_piket.php">Jadwal Piket</a>
+                    <a href="pages/melani/riwayat_tugas.php">Riwayat Tugas</a>
+                </div>
                 <a href="pages/armada.php"><i class="bi bi-truck"></i> Armada</a>
 
                 <a href="#menuSarpras" data-bs-toggle="collapse"

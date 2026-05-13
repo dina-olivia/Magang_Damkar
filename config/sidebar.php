@@ -44,9 +44,21 @@ $base_url = ($directory == 'pages') ? '../' : '';
                     class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
 
-            <a href="<?= $base_url ?>pages/personil.php" class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
-                <i class="bi bi-people"></i> Personil
+             <a href="#menuPersonil" data-bs-toggle="collapse"
+                class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-clipboard-check"></i> Personil</span>
+                <i class="bi bi-chevron-down small"></i>
             </a>
+            <div class="collapse <?= in_array($current_page, ['personil.php', 'penempatan_pos.php', 'jadwal_piket.php', 'riwayat_tugas.php']) ? 'show' : '' ?> sub-menu"
+                id="menuPersonil">
+                <a href="<?= $base_url ?>pages/personil.php"
+                    class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">Data Personil</a>
+                <a href="<?= $base_url ?>pages/penempatan_pos.php"
+                    class="<?= $current_page == 'penempatan_pos.php' ? 'active' : '' ?>">Penempatan Pos</a>
+                <a href="<?= $base_url ?>pages/jadwal_piket.php"
+                    class="<?= $current_page == 'jadwal_piket.php' ? 'active' : '' ?>">Jadwal Piket</a>
+                <a href="<?= $base_url ?>pages/riwayat_tugas.php"
+                    class="<?= $current_page == 'riwayat_tugas.php' ? 'active' : '' ?>">Riwayat Tugas</a>
 
             <a href="<?= $base_url ?>pages/armada.php" class="<?= $current_page == 'armada.php' ? 'active' : '' ?>">
                 <i class="bi bi-truck"></i> Armada
