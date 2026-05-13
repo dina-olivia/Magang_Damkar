@@ -1,9 +1,10 @@
 <?php
 // 1. Koneksi ke Database
+$conn = null;
 include '../config/koneksi.php';
 
 // Cek apakah variabel $conn sudah benar
-if (!$conn) {
+if (!isset($conn) || !$conn) {
     die("Koneksi gagal! Periksa file config/koneksi.php");
 }
 

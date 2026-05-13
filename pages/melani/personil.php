@@ -1,6 +1,5 @@
-<?php 
-include '../../config/koneksi.php'; 
-?>
+<?php include '../../config/koneksi.php'?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -249,9 +248,7 @@ include '../../config/koneksi.php';
 
     <!-- Header -->
     <div class="sidebar-header">
-        <img src="../assets/img/logo-damkar.png" alt="Logo" width="36" height="36"
-             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'"
-             class="rounded">
+        <img src="../../assets/logo_damkar.png" alt="Logo" width="140" height="80">
         <span class="fw-bold ms-2 fs-6">DAMKAR PADANG</span>
     </div>
 
@@ -259,12 +256,12 @@ include '../../config/koneksi.php';
         <div class="nav-section">
 
             <!-- Dashboard -->
-            <a href="../index.php" class="nav-top-link">
+            <a href="../../index.php" class="nav-top-link">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
             <!-- Manajemen Kejadian -->
-            <a href="manajemen_kejadian.php" class="nav-top-link">
+            <a href="../../pages/manajemen_kejadian.php" class="nav-top-link">
                 <i class="bi bi-megaphone"></i> Manajemen Kejadian
             </a>
 
@@ -350,7 +347,7 @@ include '../../config/koneksi.php';
                 <div class="stat-label">Total Personil</div>
                 <div class="stat-value">
                     <?php
-                    $r = mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar");
+                    $r = $conn ? mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar") : false;
                     echo ($r ? mysqli_fetch_assoc($r)['c'] : 0);
                     ?>
                 </div>
@@ -361,7 +358,7 @@ include '../../config/koneksi.php';
                 <div class="stat-label">Personil Aktif</div>
                 <div class="stat-value">
                     <?php
-                    $r = mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar WHERE status='Aktif'");
+                    $r = $conn ? mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar WHERE status='Aktif'") : false;
                     echo ($r ? mysqli_fetch_assoc($r)['c'] : 0);
                     ?>
                 </div>
@@ -372,7 +369,7 @@ include '../../config/koneksi.php';
                 <div class="stat-label">Komandan Regu</div>
                 <div class="stat-value">
                     <?php
-                    $r = mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar WHERE jabatan='Komandan Regu'");
+                    $r = $conn ? mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar WHERE jabatan='Komandan Regu'") : false;
                     echo ($r ? mysqli_fetch_assoc($r)['c'] : 0);
                     ?>
                 </div>
@@ -383,7 +380,7 @@ include '../../config/koneksi.php';
                 <div class="stat-label">Tidak Aktif</div>
                 <div class="stat-value">
                     <?php
-                    $r = mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar WHERE status='Tidak Aktif'");
+                    $r = $conn ? mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar WHERE status='Tidak Aktif'") : false;
                     echo ($r ? mysqli_fetch_assoc($r)['c'] : 0);
                     ?>
                 </div>
@@ -436,7 +433,7 @@ include '../../config/koneksi.php';
                         'Petugas'       => ['bg-success-subtle',  'text-success'],
                     ];
 
-                    $result = mysqli_query($koneksi, "SELECT * FROM tbl_daftar ORDER BY nip ASC");
+                    $result = $conn ? mysqli_query($conn, "SELECT * FROM tbl_daftar ORDER BY nip ASC") : false;
 
                     if ($result && mysqli_num_rows($result) > 0):
                         $i = 0;
