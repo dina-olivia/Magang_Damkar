@@ -1,4 +1,4 @@
-<?php include '../config/koneksi.php'; ?>
+<?php include '../../config/koneksi.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -7,12 +7,45 @@
     <title>Log Laporan Penanganan - E-DAMKAR</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #main-content {
+            flex: 1;
+            /* Ini kunci agar konten mengisi ruang di kanan sidebar */
+            padding: 25px;
+            background-color: #f8f9fa;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border: none;
+        }
+
+        .btn-purple {
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+        }
+
+        .btn-purple:hover {
+            background-color: #59359a;
+            color: white;
+        }
+    </style>
 </head>
 
-<body>
+<body class="d-flex">
 
-    <?php include '../config/sidebar.php'; ?>
+    <?php include '../../config/sidebar.php'; ?>
 
     <div id="main-content">
 
