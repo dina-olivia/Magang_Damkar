@@ -22,11 +22,22 @@ $base_url = ($directory == 'pages') ? '../' : '';
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
-            <a href="<?= $base_url ?>pages/manajemen_kejadian.php"
-                class="<?= $current_page == 'manajemen_kejadian.php' ? 'active' : '' ?>">
-                <i class="bi bi-megaphone"></i> Manajemen Kejadian
+            <a href="#menuManajemenKejadian" data-bs-toggle="collapse"
+                class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-clipboard-check"></i> Manajemen Kejadian</span>
+                <i class="bi bi-chevron-down small"></i>
             </a>
-
+            <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_kejadian.php', 'timeline_kronologi.php']) ? 'show' : '' ?> sub-menu"
+                id="menuManajemenKejadian">
+                <a href="<?= $base_url ?>pages/input_laporan.php"
+                    class="<?= $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
+                <a href="<?= $base_url ?>pages/monitoring_kejadian.php"
+                    class="<?= $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
+                <a href="<?= $base_url ?>pages/detail_kejadian.php"
+                    class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
+                <a href="<?= $base_url ?>pages/timeline_kronologi.php"
+                    class="<?= $current_page == 'timeline_kronologi.php' ? 'active' : '' ?>">Timeline Kronologi</a>
+            </div>
             <a href="#menuOperasional" data-bs-toggle="collapse"
                 class="d-flex justify-content-between align-items-center">
                 <span><i class="bi bi-clipboard-check"></i> Operasional</span>

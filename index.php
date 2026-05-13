@@ -24,7 +24,16 @@
         <div class="sidebar-content">
             <div class="nav flex-column mt-2">
                 <a href="index.php" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                
                 <a href="pages/manajemen_kejadian.php"><i class="bi bi-megaphone"></i> Manajemen Kejadian</a>
+
+                <div class="collapse sub-menu" id="menuManajemenKejadian">
+                    <a href="pages/input_laporan.php">Input Laporan</a>
+                    <a href="pages/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="pages/detail_kejadian.php">Detail Kejadian</a>
+                    <a href="pages/timeline_kronologi.php">Timeline Kronologi</a>
+                </div>
+
 
                 <a href="#menuOperasional" data-bs-toggle="collapse"
                     class="d-flex justify-content-between align-items-center">
