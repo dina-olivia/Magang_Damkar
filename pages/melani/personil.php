@@ -527,7 +527,7 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form action="proses/tambah_personil.php" method="POST">
+            <form action="proses_personil.php" method="POST">
                 <div class="modal-body p-4">
                     <div class="row g-3">
                         <div class="col-md-6">
