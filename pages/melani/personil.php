@@ -1,4 +1,4 @@
-<?php include '../../config/koneksi.php'?>
+<?php require_once __DIR__ . '/../../config/koneksi.php'; ?>
 
 <!DOCTYPE html>
 <html lang="id">
@@ -56,7 +56,7 @@
             cursor: pointer;
         }
 
-        #sidebar .nav-top-link i { margin-right: 13px; font-size: 1.15rem; }
+        #sidebar .nav-top-link i:first-child { margin-right: 13px; font-size: 1.15rem; }
 
         #sidebar .nav-top-link:hover {
             background-color: #1e293b;
@@ -71,20 +71,18 @@
         }
 
         /* Sub-menu */
-        .sub-menu { background-color: #1a2236; }
+        .sub-menu { background-color: #1a2236; list-style: none; padding: 0; margin: 0; }
 
         .sub-menu a {
             color: #64748b;
             text-decoration: none;
-            padding: 10px 22px 10px 52px;
+            padding: 11px 22px 11px 55px; /* Jarak kiri disesuaikan agar lurus rapi */
             display: flex;
             align-items: center;
             font-size: 0.875rem;
             border-left: 4px solid transparent;
             transition: 0.2s;
         }
-
-        .sub-menu a i { margin-right: 10px; font-size: 0.85rem; }
 
         .sub-menu a:hover {
             background-color: #1e293b;
@@ -122,7 +120,7 @@
 
         .page-header-sub { color: #64748b; font-size: 0.95rem; margin-top: 4px; }
 
-        /* Stat Cards — mirip dashboard */
+        /* Stat Cards */
         .stat-card {
             background: #fff;
             border-radius: 14px;
@@ -134,7 +132,7 @@
 
         .stat-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
 
-        .stat-label {
+        .stat-card .stat-label {
             font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: 1px;
@@ -142,7 +140,7 @@
             color: #94a3b8;
         }
 
-        .stat-value {
+        .stat-card .stat-value {
             font-size: 2.5rem;
             font-weight: 800;
             color: #0f172a;
@@ -243,81 +241,69 @@
 </head>
 <body>
 
-<!-- ===== SIDEBAR ===== -->
 <div id="sidebar" class="shadow">
-
-    <!-- Header -->
     <div class="sidebar-header">
-        <img src="../../assets/logo_damkar.png" alt="Logo" width="140" height="80">
-        <span class="fw-bold ms-2 fs-6">DAMKAR PADANG</span>
+        <img src="../../assets/logo_damkar.png" alt="Logo" width="50" height="50">
+        <div class="ms-2">
+            <span class="fw-bold d-block lh-1 text-white fs-6">DAMKAR</span>
+            <span class="fw-bold d-block lh-1 text-white fs-6">PADANG</span>
+        </div>
     </div>
 
     <div class="sidebar-content">
         <div class="nav-section">
 
-            <!-- Dashboard -->
             <a href="../../index.php" class="nav-top-link">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
-            <!-- Manajemen Kejadian -->
             <a href="../../pages/manajemen_kejadian.php" class="nav-top-link">
                 <i class="bi bi-megaphone"></i> Manajemen Kejadian
             </a>
 
-            <!-- Operasional (collapsed) -->
-            <a class="nav-top-link" data-bs-toggle="collapse" href="#menuOperasional"
-               aria-expanded="false">
+            <a class="nav-top-link" data-bs-toggle="collapse" href="#menuOperasional" aria-expanded="false">
                 <i class="bi bi-clipboard-check"></i> Operasional
                 <i class="bi bi-chevron-down chevron"></i>
             </a>
             <div class="collapse sub-menu" id="menuOperasional">
-                <a href="penugasan_tim.php"><i class="bi bi-dot"></i> Penugasan Tim</a>
-                <a href="monitoring_armada.php"><i class="bi bi-dot"></i> Monitoring Armada</a>
-                <a href="status_penanganan.php"><i class="bi bi-dot"></i> Status Penanganan</a>
-                <a href="riwayat_penugasan.php"><i class="bi bi-dot"></i> Riwayat Penugasan</a>
+                <a href="penugasan_tim.php">Penugasan Tim</a>
+                <a href="monitoring_armada.php">Monitoring Armada</a>
+                <a href="status_penanganan.php">Status Penanganan</a>
+                <a href="riwayat_penugasan.php">Riwayat Penugasan</a>
             </div>
 
-            <!-- Personil (aktif & expand) -->
-            <a class="nav-top-link active" data-bs-toggle="collapse" href="#menuPersonil"
-               aria-expanded="true">
+            <a class="nav-top-link active" data-bs-toggle="collapse" href="#menuPersonil" aria-expanded="true">
                 <i class="bi bi-people"></i> Personil
                 <i class="bi bi-chevron-down chevron"></i>
             </a>
             <div class="collapse show sub-menu" id="menuPersonil">
-                <a href="personil.php" class="active"><i class="bi bi-dot"></i> Data Personil</a>
-                <a href="penempatan_pos.php"><i class="bi bi-dot"></i> Penempatan Pos</a>
-                <a href="jadwal_piket.php"><i class="bi bi-dot"></i> Jadwal Piket</a>
-                <a href="riwayat_tugas.php"><i class="bi bi-dot"></i> Riwayat Tugas</a>
+                <a href="personil.php" class="active">Data Personil</a>
+                <a href="penempatan_pos.php">Penempatan Pos</a>
+                <a href="jadwal_piket.php">Jadwal Piket</a>
+                <a href="riwayat_tugas.php">Riwayat Tugas</a>
             </div>
 
-            <!-- Armada -->
             <a href="armada.php" class="nav-top-link">
                 <i class="bi bi-truck"></i> Armada
             </a>
 
-            <!-- Sarpras (collapsed) -->
-            <a class="nav-top-link" data-bs-toggle="collapse" href="#menuSarpras"
-               aria-expanded="false">
+            <a class="nav-top-link" data-bs-toggle="collapse" href="#menuSarpras" aria-expanded="false">
                 <i class="bi bi-tools"></i> Sarpras
                 <i class="bi bi-chevron-down chevron"></i>
             </a>
             <div class="collapse sub-menu" id="menuSarpras">
-                <a href="sarpras.php"><i class="bi bi-dot"></i> Data Sarpras</a>
-                <a href="master_bidang.php"><i class="bi bi-dot"></i> Master Bidang</a>
+                <a href="sarpras.php">Data Sarpras</a>
+                <a href="master_bidang.php">Master Bidang</a>
             </div>
 
-            <!-- Laporan -->
             <a href="laporan.php" class="nav-top-link">
                 <i class="bi bi-file-earmark-text"></i> Laporan
             </a>
 
-            <!-- Pengaturan -->
             <a href="pengaturan.php" class="nav-top-link">
                 <i class="bi bi-gear"></i> Pengaturan
             </a>
 
-            <!-- Keluar -->
             <a href="../logout.php" class="nav-top-link mt-2" style="color:#f87171;">
                 <i class="bi bi-box-arrow-left"></i> Keluar
             </a>
@@ -326,10 +312,8 @@
     </div>
 </div>
 
-<!-- ===== MAIN CONTENT ===== -->
 <div id="main-content">
 
-    <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-start mb-4">
         <div>
             <div class="page-header-title">PERSONIL DAMKAR</div>
@@ -340,14 +324,13 @@
         </button>
     </div>
 
-    <!-- Stat Cards -->
     <div class="row g-3 mb-4">
         <div class="col-md-3 col-6">
             <div class="stat-card">
                 <div class="stat-label">Total Personil</div>
                 <div class="stat-value">
                     <?php
-                    $r = $conn ? mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar") : false;
+                    $r = isset($koneksi) && $koneksi ? mysqli_query($koneksi, "SELECT COUNT(*) as c FROM tbl_daftar") : false;
                     echo ($r ? mysqli_fetch_assoc($r)['c'] : 0);
                     ?>
                 </div>
@@ -358,7 +341,7 @@
                 <div class="stat-label">Personil Aktif</div>
                 <div class="stat-value">
                     <?php
-                    $r = $conn ? mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar WHERE status='Aktif'") : false;
+                    $r = isset($koneksi) && $koneksi ? mysqli_query($koneksi, "SELECT COUNT(*) as c FROM tbl_daftar WHERE status='Aktif'") : false;
                     echo ($r ? mysqli_fetch_assoc($r)['c'] : 0);
                     ?>
                 </div>
@@ -369,7 +352,7 @@
                 <div class="stat-label">Komandan Regu</div>
                 <div class="stat-value">
                     <?php
-                    $r = $conn ? mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar WHERE jabatan='Komandan Regu'") : false;
+                    $r = isset($koneksi) && $koneksi ? mysqli_query($koneksi, "SELECT COUNT(*) as c FROM tbl_daftar WHERE jabatan='Komandan Regu'") : false;
                     echo ($r ? mysqli_fetch_assoc($r)['c'] : 0);
                     ?>
                 </div>
@@ -380,7 +363,7 @@
                 <div class="stat-label">Tidak Aktif</div>
                 <div class="stat-value">
                     <?php
-                    $r = $conn ? mysqli_query($conn, "SELECT COUNT(*) as c FROM tbl_daftar WHERE status='Tidak Aktif'") : false;
+                    $r = isset($koneksi) && $koneksi ? mysqli_query($koneksi, "SELECT COUNT(*) as c FROM tbl_daftar WHERE status='Tidak Aktif'") : false;
                     echo ($r ? mysqli_fetch_assoc($r)['c'] : 0);
                     ?>
                 </div>
@@ -388,13 +371,11 @@
         </div>
     </div>
 
-    <!-- Tabel -->
     <div class="main-card">
         <div class="main-card-header">
             <h6><i class="bi bi-people me-2 text-danger"></i>Daftar Personil</h6>
             <div class="d-flex gap-2 filter-bar flex-wrap">
-                <input type="text" id="searchInput" class="form-control" style="width:220px"
-                       placeholder="&#128269;  Cari nama / NIP...">
+                <input type="text" id="searchInput" class="form-control" style="width:220px" placeholder="&#128269;  Cari nama / NIP...">
                 <select id="filterJabatan" class="form-select" style="width:170px">
                     <option value="">Semua Jabatan</option>
                     <option value="Komandan Regu">Komandan Regu</option>
@@ -433,15 +414,15 @@
                         'Petugas'       => ['bg-success-subtle',  'text-success'],
                     ];
 
-                    $result = $conn ? mysqli_query($conn, "SELECT * FROM tbl_daftar ORDER BY nip ASC") : false;
+                    $result = $koneksi ? mysqli_query($koneksi, "SELECT * FROM tbl_daftar ORDER BY nip ASC") : false;
 
                     if ($result && mysqli_num_rows($result) > 0):
                         $i = 0;
                         while ($row = mysqli_fetch_assoc($result)):
-                            $inisial   = strtoupper(substr($row['nama'], 0, 1));
+                            $inisial   = !empty($row['nama']) ? strtoupper(substr($row['nama'], 0, 1)) : '?';
                             $warna     = $colors[$i % count($colors)];
-                            $tgl       = date('d M Y', strtotime($row['tanggal_lahir']));
-                            $umur      = date('Y') - date('Y', strtotime($row['tanggal_lahir']));
+                            $tgl       = ($row['tanggal_lahir'] != '0000-00-00' && !empty($row['tanggal_lahir'])) ? date('d M Y', strtotime($row['tanggal_lahir'])) : '-';
+                            $umur      = ($row['tanggal_lahir'] != '0000-00-00' && !empty($row['tanggal_lahir'])) ? date('Y') - date('Y', strtotime($row['tanggal_lahir'])) : '-';
                             [$bg, $tc] = $badge_map[$row['jabatan']] ?? ['bg-secondary-subtle', 'text-secondary'];
                             $i++;
                     ?>
@@ -450,10 +431,10 @@
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="avatar-circle" style="background:<?= $warna ?>">
-                                        <?= $inisial ?>
+                                      <?= $inisial = strtoupper(substr($row['nama_personil'] ?? '', 0, 1)); ?>
                                     </div>
                                     <div>
-                                        <div class="fw-semibold text-dark"><?= htmlspecialchars($row['nama']) ?></div>
+                                        <div class="fw-semibold text-dark"><?= htmlspecialchars($row['nama_personil']) ?></div>
                                         <div class="text-muted" style="font-size:11px">
                                             Umur <?= $umur ?> tahun
                                         </div>
@@ -481,18 +462,15 @@
                             </td>
                             <td>
                                 <div class="d-flex gap-1">
-                                    <a href="detail_personil.php?id=<?= $row['id'] ?>"
-                                       class="btn btn-sm btn-outline-secondary" title="Detail">
+                                    <a href="detail.php?menu=tbl_daftar&id=<?= $row['id'] ?>" class="btn btn-sm btn-outline-secondary" title="Detail">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="edit_personil.php?id=<?= $row['id'] ?>"
-                                       class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <a href="edit.php?menu=tbl_daftar&id=<?= $row['id'] ?>" class="btn btn-sm btn-outline-warning" title="Edit">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <button class="btn btn-sm btn-outline-danger" title="Hapus"
-                                            onclick="hapus(<?= $row['id'] ?>, '<?= htmlspecialchars($row['nama']) ?>')">
+                                    <a href="hapus.php?menu=tbl_daftar&id=<?= $row['id'] ?>" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus data <?= htmlspecialchars($row['nama_personil'] ?? '') ?>?')">
                                         <i class="bi bi-trash"></i>
-                                    </button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -517,7 +495,6 @@
     </div>
 </div>
 
-<!-- ===== MODAL TAMBAH ===== -->
 <div class="modal fade" id="modalTambah" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 shadow">
@@ -527,18 +504,16 @@
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form action="proses_personil.php" method="POST">
+            <form action="" method="POST">
                 <div class="modal-body p-4">
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small">NIP</label>
-                            <input type="text" name="nip" class="form-control"
-                                   placeholder="PK-YYYY-XXX" required>
+                            <input type="text" name="nip" class="form-control" placeholder="PK-YYYY-XXX" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small">Nama Lengkap</label>
-                            <input type="text" name="nama" class="form-control"
-                                   placeholder="Nama lengkap personil" required>
+                            <input type="text" name="nama" class="form-control" placeholder="Nama lengkap personil" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small">Jabatan</label>
@@ -555,13 +530,11 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small">Telepon</label>
-                            <input type="text" name="telepon" class="form-control"
-                                   placeholder="08xxxxxxxxxx">
+                            <input type="text" name="telepon" class="form-control" placeholder="08xxxxxxxxxx">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold small">Email</label>
-                            <input type="email" name="email" class="form-control"
-                                   placeholder="nama@damkar.go.id">
+                            <input type="email" name="email" class="form-control" placeholder="nama@damkar.go.id">
                         </div>
                         <div class="col-12">
                             <label class="form-label fw-semibold small">Status</label>
@@ -574,7 +547,7 @@
                 </div>
                 <div class="modal-footer border-top">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger fw-semibold">
+                    <button type="submit" name="simpan" class="btn btn-danger fw-semibold">
                         <i class="bi bi-save me-1"></i>Simpan Data
                     </button>
                 </div>
@@ -585,7 +558,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Search & Filter
+    // Search & Filter JavaScript
     const searchInput   = document.getElementById('searchInput');
     const filterJabatan = document.getElementById('filterJabatan');
     const filterStatus  = document.getElementById('filterStatus');
@@ -596,9 +569,12 @@
         const sta = filterStatus.value.toLowerCase();
 
         document.querySelectorAll('#tabelPersonil tbody tr').forEach(row => {
+            if (row.querySelector('.empty-state')) return; // Lewati baris jika data kosong
+            
             const txt  = row.innerText.toLowerCase();
             const jabC = row.cells[2]?.innerText.toLowerCase() ?? '';
             const staC = row.cells[6]?.innerText.toLowerCase() ?? '';
+            
             row.style.display =
                 txt.includes(kw) &&
                 (jab === '' || jabC.includes(jab)) &&
@@ -610,12 +586,37 @@
     searchInput.addEventListener('input',    doFilter);
     filterJabatan.addEventListener('change', doFilter);
     filterStatus.addEventListener('change',  doFilter);
-
-    function hapus(id, nama) {
-        if (confirm('Hapus personil "' + nama + '"?')) {
-            window.location.href = 'proses/hapus_personil.php?id=' + id;
-        }
-    }
 </script>
 </body>
 </html>
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
+    // Ambil data form dan amankan dari SQL Injection
+    $nip           = mysqli_real_escape_string($koneksi, $_POST['nip']);
+    $nama          = mysqli_real_escape_string($koneksi, $_POST['nama']);
+    $jabatan       = mysqli_real_escape_string($koneksi, $_POST['jabatan']);
+    $tanggal_lahir = mysqli_real_escape_string($koneksi, $_POST['tanggal_lahir']);
+    $telepon       = mysqli_real_escape_string($koneksi, $_POST['telepon']);
+    $email         = mysqli_real_escape_string($koneksi, $_POST['email']);
+    $status        = mysqli_real_escape_string($koneksi, $_POST['status']);
+
+    // Query INSERT disesuaikan dengan struktur tabel tbl_daftar Anda
+    $query = "INSERT INTO tbl_daftar (nip, nama_personil, jabatan, tanggal_lahir, telepon, email, status) 
+              VALUES ('$nip', '$nama', '$jabatan', '$tanggal_lahir', '$telepon', '$email', '$status')";
+
+    if (mysqli_query($koneksi, $query)) {
+        // Jika berhasil, munculkan alert sukses dan redirect ke halaman ini sendiri agar form ter-reset
+        echo "<script>
+                alert('Data personil baru berhasil ditambahkan!');
+                window.location.href = 'personil.php';
+              </script>";
+        exit;
+    } else {
+        // Jika gagal, munculkan alert error tanpa me-redirect halaman agar tahu letak salahnya
+        echo "<script>
+                alert('Gagal menambahkan data: " . mysqli_error($koneksi) . "');
+              </script>";
+    }
+}
+?>

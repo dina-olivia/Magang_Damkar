@@ -4,9 +4,9 @@ $user = "root";
 $password = "";
 $database = "app_damkar";
 
-$conn = mysqli_connect($host, $user, $password, $database);
+$koneksi = mysqli_connect($host, $user, $password, $database);
 
-if (!$conn) {
+if (!$koneksi) {
     die("Koneksi ke database gagal: " . mysqli_connect_error());
 }
 ?>
