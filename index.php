@@ -1,4 +1,18 @@
 <?php include 'config/koneksi.php'; ?>
+<?php
+$total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian"));
+$menunggu = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='menunggu'"));
+$proses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='proses'"));
+$selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='selesai'"));
+$armada = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM armada WHERE status='siaga'"));
+
+$stats = [
+    ['Laporan Masuk', $menunggu['t'], 'bi-megaphone'],
+    ['Dalam Proses', $proses['t'], 'bi-exclamation-triangle'],
+    ['Selesai', $selesai['t'], 'bi-check-circle'],
+    ['Armada Siaga', $armada['t'], 'bi-truck']
+];
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -73,8 +87,8 @@
                     <a href="pages/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="pages/dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
-                <a href="pages/pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+                <a href="pages/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                <a href="pages/manajemen_user.php"><i class="bi bi-person"></i> Manajemen User</a>
 
                 <a href="logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>

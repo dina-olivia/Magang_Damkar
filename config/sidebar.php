@@ -1,4 +1,4 @@
-<?php echo "";
+<?php
 $current_page = basename($_SERVER['PHP_SELF']);
 $path = $_SERVER['PHP_SELF'];
 $root_folder = '/Magang_DAMKAR';
@@ -8,48 +8,61 @@ $base_url = str_repeat('../', $levels);
 ?>
 
 <div id="sidebar" class="shadow">
-    <div class="sidebar-header">
-        <img src="<?= $base_url ?>assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
-            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+    <div class="sidebar-header d-flex align-items-center">
+        <img src="<?= $base_url ?>MAGANG_DAMKAR/assets/img/logo_damkar.png" width="140" height="80">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
 
     <div class="sidebar-content">
         <div class="nav flex-column mt-2">
 
+            <!-- DASHBOARD -->
             <a href="<?= $base_url ?>index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
-            <a href="<?= $base_url ?>pages/manajemen_kejadian.php"
-                class="<?= $current_page == 'manajemen_kejadian.php' ? 'active' : '' ?>">
-                <i class="bi bi-megaphone"></i> Manajemen Kejadian
+            <!-- MANAJEMEN -->
+            <a href="#menuManajemen" data-bs-toggle="collapse"
+                class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
+                <i class="bi bi-chevron-down small"></i>
             </a>
-            <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_penanganan.php', 'timeline_kronologi.php']) ? 'show' : '' ?> sub-menu"
+
+            <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_kejadian.php', 'timeline_kronologi.php']) ? 'show' : '' ?> sub-menu"
                 id="menuManajemen">
-                <a href="pages/input_laporan.php"
-                    class="<? $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
-                <a href="pages/monitoring_kejadian.php
-                class=" <? $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
-                <a href="pages/detail_kejadian.php"
-                    class="<? $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
-                <a href="pages/timeline_kronologi.php"
-                    class="<? $current_page == 'timeline_kronologi.php' ? 'active' : '' ?>">Timeline Kronologi</a>
+
+                <a href="<?= $base_url ?>pages/input_laporan.php"
+                    class="<?= $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
+
+                <a href="<?= $base_url ?>pages/monitoring_kejadian.php"
+                    class="<?= $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
+
+                <a href="<?= $base_url ?>pages/detail_kejadian.php"
+                    class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
+
+                <a href="<?= $base_url ?>pages/timeline_kronologi.php"
+                    class="<?= $current_page == 'timeline_kronologi.php' ? 'active' : '' ?>">Timeline Kronologi</a>
             </div>
 
+            <!-- OPERASIONAL -->
             <a href="#menuOperasional" data-bs-toggle="collapse"
                 class="d-flex justify-content-between align-items-center">
                 <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                 <i class="bi bi-chevron-down small"></i>
             </a>
+
             <div class="collapse <?= in_array($current_page, ['penugasan_tim.php', 'monitoring_armada.php', 'status_penanganan.php', 'riwayat_penugasan.php']) ? 'show' : '' ?> sub-menu"
                 id="menuOperasional">
+
                 <a href="<?= $base_url ?>pages/penugasan_tim.php"
                     class="<?= $current_page == 'penugasan_tim.php' ? 'active' : '' ?>">Penugasan Tim</a>
+
                 <a href="<?= $base_url ?>pages/monitoring_armada.php"
                     class="<?= $current_page == 'monitoring_armada.php' ? 'active' : '' ?>">Monitoring Armada</a>
+
                 <a href="<?= $base_url ?>pages/status_penanganan.php"
                     class="<?= $current_page == 'status_penanganan.php' ? 'active' : '' ?>">Status Penanganan</a>
+
                 <a href="<?= $base_url ?>pages/riwayat_penugasan.php"
                     class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
@@ -62,33 +75,38 @@ $base_url = str_repeat('../', $levels);
                 <i class="bi bi-truck"></i> Armada
             </a>
 
+            <!-- SARPRAS -->
             <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                 <span><i class="bi bi-tools"></i> Sarpras</span>
                 <i class="bi bi-chevron-down small"></i>
             </a>
+
             <div class="collapse <?= in_array($current_page, ['sarpras.php', 'master_bidang.php', 'master_kategori.php']) ? 'show' : '' ?> sub-menu"
                 id="menuSarpras">
+
                 <a href="<?= $base_url ?>pages/sarpras.php"
                     class="<?= $current_page == 'sarpras.php' ? 'active' : '' ?>">Data Sarpras</a>
+
                 <a href="<?= $base_url ?>pages/master_bidang.php"
                     class="<?= $current_page == 'master_bidang.php' ? 'active' : '' ?>">Master Bidang</a>
+
                 <a href="<?= $base_url ?>pages/master_kategori.php"
                     class="<?= $current_page == 'master_kategori.php' ? 'active' : '' ?>">Master Kategori</a>
             </div>
 
-            <a href="<?= $base_url ?>pages/dina/laporan.php"
-                class="<?= $current_page == 'laporan.php' ? 'active' : '' ?>">
+            <a href="<?= $base_url ?>pages/laporan.php" class="<?= $current_page == 'laporan.php' ? 'active' : '' ?>">
                 <i class="bi bi-file-earmark-text"></i> Laporan
             </a>
 
-            <a href="<?= $base_url ?>pages/pengaturan.php"
-                class="<?= $current_page == 'pengaturan.php' ? 'active' : '' ?>">
-                <i class="bi bi-gear"></i> Pengaturan
+            <a href="<?= $base_url ?>pages/manajemen_user.php"
+                class="<?= $current_page == 'manajemen_user.php' ? 'active' : '' ?>">
+                <i class="bi bi-person"></i> Manajemen User
             </a>
 
             <a href="<?= $base_url ?>logout.php" class="mt-4 text-danger">
                 <i class="bi bi-box-arrow-left"></i> Keluar
             </a>
+
         </div>
     </div>
 </div>
