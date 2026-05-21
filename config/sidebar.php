@@ -97,7 +97,7 @@ $base_url = str_repeat('../', $levels);
             <a href="<?= $base_url ?>pages/laporan.php" class="<?= $current_page == 'laporan.php' ? 'active' : '' ?>">
                 <i class="bi bi-file-earmark-text"></i> Laporan
             </a>
-
+<!-- Manajemen User -->
             <a href="<?= $base_url ?>pages/manajemen_user.php"
                 class="<?= $current_page == 'manajemen_user.php' ? 'active' : '' ?>">
                 <i class="bi bi-person"></i> Manajemen User
