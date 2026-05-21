@@ -1,4 +1,4 @@
-<?php include 'config/koneksi.php'; ?>
+<?php include '/config/koneksi.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -16,7 +16,7 @@
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-            <img src="assets/logo_damkar.png" alt="Logo" width="140" height="80"
+            <img src="assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
@@ -47,7 +47,17 @@
                     <a href="pages/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
-                <a href="pages/personil.php"><i class="bi bi-people"></i> Personil</a>
+                <a href="#menuPersonil" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-clipboard-check"></i> Personil</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuPersonil">
+                    <a href="pages/melani/personil.php">Data Personil</a>
+                    <a href="pages/melani/penempatan_pos.php">Penempatan Pos</a>
+                    <a href="pages/melani/jadwal_piket.php">Jadwal Piket</a>
+                    <a href="pages/melani/riwayat_tugas.php">Riwayat Tugas</a>
+                </div>
                 <a href="pages/armada.php"><i class="bi bi-truck"></i> Armada</a>
 
                 <a href="#menuSarpras" data-bs-toggle="collapse"
@@ -61,7 +71,7 @@
                     <a href="pages/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="pages/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                <a href="pages/dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
                 <a href="pages/pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
 
                 <a href="logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
