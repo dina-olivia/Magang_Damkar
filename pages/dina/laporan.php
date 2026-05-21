@@ -135,7 +135,7 @@
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small text-muted">Nama Pelapor</label>
                                 <input type="text" name="nama_pelapor" class="form-control bg-light border-0"
-                                    placeholder="Contoh: Budi Santoso" required>
+                                    placeholder="" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small text-muted">Kontak (WA/Telp)</label>
