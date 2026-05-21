@@ -5,6 +5,7 @@ $directory = basename(dirname($_SERVER['PHP_SELF']));
 
 // Jika kita di dalam folder 'pages', base_url adalah keluar satu tingkat (../)
 // Jika kita di root (Magang_DAMKAR), base_url kosong
+// Dengan logika ini, semua link akan tetap berfungsi tanpa error, baik di root maupun di dalam folder 'pages'
 $base_url = ($directory == 'pages') ? '../' : '';
 ?>
 
