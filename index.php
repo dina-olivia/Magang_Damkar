@@ -1,3 +1,4 @@
+<!-- komentar -->
 <?php include 'config/koneksi.php'; ?>
 <!DOCTYPE html>
 <html lang="id">
