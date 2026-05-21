@@ -1,10 +1,11 @@
 <?php echo "";
 $current_page = basename($_SERVER['PHP_SELF']);
-$path = $_SERVER['PHP_SELF'];
-$root_folder = '/Magang_DAMKAR';
-$clean_path = str_replace($root_folder, '', $path);
-$levels = substr_count($clean_path, '/');
-$base_url = str_repeat('../', $levels);
+$directory = basename(dirname($_SERVER['PHP_SELF']));
+
+// Jika kita di dalam folder 'pages', base_url adalah keluar satu tingkat (../)
+// Jika kita di root (Magang_DAMKAR), base_url kosong
+// Dengan logika ini, semua link akan tetap berfungsi tanpa error, baik di root maupun di dalam folder 'pages'
+$base_url = ($directory == 'pages') ? '../' : '';
 ?>
 
 <div id="sidebar" class="shadow">
@@ -21,22 +22,22 @@ $base_url = str_repeat('../', $levels);
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
-            <a href="<?= $base_url ?>pages/manajemen_kejadian.php"
-                class="<?= $current_page == 'manajemen_kejadian.php' ? 'active' : '' ?>">
-                <i class="bi bi-megaphone"></i> Manajemen Kejadian
+            <a href="#menuManajemenKejadian" data-bs-toggle="collapse"
+                class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-clipboard-check"></i> Manajemen Kejadian</span>
+                <i class="bi bi-chevron-down small"></i>
             </a>
-            <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_penanganan.php', 'timeline_kronologi.php']) ? 'show' : '' ?> sub-menu"
-                id="menuManajemen">
-                <a href="pages/input_laporan.php"
-                    class="<? $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
-                <a href="pages/monitoring_kejadian.php
-                class=" <? $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
-                <a href="pages/detail_kejadian.php"
-                    class="<? $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
-                <a href="pages/timeline_kronologi.php"
-                    class="<? $current_page == 'timeline_kronologi.php' ? 'active' : '' ?>">Timeline Kronologi</a>
+            <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_kejadian.php', 'timeline_kronologi.php']) ? 'show' : '' ?> sub-menu"
+                id="menuManajemenKejadian">
+                <a href="<?= $base_url ?>pages/input_laporan.php"
+                    class="<?= $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
+                <a href="<?= $base_url ?>pages/monitoring_kejadian.php"
+                    class="<?= $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
+                <a href="<?= $base_url ?>pages/detail_kejadian.php"
+                    class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
+                <a href="<?= $base_url ?>pages/timeline_kronologi.php"
+                    class="<?= $current_page == 'timeline_kronologi.php' ? 'active' : '' ?>">Timeline Kronologi</a>
             </div>
-
             <a href="#menuOperasional" data-bs-toggle="collapse"
                 class="d-flex justify-content-between align-items-center">
                 <span><i class="bi bi-clipboard-check"></i> Operasional</span>
@@ -54,9 +55,21 @@ $base_url = str_repeat('../', $levels);
                     class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
 
-            <a href="<?= $base_url ?>pages/personil.php" class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
-                <i class="bi bi-people"></i> Personil
+             <a href="#menuPersonil" data-bs-toggle="collapse"
+                class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-clipboard-check"></i> Personil</span>
+                <i class="bi bi-chevron-down small"></i>
             </a>
+            <div class="collapse <?= in_array($current_page, ['personil.php', 'penempatan_pos.php', 'jadwal_piket.php', 'riwayat_tugas.php']) ? 'show' : '' ?> sub-menu"
+                id="menuPersonil">
+                <a href="<?= $base_url ?>pages/personil.php"
+                    class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">Data Personil</a>
+                <a href="<?= $base_url ?>pages/penempatan_pos.php"
+                    class="<?= $current_page == 'penempatan_pos.php' ? 'active' : '' ?>">Penempatan Pos</a>
+                <a href="<?= $base_url ?>pages/jadwal_piket.php"
+                    class="<?= $current_page == 'jadwal_piket.php' ? 'active' : '' ?>">Jadwal Piket</a>
+                <a href="<?= $base_url ?>pages/riwayat_tugas.php"
+                    class="<?= $current_page == 'riwayat_tugas.php' ? 'active' : '' ?>">Riwayat Tugas</a>
 
             <a href="<?= $base_url ?>pages/armada.php" class="<?= $current_page == 'armada.php' ? 'active' : '' ?>">
                 <i class="bi bi-truck"></i> Armada
