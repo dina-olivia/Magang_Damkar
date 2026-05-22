@@ -243,7 +243,7 @@
 
 <div id="sidebar" class="shadow">
     <div class="sidebar-header">
-        <img src="../../assets/logo_damkar.png" alt="Logo" width="50" height="50">
+        <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
         <div class="ms-2">
             <span class="fw-bold d-block lh-1 text-white fs-6">DAMKAR</span>
             <span class="fw-bold d-block lh-1 text-white fs-6">PADANG</span>
@@ -257,10 +257,16 @@
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
-            <a href="../../pages/manajemen_kejadian.php" class="nav-top-link">
-                <i class="bi bi-megaphone"></i> Manajemen Kejadian
+           <a class="nav-top-link" data-bs-toggle="collapse" href="#menuManajemenKejadian" aria-expanded="false">
+                <i class="bi bi-clipboard-check"></i> Manajemen Kejadian
+                <i class="bi bi-chevron-down chevron"></i>
             </a>
-
+            <div class="collapse sub-menu" id="menuManajemenKejadian">
+                <a href="input_laporan.php">Input Laporan</a>
+                <a href="monitoring_kejadian.php">Monitoring Kejadian</a>
+                <a href="detail_kejadian.php">Detail Kejadian</a>
+                <a href="timeline_kronologi.php">Timeline Kronologi</a>
+            </div>
             <a class="nav-top-link" data-bs-toggle="collapse" href="#menuOperasional" aria-expanded="false">
                 <i class="bi bi-clipboard-check"></i> Operasional
                 <i class="bi bi-chevron-down chevron"></i>

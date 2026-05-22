@@ -398,12 +398,27 @@ $query_riwayat = mysqli_query($koneksi, "
         .rating-number { font-weight: 700; color: #d97706; }
         .stars { color: #f59e0b; font-size: 12px; }
 
-        .btn-detail {
-            color: #2563eb;
-            text-decoration: none;
+        /* RE-DESIGN TOMBOL DETAIL CUSTOM (MENGGANTI BOOTSTRAP) */
+        .btn-lihat-detail {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #fff;
+            color: #e53e3e;
+            border: 1px solid #e53e3e;
+            padding: 8px 14px;
+            font-size: 13px;
             font-weight: 600;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.2s ease;
         }
-        .btn-detail:hover { text-decoration: underline; }
+        .btn-lihat-detail:hover {
+            background: #e53e3e;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(229, 62, 62, 0.2);
+        }
 
         .empty-row {
             text-align: center;
@@ -416,16 +431,26 @@ $query_riwayat = mysqli_query($koneksi, "
 
     <div class="sidebar">
         <div class="brand">
-            <img src="../../assets/logo_damkar.png" alt="Logo">
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
             <div class="brand-text">
                 <h2>DAMKAR</h2>
                 <h2>PADANG</h2>
             </div>
         </div>
         <ul class="menu-list">
-            <li class="menu-item"><a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-            <li class="menu-item"><a href="#"><i class="fa-solid fa-bullhorn"></i> Manajemen Kejadian</a></li>
-            <li class="menu-item"><a href="#"><i class="fa-solid fa-paste"></i> Operasional</a></li>
+            <li class="menu-item">
+                <a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
+            <li class="menu-item active">
+                <a href="#"><i class="fa-solid fa-users"></i> Manajemen Kejadian</a></li>
+            <li class="menu-item active">
+                <a href="#"><i class="fa-solid fa-users"></i> Operasional</a></li>
+                <ul class="submenu">
+                    <li><a href="penugasan_tim.php">Penugasan Tim</a></li>
+                    <li><a href="monitoring_armada.php">Monitoring Armada</a></li>
+                    <li><a href="status_penanganan.php">Status Penanganan</a></li>
+                    <li><a href="riwayat_penugasan.php">Riwayat Penugasan</a></li>
+                </ul>
+            </li>
             <li class="menu-item active">
                 <a href="#"><i class="fa-solid fa-users"></i> Personil</a>
                 <ul class="submenu">
@@ -555,9 +580,9 @@ $query_riwayat = mysqli_query($koneksi, "
                             </div>
                         </td>
                         <td>
-                            <a href="detail.php?menu=riwayat_tugas&id=<?= $data['id'] ?>" class="btn btn-sm btn-outline-secondary" title="Detail">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
+                            <a href="detail.php?menu=riwayat_tugas&id=<?= $data['id'] ?>" class="btn-lihat-detail" title="Lihat Detail">
+                                <i class="fa-solid fa-eye"></i> Detail
+                            </a>
                         </td>
                     </tr>
                     <?php 
@@ -565,7 +590,7 @@ $query_riwayat = mysqli_query($koneksi, "
                     } else { 
                     ?>
                     <tr>
-                        <td colspan="7" class="empty-row"><i class="fa-solid fa-users-slash" style="font-size:30px; margin-bottom:10px; display:block;"></i>Belum Ada Data Riwayat Tugas.</td>
+                        <td colspan="7" class="empty-row"><i class="fa-solid fa-users-slash" style="font-size:30px; margin-bottom:10px; display:block;"></i>Belum Anda Data Riwayat Tugas.</td>
                     </tr>
                     <?php } ?>
                 </tbody>

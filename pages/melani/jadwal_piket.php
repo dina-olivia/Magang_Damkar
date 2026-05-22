@@ -389,7 +389,7 @@ $query = mysqli_query($koneksi, "
 
     <div class="sidebar">
         <div class="brand">
-            <img src="../../assets/logo_damkar.png" alt="Logo" width="50">
+            <img src="../../assets/imglogo_damkar.png" alt="Logo" width="140" height="80">
             <div class="brand-text">
                 <h2>DAMKAR</h2>
                 <h2>PADANG</h2>
@@ -397,8 +397,16 @@ $query = mysqli_query($koneksi, "
         </div>
         <ul class="menu-list">
             <li class="menu-item"><a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-            <li class="menu-item"><a href="#"><i class="fa-solid fa-bullhorn"></i> Manajemen Kejadian</a></li>
-            <li class="menu-item"><a href="#"><i class="fa-solid fa-paste"></i> Operasional</a></li>
+            <li class="menu-item active">
+                <a href="#"><i class="fa-solid fa-users"></i> Manajemen Kejadian</a></li>
+            <li class="menu-item active">
+                <a href="#"><i class="fa-solid fa-users"></i> Operasional</a></li>
+                <ul class="submenu">
+                    <li><a href="penugasan_tim.php">Penugasan Tim</a></li>
+                    <li><a href="monitoring_armada.php">Monitoring Armada</a></li>
+                    <li><a href="status_penanganan.php">Status Penanganan</a></li>
+                    <li><a href="riwayat_penugasan.php">Riwayat Penugasan</a></li>
+                </ul>
             <li class="menu-item active">
                 <a href="#"><i class="fa-solid fa-users"></i> Personil</a>
                 <ul class="submenu">
