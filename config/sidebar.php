@@ -1,17 +1,15 @@
 <?php echo "";
 $current_page = basename($_SERVER['PHP_SELF']);
-$directory = basename(dirname($_SERVER['PHP_SELF']));
-
-// Jika kita di dalam folder 'pages', base_url adalah keluar satu tingkat (../)
-// Jika kita di root (Magang_DAMKAR), base_url kosong
-// Dengan logika ini, semua link akan tetap berfungsi tanpa error, baik di root maupun di dalam folder 'pages'
-$base_url = ($directory == 'pages') ? '../' : '';
+$path = $_SERVER['PHP_SELF'];
+$root_folder = '/Magang_DAMKAR';
+$clean_path = str_replace($root_folder, '', $path);
+$levels = substr_count($clean_path, '/');
+$base_url = str_repeat('../', $levels);
 ?>
 
 <div id="sidebar" class="shadow">
     <div class="sidebar-header">
-        <img src="<?= $base_url ?>assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
-            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+        <img src="MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
 

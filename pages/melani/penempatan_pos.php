@@ -64,8 +64,8 @@ $query = mysqli_query($koneksi, "
         }
 
         .brand img {
-            width: 50px;
-            height: auto;
+            width: 140px;
+            height: 80px;
         }
 
         .brand-text h2 {

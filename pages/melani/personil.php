@@ -9,246 +9,18 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="../../assets/css/style.css">
     
-    <style>
-        :root { 
-            --fire-red: #b91c1c; 
-            --dark-sidebar: #0f172a; 
-            --sidebar-text: #94a3b8;
-        }
-        
-        body { background-color: #f1f5f9; margin: 0; padding: 0; display: flex; font-family: 'Segoe UI', sans-serif; }
-
-        /* ===== SIDEBAR ===== */
-        #sidebar {
-            width: 280px; height: 100vh; position: fixed; left: 0; top: 0;
-            background-color: var(--dark-sidebar); display: flex; flex-direction: column; z-index: 1000;
-        }
-
-        .sidebar-header {
-            padding: 16px 20px;
-            background-color: var(--fire-red);
-            color: white;
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-            border-left: 4px solid rgba(255,255,255,0.3);
-        }
-
-        .sidebar-content { flex-grow: 1; overflow-y: auto; overflow-x: hidden; }
-        .sidebar-content::-webkit-scrollbar { width: 4px; }
-        .sidebar-content::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-
-        /* Nav item wrapper */
-        .nav-section { padding: 6px 0; }
-
-        /* Top-level link */
-        #sidebar .nav-top-link {
-            color: var(--sidebar-text);
-            text-decoration: none;
-            padding: 13px 22px;
-            display: flex;
-            align-items: center;
-            font-size: 0.95rem;
-            font-weight: 500;
-            border-left: 4px solid transparent;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        #sidebar .nav-top-link i:first-child { margin-right: 13px; font-size: 1.15rem; }
-
-        #sidebar .nav-top-link:hover {
-            background-color: #1e293b;
-            color: #fff;
-            border-left-color: #ef4444;
-        }
-
-        #sidebar .nav-top-link.active {
-            background-color: #1e293b;
-            color: #fff;
-            border-left-color: #ef4444;
-        }
-
-        /* Sub-menu */
-        .sub-menu { background-color: #1a2236; list-style: none; padding: 0; margin: 0; }
-
-        .sub-menu a {
-            color: #64748b;
-            text-decoration: none;
-            padding: 11px 22px 11px 55px; /* Jarak kiri disesuaikan agar lurus rapi */
-            display: flex;
-            align-items: center;
-            font-size: 0.875rem;
-            border-left: 4px solid transparent;
-            transition: 0.2s;
-        }
-
-        .sub-menu a:hover {
-            background-color: #1e293b;
-            color: #cbd5e1;
-            border-left-color: #ef4444;
-        }
-
-        .sub-menu a.active {
-            background-color: #1e293b;
-            color: #fff;
-            font-weight: 600;
-            border-left-color: #ef4444;
-        }
-
-        /* Chevron */
-        .chevron { margin-left: auto; font-size: 0.8rem; transition: transform 0.25s; }
-        .nav-top-link[aria-expanded="true"] .chevron { transform: rotate(180deg); }
-
-        /* ===== MAIN CONTENT ===== */
-        #main-content {
-            margin-left: 280px;
-            padding: 36px 40px;
-            width: calc(100% - 280px);
-            min-height: 100vh;
-        }
-
-        /* Page header */
-        .page-header-title {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #0f172a;
-            letter-spacing: -0.5px;
-            line-height: 1.1;
-        }
-
-        .page-header-sub { color: #64748b; font-size: 0.95rem; margin-top: 4px; }
-
-        /* Stat Cards */
-        .stat-card {
-            background: #fff;
-            border-radius: 14px;
-            padding: 24px 28px;
-            border: 1px solid #e2e8f0;
-            border-bottom: 4px solid var(--fire-red);
-            transition: box-shadow 0.2s;
-        }
-
-        .stat-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
-
-        .stat-card .stat-label {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #94a3b8;
-        }
-
-        .stat-card .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: #0f172a;
-            line-height: 1.1;
-            margin-top: 6px;
-        }
-
-        /* Main card */
-        .main-card {
-            background: #fff;
-            border-radius: 14px;
-            border: 1px solid #e2e8f0;
-            overflow: hidden;
-        }
-
-        .main-card-header {
-            padding: 18px 24px;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .main-card-header h6 {
-            font-weight: 700;
-            color: #0f172a;
-            font-size: 1rem;
-            margin: 0;
-        }
-
-        .main-card-body { padding: 20px 24px; }
-
-        /* Table */
-        .table thead th {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: #94a3b8;
-            border-bottom: 2px solid #f1f5f9;
-            padding: 10px 14px;
-            background: #f8fafc;
-        }
-
-        .table tbody td {
-            padding: 13px 14px;
-            vertical-align: middle;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.9rem;
-            color: #334155;
-        }
-
-        .table tbody tr:hover { background: #f8fafc; }
-
-        /* Avatar */
-        .avatar-circle {
-            width: 38px; height: 38px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 14px;
-            color: #fff; flex-shrink: 0;
-        }
-
-        /* Badge jabatan */
-        .badge-jabatan {
-            font-size: 11px; font-weight: 600;
-            padding: 4px 10px; border-radius: 20px;
-        }
-
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #94a3b8;
-        }
-
-        .empty-state i { font-size: 3rem; margin-bottom: 12px; display: block; }
-        .empty-state p { font-size: 0.95rem; }
-
-        /* Search/filter controls */
-        .filter-bar .form-control,
-        .filter-bar .form-select {
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            font-size: 0.875rem;
-            padding: 8px 12px;
-            background: #f8fafc;
-        }
-
-        .filter-bar .form-control:focus,
-        .filter-bar .form-select:focus {
-            border-color: var(--fire-red);
-            box-shadow: 0 0 0 3px rgba(185,28,28,0.1);
-        }
-    </style>
 </head>
 <body>
 
 <div id="sidebar" class="shadow">
-    <div class="sidebar-header">
-        <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
-        <div class="ms-2">
-            <span class="fw-bold d-block lh-1 text-white fs-6">DAMKAR</span>
-            <span class="fw-bold d-block lh-1 text-white fs-6">PADANG</span>
+        <div class="sidebar-header">
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+            <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
-    </div>
 
     <div class="sidebar-content">
         <div class="nav-section">
@@ -322,7 +94,7 @@
 
     <div class="d-flex justify-content-between align-items-start mb-4">
         <div>
-            <div class="page-header-title">PERSONIL DAMKAR</div>
+            <div class="page-header-title"><h2>PERSONIL DAMKAR</h2></div>
             <div class="page-header-sub">Sistem Informasi Manajemen Personil Pemadam Kebakaran</div>
         </div>
         <button class="btn btn-danger px-4 fw-semibold" data-bs-toggle="modal" data-bs-target="#modalTambah">

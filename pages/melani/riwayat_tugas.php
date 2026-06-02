@@ -65,11 +65,22 @@ $query_riwayat = mysqli_query($koneksi, "
         .sidebar {
             width: 280px;
             background: #111625;
-            min-height: 100vh;
+            height: 100vh;
             color: #a3afc7;
             position: fixed;
             left: 0;
             top: 0;
+            /* PERBAIKAN 1: Supaya sidebar bisa discroll secara vertikal jika menu terlalu panjang */
+            overflow-y: auto; 
+        }
+
+        /* Opsional: Mempercantik tampilan scrollbar di sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #232d45;
+            border-radius: 3px;
         }
 
         .brand {
@@ -79,11 +90,14 @@ $query_riwayat = mysqli_query($koneksi, "
             align-items: center;
             gap: 15px;
             color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .brand img {
-            width: 50px;
-            height: auto;
+            width: 140px;
+            height: 80px;
         }
 
         .brand-text h2 {
@@ -100,12 +114,19 @@ $query_riwayat = mysqli_query($koneksi, "
         .menu-item a {
             display: flex;
             align-items: center;
+            justify-content: space-between; /* Modifikasi untuk panah submenu */
             padding: 15px 25px;
             color: #a3afc7;
             text-decoration: none;
             font-size: 15px;
-            gap: 15px;
             transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-link-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .menu-item a:hover, .menu-item.active > a {
@@ -117,10 +138,28 @@ $query_riwayat = mysqli_query($koneksi, "
             border-left: 4px solid #d71920;
         }
 
+        /* Ikon panah indikator submenu */
+        .menu-item .arrow-icon {
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+
+        /* Rotasi panah saat menu terbuka */
+        .menu-item.open .arrow-icon {
+            transform: rotate(90deg);
+        }
+
+        /* PERBAIKAN 2: Sembunyikan submenu secara default */
         .submenu {
             list-style: none;
             background: #0d111d;
             padding: 5px 0;
+            display: none; 
+        }
+
+        /* Tampilkan jika parent menu di-klik (memiliki class .open) */
+        .menu-item.open .submenu {
+            display: block;
         }
 
         .submenu li a {
@@ -129,11 +168,13 @@ $query_riwayat = mysqli_query($koneksi, "
             display: block;
             color: #a3afc7;
             text-decoration: none;
+            justify-content: flex-start;
         }
 
         .submenu li.active a {
             color: white;
             font-weight: bold;
+            background: #141a29;
         }
 
         /* ================= MAIN CONTENT ================= */
@@ -398,7 +439,6 @@ $query_riwayat = mysqli_query($koneksi, "
         .rating-number { font-weight: 700; color: #d97706; }
         .stars { color: #f59e0b; font-size: 12px; }
 
-        /* RE-DESIGN TOMBOL DETAIL CUSTOM (MENGGANTI BOOTSTRAP) */
         .btn-lihat-detail {
             display: inline-flex;
             align-items: center;
@@ -439,11 +479,20 @@ $query_riwayat = mysqli_query($koneksi, "
         </div>
         <ul class="menu-list">
             <li class="menu-item">
-                <a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a></li>
-            <li class="menu-item active">
-                <a href="#"><i class="fa-solid fa-users"></i> Manajemen Kejadian</a></li>
-            <li class="menu-item active">
-                <a href="#"><i class="fa-solid fa-users"></i> Operasional</a></li>
+                <a href="../../index.php">
+                    <span class="menu-link-content"><i class="fa-solid fa-gauge"></i> Dashboard</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span class="menu-link-content"><i class="fa-solid fa-fire-extinguisher"></i> Manajemen Kejadian</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a class="has-submenu">
+                    <span class="menu-link-content"><i class="fa-solid fa-route"></i> Operasional</span>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </a>
                 <ul class="submenu">
                     <li><a href="penugasan_tim.php">Penugasan Tim</a></li>
                     <li><a href="monitoring_armada.php">Monitoring Armada</a></li>
@@ -451,8 +500,11 @@ $query_riwayat = mysqli_query($koneksi, "
                     <li><a href="riwayat_penugasan.php">Riwayat Penugasan</a></li>
                 </ul>
             </li>
-            <li class="menu-item active">
-                <a href="#"><i class="fa-solid fa-users"></i> Personil</a>
+            <li class="menu-item open active">
+                <a class="has-submenu">
+                    <span class="menu-link-content"><i class="fa-solid fa-users"></i> Personil</span>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                </a>
                 <ul class="submenu">
                     <li><a href="personil.php">Data Personil</a></li>
                     <li><a href="penempatan_pos.php">Penempatan Pos</a></li>
@@ -460,8 +512,16 @@ $query_riwayat = mysqli_query($koneksi, "
                     <li class="active"><a href="riwayat_tugas.php">Riwayat Tugas</a></li>
                 </ul>
             </li>
-            <li class="menu-item"><a href="#"><i class="fa-solid fa-truck-fire"></i> Armada</a></li>
-            <li class="menu-item"><a href="#"><i class="fa-solid fa-file-invoice"></i> Laporan</a></li>
+            <li class="menu-item">
+                <a href="#">
+                    <span class="menu-link-content"><i class="fa-solid fa-truck-fire"></i> Armada</span>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="#">
+                    <span class="menu-link-content"><i class="fa-solid fa-file-invoice"></i> Laporan</span>
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -599,6 +659,25 @@ $query_riwayat = mysqli_query($koneksi, "
     </div>
 
     <script>
+        // 1. Logika untuk Buka-Tutup Submenu Sidebar
+        const submenus = document.querySelectorAll('.has-submenu');
+        
+        submenus.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const parentLi = this.parentElement;
+                
+                // Menutup menu lain jika ingin mode accordion (opsional)
+                // document.querySelectorAll('.menu-item').forEach(li => {
+                //    if(li !== parentLi) li.classList.remove('open');
+                // });
+
+                // Toggle class open pada menu yang diklik
+                parentLi.classList.toggle('open');
+            });
+        });
+
+        // 2. Logika Realtime Search Table
         const searchInput = document.getElementById('searchInput');
         searchInput.addEventListener('input', function() {
             const keyword = this.value.toLowerCase();
