@@ -25,7 +25,7 @@ $base_url = str_repeat('../', $levels);
                 <i class="bi bi-megaphone"></i> Manajemen Kejadian
             </a>
            <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_penanganan.php', 'timeline_kronologi.php']) ? 'show' : '' ?> sub-menu" id="menuManajemen">
-
+<!--  -->
             <a href="/MAGANG/Magang_Damkar/pages/input_laporan.php"
             class="<?= $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
             
