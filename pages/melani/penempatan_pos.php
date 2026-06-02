@@ -408,7 +408,7 @@ $query = mysqli_query($conn, "
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="40" height="40"
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
