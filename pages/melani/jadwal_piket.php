@@ -1,12 +1,12 @@
 <?php require_once __DIR__ . '/../../config/koneksi.php';
 
 // STATISTICS
-$total_jadwal   = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM jadwal_piket"));
-$jumlah_shift   = mysqli_num_rows(mysqli_query($koneksi, "SELECT DISTINCT shift FROM jadwal_piket WHERE shift != ''"));
-$total_personil = mysqli_num_rows(mysqli_query($koneksi, "SELECT DISTINCT nama_personil FROM jadwal_piket"));
+$total_jadwal   = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM jadwal_piket"));
+$jumlah_shift   = mysqli_num_rows(mysqli_query($conn, "SELECT DISTINCT shift FROM jadwal_piket WHERE shift != ''"));
+$total_personil = mysqli_num_rows(mysqli_query($conn, "SELECT DISTINCT nama_personil FROM jadwal_piket"));
 
 // DISTRIBUSI BOX
-$query_distribusi = mysqli_query($koneksi, "
+$query_distribusi = mysqli_query($conn, "
     SELECT 
         shift,
         COUNT(id) as jumlah
@@ -16,7 +16,7 @@ $query_distribusi = mysqli_query($koneksi, "
 ");
 
 // QUERY UTAMA
-$query = mysqli_query($koneksi, "
+$query = mysqli_query($conn, "
     SELECT 
         jp.tanggal, 
         jp.shift, 
@@ -120,7 +120,7 @@ $query = mysqli_query($koneksi, "
                 </div>
 
                 <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-person-vcard"></i> Personil</span>
+                    <span><i class="bi bi-people"></i> Personil</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu show" id="menuPersonil">
@@ -300,7 +300,7 @@ $query = mysqli_query($koneksi, "
                         <select name="nama_personil" class="form-select" required>
                             <option value="">-- Pilih Anggota Damkar --</option>
                             <?php
-                            $ambil_personil = mysqli_query($koneksi, "SELECT nama_personil, nip FROM tbl_daftar ORDER BY nama_personil ASC");
+                            $ambil_personil = mysqli_query($conn, "SELECT nama_personil, nip FROM tbl_daftar ORDER BY nama_personil ASC");
                             while ($personil = mysqli_fetch_assoc($ambil_personil)) {
                                 echo "<option value='".htmlspecialchars($personil['nama_personil'])."'>".htmlspecialchars($personil['nama_personil'])." - (NIP: ".htmlspecialchars($personil['nip']).")</option>";
                             }
@@ -353,17 +353,17 @@ $query = mysqli_query($koneksi, "
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan_jadwal'])) {
-    $tanggal        = mysqli_real_escape_string($koneksi, $_POST['tanggal']);
-    $shift          = mysqli_real_escape_string($koneksi, $_POST['shift']);
-    $jam_kerja      = mysqli_real_escape_string($koneksi, $_POST['jam_kerja']);
-    $nama_personil  = mysqli_real_escape_string($koneksi, $_POST['nama_personil']);
+    $tanggal        = mysqli_real_escape_string($conn, $_POST['tanggal']);
+    $shift          = mysqli_real_escape_string($conn, $_POST['shift']);
+    $jam_kerja      = mysqli_real_escape_string($conn, $_POST['jam_kerja']);
+    $nama_personil  = mysqli_real_escape_string($conn, $_POST['nama_personil']);
 
-    $cek_ganda = mysqli_query($koneksi, "SELECT * FROM jadwal_piket WHERE tanggal='$tanggal' AND shift='$shift' AND nama_personil='$nama_personil'");
+    $cek_ganda = mysqli_query($conn, "SELECT * FROM jadwal_piket WHERE tanggal='$tanggal' AND shift='$shift' AND nama_personil='$nama_personil'");
     if(mysqli_num_rows($cek_ganda) > 0) {
         echo "<script>alert('Personil tersebut sudah terdaftar di shift dan tanggal ini!');</script>";
     } else {
         $query_insert = "INSERT INTO jadwal_piket (tanggal, shift, jam_kerja, nama_personil) VALUES ('$tanggal', '$shift', '$jam_kerja', '$nama_personil')";
-        if (mysqli_query($koneksi, $query_insert)) {
+        if (mysqli_query($conn, $query_insert)) {
             echo "<script>alert('Anggota berhasil ditambahkan ke jadwal piket!'); window.location.href = 'jadwal_piket.php';</script>";
             exit;
         }

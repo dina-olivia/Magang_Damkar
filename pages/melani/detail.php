@@ -17,7 +17,7 @@ if (empty($menu) || $id <= 0) {
 }
 
 // 4. Jalankan Query dengan mengamankan nama tabel menggunakan backtick (`)
-$result = mysqli_query($koneksi, "SELECT * FROM `$menu` WHERE id = $id");
+$result = mysqli_query($conn, "SELECT * FROM `$menu` WHERE id = $id");
 
 // Jika nama tabel ngawur / tidak ada di database, tangani dengan elegan (bukan fatal error)
 if (!$result) {

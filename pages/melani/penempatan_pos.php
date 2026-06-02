@@ -1,12 +1,12 @@
 <?php require_once __DIR__ . '/../../config/koneksi.php';
 
 // Statistik
-$total_penempatan = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM penempatan_pos"));
-$penempatan_aktif = mysqli_num_rows(mysqli_query($koneksi, "SELECT * FROM penempatan_pos WHERE status='Aktif'"));
-$jumlah_pos = mysqli_num_rows(mysqli_query($koneksi, "SELECT DISTINCT pos_penempatan FROM penempatan_pos"));
+$total_penempatan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM penempatan_pos"));
+$penempatan_aktif = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM penempatan_pos WHERE status='Aktif'"));
+$jumlah_pos = mysqli_num_rows(mysqli_query($conn, "SELECT DISTINCT pos_penempatan FROM penempatan_pos"));
 
 // Distribusi
-$query_distribusi = mysqli_query($koneksi, "
+$query_distribusi = mysqli_query($conn, "
     SELECT 
         pos_penempatan,
         COUNT(id) as jumlah
@@ -15,7 +15,7 @@ $query_distribusi = mysqli_query($koneksi, "
 ");
 
 // 1. DATA PENEMPATAN DIUBAH MENGGUNAKAN INNER JOIN AGAR SINKRON DENGAN TBL_DAFTAR
-$query = mysqli_query($koneksi, "
+$query = mysqli_query($conn, "
     SELECT penempatan_pos.*, tbl_daftar.nama_personil AS nama_asli, tbl_daftar.nip AS nip_asli 
     FROM penempatan_pos 
     INNER JOIN tbl_daftar ON penempatan_pos.nama_personil = tbl_daftar.nama_personil 
@@ -29,102 +29,44 @@ $query = mysqli_query($koneksi, "
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Penempatan Pos - DAMKAR PADANG</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+        .custom-modal-overlay {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: rgba(0, 0, 0, 0.6) !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            z-index: 9999 !important;
+            display: none !important; 
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        body {
-            background: #f4f7f6;
-            display: flex;
+        .custom-modal-overlay.open {
+            display: flex !important;
+            opacity: 1 !important;
         }
 
-        /* ================= SIDEBAR ================= */
-        .sidebar {
-            width: 280px;
-            background: #111625;
-            min-height: 100vh;
-            color: #a3afc7;
-            position: fixed;
-            left: 0;
-            top: 0;
+        .custom-modal-box {
+            background: white !important;
+            border-radius: 12px !important;
+            width: 550px !important;
+            max-width: 90% !important;
+            overflow: hidden !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
+            transform: translateY(-50px);
+            transition: transform 0.3s ease;
         }
 
-        .brand {
-            background: #d71920;
-            padding: 25px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: white;
-        }
-
-        .brand img {
-            width: 140px;
-            height: 80px;
-        }
-
-        .brand-text h2 {
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-
-        .brand-text p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .menu-list {
-            list-style: none;
-            margin-top: 15px;
-        }
-
-        .menu-item a {
-            display: flex;
-            align-items: center;
-            padding: 15px 25px;
-            color: #a3afc7;
-            text-decoration: none;
-            font-size: 15px;
-            gap: 15px;
-            transition: all 0.3s;
-        }
-
-        .menu-item a:hover, .menu-item.active > a {
-            background: #171e30;
-            color: white;
-        }
-
-        .menu-item.active {
-            border-left: 4px solid #d71920;
-        }
-
-        .submenu {
-            list-style: none;
-            background: #0d111d;
-            padding: 5px 0;
-        }
-
-        .submenu li a {
-            padding: 12px 25px 12px 55px;
-            font-size: 14px;
-        }
-
-        .submenu li.active a {
-            color: white;
-            font-weight: bold;
-        }
-
-        /* ================= MAIN CONTENT ================= */
-        .main-content {
-            margin-left: 280px;
-            flex: 1;
-            padding: 40px;
+        .custom-modal-overlay.open .custom-modal-box {
+            transform: translateY(0) !important;
         }
 
         /* ================= HEADER ================= */
@@ -380,9 +322,19 @@ $query = mysqli_query($koneksi, "
             font-weight: 700;
         }
 
+        .action-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
         .action-links a {
-            margin-right: 10px;
-            font-size: 16px;
+            font-size: 18px;
+            transition: transform 0.2s;
+        }
+
+        .action-links a:hover {
+            transform: scale(1.15);
         }
 
         .action-edit { color: #3182ce; }
@@ -443,8 +395,7 @@ $query = mysqli_query($koneksi, "
             .cards-grid, .distribusi-container { grid-template-columns: repeat(2, 1fr); }
         }
         @media(max-width: 768px) {
-            .sidebar { display: none; }
-            .main-content { margin-left: 0; padding: 20px; }
+            .main-content { padding: 20px; }
             .cards-grid, .distribusi-container { grid-template-columns: 1fr; }
             .table-header { flex-direction: column; align-items: flex-start; }
             .toolbar-right { width: 100%; flex-wrap: wrap; }
@@ -452,54 +403,74 @@ $query = mysqli_query($koneksi, "
         }
     </style>
 </head>
+
 <body>
 
-    <div class="sidebar">
-        <div class="brand">
-            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
-            <div class="brand-text">
-                <h2>DAMKAR</h2>
-                <h2>PADANG</h2>
+    <div id="sidebar" class="shadow">
+        <div class="sidebar-header">
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="40" height="40"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+            <span class="fw-bold ms-2">DAMKAR PADANG</span>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="nav flex-column mt-2">
+                <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuManajemenKejadian">
+                    <a href="../input_laporan.php">Input Laporan</a>
+                    <a href="../monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="../detail_kejadian.php">Detail Kejadian</a>
+                    <a href="../timeline_kronologi.php">Timeline Kronologi</a>
+                </div>
+
+                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-clipboard-check"></i> Operasional</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuOperasional">
+                    <a href="../penugasan_tim.php">Penugasan Tim</a>
+                    <a href="../monitoring_armada.php">Monitoring Armada</a>
+                    <a href="../status_penanganan.php">Status Penanganan</a>
+                    <a href="../riwayat_penugasan.php">Riwayat Penugasan</a>
+                </div>
+
+                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-people"></i> Personil</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu show" id="menuPersonil">
+                    <a href="personil.php">Data Personil</a>
+                    <a href="penempatan_pos.php" class="active">Penempatan Pos</a>
+                    <a href="jadwal_piket.php">Jadwal Piket</a>
+                    <a href="riwayat_tugas.php">Riwayat Tugas</a>
+                </div>
+
+                <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
+
+                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-tools"></i> Sarpras</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuSarpras">
+                    <a href="../sarpras.php">Data Sarpras</a>
+                    <a href="../master_bidang.php">Master Bidang</a>
+                    <a href="../master_kategori.php">Master Kategori</a>
+                </div>
+
+                <a href="../dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+
+                <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>
         </div>
-        <ul class="menu-list">
-            <li class="menu-item">
-                <a href="../../index.php"><i class="fa-solid fa-gauge"></i> Dashboard</a>
-            </li>
-            <li class="menu-item">
-                <a href="#"><i class="fa-solid fa-bullhorn"></i> Manajemen Kejadian</a>
-            </li>
-            <li class="menu-item">
-                <a href="#"><i class="fa-solid fa-paste"></i> Operasional <i class="fa-solid fa-chevron-down" style="margin-left:auto; font-size:12px;"></i></a>
-                <ul class="submenu">
-                    <li><a href="penugasan_tim.php">Penugasan Tim</a></li>
-                    <li><a href="monitoring_armada.php">Monitoring Armada</a></li>
-                    <li><a href="status_penanganan.php">Status Penanganan</a></li>
-                    <li><a href="riwayat_penugasan.php">Riwayat Penugasan</a></li>
-                </ul>
-            </li>
-            <li class="menu-item active">
-                <a href="#"><i class="fa-solid fa-users"></i> Personil <i class="fa-solid fa-chevron-up" style="margin-left:auto; font-size:12px;"></i></a>
-                <ul class="submenu">
-                    <li><a href="personil.php">Data Personil</a></li>
-                    <li class="active"><a href="penempatan_pos.php">Penempatan Pos</a></li>
-                    <li><a href="jadwal_piket.php">Jadwal Piket</a></li>
-                    <li><a href="riwayat_tugas.php">Riwayat Tugas</a></li>
-                </ul>
-            </li>
-            <li class="menu-item">
-                <a href="#"><i class="fa-solid fa-truck-fire"></i> Armada</a>
-            </li>
-            <li class="menu-item">
-                <a href="#"><i class="fa-solid fa-screwdriver-wrench"></i> Sarpras <i class="fa-solid fa-chevron-down" style="margin-left:auto; font-size:12px;"></i></a>
-            </li>
-            <li class="menu-item">
-                <a href="#"><i class="fa-solid fa-file-invoice"></i> Laporan</a>
-            </li>
-        </ul>
     </div>
 
-    <div class="main-content">
+    <div id="main-content">
 
         <div class="header">
             <div class="header-left">
@@ -557,7 +528,7 @@ $query = mysqli_query($koneksi, "
                 <h2>Daftar Penempatan Personil</h2>
                 <div class="toolbar-right">
                     <div class="search-box">
-                        <i class="fa fa-search"></i>
+                        <i class="bi bi-search"></i>
                         <input type="text" id="searchInput" placeholder="Cari nama / Pos...">
                     </div>
                     <select class="filter-select" id="filterStatus">
@@ -566,7 +537,7 @@ $query = mysqli_query($koneksi, "
                         <option value="Tidak Aktif">Tidak Aktif</option>
                     </select>
                     <button class="btn-add" onclick="openModal()">
-                        <i class="fa fa-plus"></i> Tambah Penempatan
+                        <i class="bi bi-plus-circle"></i> Tambah Penempatan
                     </button>
                 </div>
             </div>
@@ -601,13 +572,15 @@ $query = mysqli_query($koneksi, "
                                     <?= htmlspecialchars($data['status']); ?>
                                 </span>
                             </td>
-                            <td class="action-links" style="text-align: center;">
-                                <a href="edit.php?menu=penempatan_pos&id=<?= $data['id']; ?>" class="action-edit" title="Edit">
-                                    <i class="fa-solid fa-pen-to-square"></i>
-                                </a>
-                                <a href="hapus.php?menu=penempatan_pos&id=<?= $data['id']; ?>" class="action-delete" title="Hapus" onclick="return confirm('Yakin hapus data?')">
-                                    <i class="fa-solid fa-trash"></i>
-                                </a>
+                            <td style="text-align: center;">
+                                <div class="action-links">
+                                    <a href="edit.php?menu=penempatan_pos&id=<?= $data['id']; ?>" class="action-edit" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a href="hapus.php?menu=penempatan_pos&id=<?= $data['id']; ?>" class="action-delete" title="Hapus" onclick="return confirm('Yakin hapus data?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         <?php 
@@ -616,7 +589,7 @@ $query = mysqli_query($koneksi, "
                         ?>
                         <tr>
                             <td colspan="6" class="empty-row">
-                                <i class="fa-solid fa-users-slash"></i>
+                                <i class="bi bi-people"></i>
                                 Belum Ada Data Penempatan Personil.<br>
                                 <span style="font-size: 13px; color: #cbd5e1;">Klik tombol "Tambah Penempatan" untuk menambahkan data.</span>
                             </td>
@@ -632,7 +605,7 @@ $query = mysqli_query($koneksi, "
     <div class="modal-overlay" id="modalTambah">
         <div class="modal-box">
             <div class="modal-header-popup">
-                <h3><i class="fa-solid fa-user-plus" style="margin-right: 8px;"></i>Tambah Penempatan</h3>
+                <h3><i class="bi bi-person-plus" style="margin-right: 8px;"></i>Tambah Penempatan</h3>
                 <button class="modal-close-btn" onclick="closeModal()">&times;</button>
             </div>
             <form action="" method="POST">
@@ -642,7 +615,7 @@ $query = mysqli_query($koneksi, "
                         <select name="nama_personil" class="form-control-popup" required>
                             <option value="">-- Pilih Anggota Damkar --</option>
                             <?php
-                            $ambil_personil = mysqli_query($koneksi, "SELECT nama_personil, nip FROM tbl_daftar ORDER BY nama_personil ASC");
+                            $ambil_personil = mysqli_query($conn, "SELECT nama_personil, nip FROM tbl_daftar ORDER BY nama_personil ASC");
                             while ($personil = mysqli_fetch_assoc($ambil_personil)) {
                                 echo "<option value='".htmlspecialchars($personil['nama_personil'])."'>".htmlspecialchars($personil['nama_personil'])." - (NIP: ".htmlspecialchars($personil['nip']).")</option>";
                             }
@@ -677,12 +650,13 @@ $query = mysqli_query($koneksi, "
                 </div>
                 <div class="modal-footer-popup">
                     <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
-                    <button type="submit" name="simpan_penempatan" class="btn-save"><i class="fa fa-save" style="margin-right: 5px;"></i>Simpan Data</button>
+                    <button type="submit" name="simpan_penempatan" class="btn-save"><i class="bi bi-save" style="margin-right: 5px;"></i>Simpan Data</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function openModal() {
             document.getElementById('modalTambah').classList.add('open');
@@ -722,19 +696,16 @@ $query = mysqli_query($koneksi, "
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan_penempatan'])) {
-    
-    // PROSES INSERT YANG SUDAH DISINKRONKAN DENGAN STRUKTUR TABEL PENEMPATAN_POS (NAMA_PERSONIL)
-    $nama_personil      = mysqli_real_escape_string($koneksi, $_POST['nama_personil']);
-    $pos_penempatan     = mysqli_real_escape_string($koneksi, $_POST['pos_penempatan']);
-    $tanggal_penempatan = mysqli_real_escape_string($koneksi, $_POST['tanggal_penempatan']);
-    $masa_penugasan     = mysqli_real_escape_string($koneksi, $_POST['masa_penugasan']);
-    $status             = mysqli_real_escape_string($koneksi, $_POST['status']);
+    $nama_personil      = mysqli_real_escape_string($conn, $_POST['nama_personil']);
+    $pos_penempatan     = mysqli_real_escape_string($conn, $_POST['pos_penempatan']);
+    $tanggal_penempatan = mysqli_real_escape_string($conn, $_POST['tanggal_penempatan']);
+    $masa_penugasan     = mysqli_real_escape_string($conn, $_POST['masa_penugasan']);
+    $status             = mysqli_real_escape_string($conn, $_POST['status']);
 
-    // Memasukkan data ke kolom nama_personil (bukan nip) sesuai blueprint database asli
     $query_insert = "INSERT INTO penempatan_pos (nama_personil, pos_penempatan, tanggal_penempatan, masa_penugasan, status) 
                      VALUES ('$nama_personil', '$pos_penempatan', '$tanggal_penempatan', '$masa_penugasan', '$status')";
 
-    if (mysqli_query($koneksi, $query_insert)) {
+    if (mysqli_query($conn, $query_insert)) {
         echo "<script>
                 alert('Data penempatan pos baru berhasil disimpan!');
                 window.location.href = 'penempatan_pos.php';
@@ -742,7 +713,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan_penempatan']))
         exit;
     } else {
         echo "<script>
-                alert('Gagal menyimpan data penempatan: " . mysqli_real_escape_string($koneksi, mysqli_error($koneksi)) . "');
+                alert('Gagal menyimpan data penempatan: " . mysqli_real_escape_string($conn, mysqli_error($conn)) . "');
               </script>";
     }
 }

@@ -1,9 +1,9 @@
 <?php require_once __DIR__ . '/../../config/koneksi.php';
 
 // STATISTICS - Mengambil data agregasi dari tabel riwayat_tugas dan tbl_daftar
-$total_personil = mysqli_num_rows(mysqli_query($koneksi, "SELECT DISTINCT nama_personil FROM tbl_daftar WHERE status = 'Aktif'"));
+$total_personil = mysqli_num_rows(mysqli_query($conn, "SELECT DISTINCT nama_personil FROM tbl_daftar WHERE status = 'Aktif'"));
 
-$stat_query = mysqli_query($koneksi, "
+$stat_query = mysqli_query($conn, "
     SELECT 
         COUNT(id) AS total_penugasan,
         IFNULL(ROUND(AVG(rating), 1), 0.0) AS rata_rating,
@@ -13,7 +13,7 @@ $stat_query = mysqli_query($koneksi, "
 $stat = mysqli_fetch_assoc($stat_query);
 
 // QUERY TOP 3 PERSONIL TERBAIK (Urutan Penugasan Terbanyak berdasarkan NAMA PERSONIL)
-$query_top3 = mysqli_query($koneksi, "
+$query_top3 = mysqli_query($conn, "
     SELECT 
         p.nama_personil,
         COUNT(r.id) AS total_penugasan
@@ -25,7 +25,7 @@ $query_top3 = mysqli_query($koneksi, "
 ");
 
 // QUERY UTAMA: DAFTAR RIWAYAT TUGAS (Menggunakan LEFT JOIN berdasarkan nama_personil)
-$query_riwayat = mysqli_query($koneksi, "
+$query_riwayat = mysqli_query($conn, "
     SELECT 
         MAX(p.id) AS id,
         p.nama_personil,
@@ -47,143 +47,10 @@ $query_riwayat = mysqli_query($koneksi, "
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riwayat Tugas Personil - DAMKAR PADANG</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        body {
-            background: #f4f7f6;
-            display: flex;
-        }
-
-        /* ================= SIDEBAR ================= */
-        .sidebar {
-            width: 280px;
-            background: #111625;
-            height: 100vh;
-            color: #a3afc7;
-            position: fixed;
-            left: 0;
-            top: 0;
-            /* PERBAIKAN 1: Supaya sidebar bisa discroll secara vertikal jika menu terlalu panjang */
-            overflow-y: auto; 
-        }
-
-        /* Opsional: Mempercantik tampilan scrollbar di sidebar */
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #232d45;
-            border-radius: 3px;
-        }
-
-        .brand {
-            background: #d71920;
-            padding: 25px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .brand img {
-            width: 140px;
-            height: 80px;
-        }
-
-        .brand-text h2 {
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }
-
-        .menu-list {
-            list-style: none;
-            margin-top: 15px;
-        }
-
-        .menu-item a {
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Modifikasi untuk panah submenu */
-            padding: 15px 25px;
-            color: #a3afc7;
-            text-decoration: none;
-            font-size: 15px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .menu-link-content {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .menu-item a:hover, .menu-item.active > a {
-            background: #171e30;
-            color: white;
-        }
-
-        .menu-item.active {
-            border-left: 4px solid #d71920;
-        }
-
-        /* Ikon panah indikator submenu */
-        .menu-item .arrow-icon {
-            font-size: 12px;
-            transition: transform 0.3s;
-        }
-
-        /* Rotasi panah saat menu terbuka */
-        .menu-item.open .arrow-icon {
-            transform: rotate(90deg);
-        }
-
-        /* PERBAIKAN 2: Sembunyikan submenu secara default */
-        .submenu {
-            list-style: none;
-            background: #0d111d;
-            padding: 5px 0;
-            display: none; 
-        }
-
-        /* Tampilkan jika parent menu di-klik (memiliki class .open) */
-        .menu-item.open .submenu {
-            display: block;
-        }
-
-        .submenu li a {
-            padding: 12px 25px 12px 55px;
-            font-size: 14px;
-            display: block;
-            color: #a3afc7;
-            text-decoration: none;
-            justify-content: flex-start;
-        }
-
-        .submenu li.active a {
-            color: white;
-            font-weight: bold;
-            background: #141a29;
-        }
-
-        /* ================= MAIN CONTENT ================= */
-        .main-content {
-            margin-left: 280px;
-            flex: 1;
-            padding: 40px;
-        }
-
         /* ================= HEADER ================= */
         .header {
             display: flex;
@@ -469,63 +336,71 @@ $query_riwayat = mysqli_query($koneksi, "
 </head>
 <body>
 
-    <div class="sidebar">
-        <div class="brand">
-            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
-            <div class="brand-text">
-                <h2>DAMKAR</h2>
-                <h2>PADANG</h2>
+    <div id="sidebar" class="shadow">
+        <div class="sidebar-header">
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+            <span class="fw-bold ms-2">DAMKAR PADANG</span>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="nav flex-column mt-2">
+                <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuManajemenKejadian">
+                    <a href="../input_laporan.php">Input Laporan</a>
+                    <a href="../monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="../detail_kejadian.php">Detail Kejadian</a>
+                    <a href="../timeline_kronologi.php">Timeline Kronologi</a>
+                </div>
+
+                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-clipboard-check"></i> Operasional</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuOperasional">
+                    <a href="../penugasan_tim.php">Penugasan Tim</a>
+                    <a href="../monitoring_armada.php">Monitoring Armada</a>
+                    <a href="../status_penanganan.php">Status Penanganan</a>
+                    <a href="../riwayat_penugasan.php">Riwayat Penugasan</a>
+                </div>
+
+                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-people"></i> Personil</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu show" id="menuPersonil">
+                    <a href="personil.php">Data Personil</a>
+                    <a href="penempatan_pos.php">Penempatan Pos</a>
+                    <a href="jadwal_piket.php">Jadwal Piket</a>
+                    <a href="riwayat_tugas.php" class="active">Riwayat Tugas</a>
+                </div>
+
+                <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
+
+                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-tools"></i> Sarpras</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuSarpras">
+                    <a href="../sarpras.php">Data Sarpras</a>
+                    <a href="../master_bidang.php">Master Bidang</a>
+                    <a href="../master_kategori.php">Master Kategori</a>
+                </div>
+
+                <a href="../dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+
+                <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>
         </div>
-        <ul class="menu-list">
-            <li class="menu-item">
-                <a href="../../index.php">
-                    <span class="menu-link-content"><i class="fa-solid fa-gauge"></i> Dashboard</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <span class="menu-link-content"><i class="fa-solid fa-fire-extinguisher"></i> Manajemen Kejadian</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a class="has-submenu">
-                    <span class="menu-link-content"><i class="fa-solid fa-route"></i> Operasional</span>
-                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                </a>
-                <ul class="submenu">
-                    <li><a href="penugasan_tim.php">Penugasan Tim</a></li>
-                    <li><a href="monitoring_armada.php">Monitoring Armada</a></li>
-                    <li><a href="status_penanganan.php">Status Penanganan</a></li>
-                    <li><a href="riwayat_penugasan.php">Riwayat Penugasan</a></li>
-                </ul>
-            </li>
-            <li class="menu-item open active">
-                <a class="has-submenu">
-                    <span class="menu-link-content"><i class="fa-solid fa-users"></i> Personil</span>
-                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                </a>
-                <ul class="submenu">
-                    <li><a href="personil.php">Data Personil</a></li>
-                    <li><a href="penempatan_pos.php">Penempatan Pos</a></li>
-                    <li><a href="jadwal_piket.php">Jadwal Piket</a></li>
-                    <li class="active"><a href="riwayat_tugas.php">Riwayat Tugas</a></li>
-                </ul>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <span class="menu-link-content"><i class="fa-solid fa-truck-fire"></i> Armada</span>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="#">
-                    <span class="menu-link-content"><i class="fa-solid fa-file-invoice"></i> Laporan</span>
-                </a>
-            </li>
-        </ul>
     </div>
 
-    <div class="main-content">
+    <div id="main-content">
         <div class="header">
             <div class="header-left">
                 <h1>Riwayat Tugas Personil</h1>
@@ -658,26 +533,9 @@ $query_riwayat = mysqli_query($koneksi, "
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 1. Logika untuk Buka-Tutup Submenu Sidebar
-        const submenus = document.querySelectorAll('.has-submenu');
-        
-        submenus.forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                const parentLi = this.parentElement;
-                
-                // Menutup menu lain jika ingin mode accordion (opsional)
-                // document.querySelectorAll('.menu-item').forEach(li => {
-                //    if(li !== parentLi) li.classList.remove('open');
-                // });
-
-                // Toggle class open pada menu yang diklik
-                parentLi.classList.toggle('open');
-            });
-        });
-
-        // 2. Logika Realtime Search Table
+        // Logika Realtime Search Table
         const searchInput = document.getElementById('searchInput');
         searchInput.addEventListener('input', function() {
             const keyword = this.value.toLowerCase();
