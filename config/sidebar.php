@@ -1,15 +1,16 @@
 <?php echo "";
 $current_page = basename($_SERVER['PHP_SELF']);
-$path = $_SERVER['PHP_SELF'];
-$root_folder = '/Magang_DAMKAR';
-$clean_path = str_replace($root_folder, '', $path);
-$levels = substr_count($clean_path, '/');
-$base_url = str_repeat('../', $levels);
+$directory = basename(dirname($_SERVER['PHP_SELF']));
+
+// Jika kita di dalam folder 'pages', base_url adalah keluar satu tingkat (../)
+// Jika kita di root (Magang_DAMKAR), base_url kosong
+$base_url = ($directory == 'pages') ? '../' : '';
 ?>
 
 <div id="sidebar" class="shadow">
     <div class="sidebar-header">
-        <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
+        <img src="<?= $base_url ?>assets/logo_damkar.png" alt="Logo" width="140" height="80"
+            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
 
@@ -53,9 +54,21 @@ $base_url = str_repeat('../', $levels);
                     class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
 
-            <a href="<?= $base_url ?>pages/personil.php" class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
-                <i class="bi bi-people"></i> Personil
+             <a href="#menuPersonil" data-bs-toggle="collapse"
+                class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-clipboard-check"></i> Personil</span>
+                <i class="bi bi-chevron-down small"></i>
             </a>
+            <div class="collapse <?= in_array($current_page, ['personil.php', 'penempatan_pos.php', 'jadwal_piket.php', 'riwayat_tugas.php']) ? 'show' : '' ?> sub-menu"
+                id="menuPersonil">
+                <a href="<?= $base_url ?>pages/personil.php"
+                    class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">Data Personil</a>
+                <a href="<?= $base_url ?>pages/penempatan_pos.php"
+                    class="<?= $current_page == 'penempatan_pos.php' ? 'active' : '' ?>">Penempatan Pos</a>
+                <a href="<?= $base_url ?>pages/jadwal_piket.php"
+                    class="<?= $current_page == 'jadwal_piket.php' ? 'active' : '' ?>">Jadwal Piket</a>
+                <a href="<?= $base_url ?>pages/riwayat_tugas.php"
+                    class="<?= $current_page == 'riwayat_tugas.php' ? 'active' : '' ?>">Riwayat Tugas</a>
 
             <a href="<?= $base_url ?>pages/armada.php" class="<?= $current_page == 'armada.php' ? 'active' : '' ?>">
                 <i class="bi bi-truck"></i> Armada
