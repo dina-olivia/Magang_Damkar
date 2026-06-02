@@ -1,19 +1,20 @@
 <?php
-// Logika untuk menentukan jalur (path) agar link tidak error
 $current_page = basename($_SERVER['PHP_SELF']);
 $directory = basename(dirname($_SERVER['PHP_SELF']));
-
-// Jika kita di dalam folder 'pages', base_url adalah keluar satu tingkat (../)
-// Jika kita di root (Magang_DAMKAR), base_url kosong
 $base_url = ($directory == 'pages') ? '../' : '';
 ?>
 
 <div id="sidebar" class="shadow">
-    <div class="sidebar-header">
-        <img src="<?= $base_url ?>assets/logo_damkar.png" alt="Logo" width="140" height="80"
-            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
-        <span class="fw-bold ms-2">DAMKAR PADANG</span>
-    </div>
+    <div class="sidebar-header text-center flex-column">
+    <img src="<?= $base_url ?>assets/logo_damkar.png"
+         alt="Logo"
+         width="70"
+         onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+
+    <h6 class="fw-bold mt-2 mb-0">
+        DAMKAR PADANG
+    </h6>
+</div>
 
     <div class="sidebar-content">
         <div class="nav flex-column mt-2">
