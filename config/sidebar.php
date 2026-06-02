@@ -14,7 +14,7 @@ $base_url = ($directory == 'pages') ? '../' : '';
             onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
-
+<!-- jgkjghjhkjh -->
     <div class="sidebar-content">
         <div class="nav flex-column mt-2">
 
