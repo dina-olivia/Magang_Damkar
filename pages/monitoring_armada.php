@@ -45,7 +45,6 @@ if (!empty($_GET['id'])) {
         #main-content {
             padding: 25px;
             margin-left: 260px;
-            /* Sesuaikan dengan lebar asli elemen sidebar Anda */
             min-height: 100vh;
         }
 
@@ -349,7 +348,7 @@ if (!empty($_GET['id'])) {
                             class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 small fw-bold">
                             <i class="bi bi-wifi me-1"></i> Sinyal Kuat
                         </span>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>

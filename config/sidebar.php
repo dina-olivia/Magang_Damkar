@@ -1,4 +1,4 @@
-<?php
+<?php echo "";
 $current_page = basename($_SERVER['PHP_SELF']);
 $path = $_SERVER['PHP_SELF'];
 $root_folder = '/Magang_DAMKAR';
@@ -8,8 +8,8 @@ $base_url = str_repeat('../', $levels);
 ?>
 
 <div id="sidebar" class="shadow">
-    <div class="sidebar-header d-flex align-items-center">
-        <img src="<?= $base_url ?>MAGANG_DAMKAR/assets/img/logo_damkar.png" width="140" height="80">
+    <div class="sidebar-header">
+        <img src="/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
 
@@ -70,43 +70,55 @@ $base_url = str_repeat('../', $levels);
             <a href="<?= $base_url ?>pages/personil.php" class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
                 <i class="bi bi-people"></i> Personil
             </a>
+        </div>
 
-            <a href="<?= $base_url ?>pages/armada.php" class="<?= $current_page == 'armada.php' ? 'active' : '' ?>">
-                <i class="bi bi-truck"></i> Armada
-            </a>
+        <!-- SARPRAS -->
+        <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-tools"></i> Sarpras</span>
+            <i class="bi bi-chevron-down small"></i>
+        </a>
 
-            <!-- SARPRAS -->
-            <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-tools"></i> Sarpras</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
+        <div class="collapse <?= in_array($current_page, ['sarpras.php', 'master_bidang.php', 'master_kategori.php']) ? 'show' : '' ?> sub-menu"
+            id="menuSarpras">
 
-            <div class="collapse <?= in_array($current_page, ['sarpras.php', 'master_bidang.php', 'master_kategori.php']) ? 'show' : '' ?> sub-menu"
-                id="menuSarpras">
+            <a href="<?= $base_url ?>pages/sarpras.php"
+                class="<?= $current_page == 'sarpras.php' ? 'active' : '' ?>">Data Sarpras</a>
 
-                <a href="<?= $base_url ?>pages/sarpras.php"
-                    class="<?= $current_page == 'sarpras.php' ? 'active' : '' ?>">Data Sarpras</a>
+            <a href="<?= $base_url ?>pages/master_bidang.php"
+                class="<?= $current_page == 'master_bidang.php' ? 'active' : '' ?>">Master Bidang</a>
 
-                <a href="<?= $base_url ?>pages/master_bidang.php"
-                    class="<?= $current_page == 'master_bidang.php' ? 'active' : '' ?>">Master Bidang</a>
+            <a href="<?= $base_url ?>pages/master_kategori.php"
+                class="<?= $current_page == 'master_kategori.php' ? 'active' : '' ?>">Master Kategori</a>
+        </div>
 
-                <a href="<?= $base_url ?>pages/master_kategori.php"
-                    class="<?= $current_page == 'master_kategori.php' ? 'active' : '' ?>">Master Kategori</a>
-            </div>
+        <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-file-earmark-bar-graph"></i> Laporan & Analitik</span>
+            <i class="bi bi-chevron-down small"></i>
+        </a>
 
-            <a href="<?= $base_url ?>pages/laporan.php" class="<?= $current_page == 'laporan.php' ? 'active' : '' ?>">
-                <i class="bi bi-file-earmark-text"></i> Laporan
-            </a>
-<!-- Manajemen User -->
-            <a href="<?= $base_url ?>pages/manajemen_user.php"
-                class="<?= $current_page == 'manajemen_user.php' ? 'active' : '' ?>">
-                <i class="bi bi-person"></i> Manajemen User
-            </a>
+        <div class="collapse <?= in_array($current_page, ['laporan_kejadian.php', 'rekap_statistik.php', 'export_excel.php']) ? 'show' : '' ?> sub-menu"
+            id="menuLaporan">
 
-            <a href="<?= $base_url ?>logout.php" class="mt-4 text-danger">
-                <i class="bi bi-box-arrow-left"></i> Keluar
-            </a>
+            <a href="/Magang_Damkar/pages/laporan_kejadian.php"
+                class="<?= $current_page == 'laporan_kejadian.php' ? 'active' : '' ?>">Laporan Kejadian</a>
+
+            <a href="/Magang_Damkar/pages/rekap_statistik.php"
+                class="<?= $current_page == 'rekap_statistik.php' ? 'active' : '' ?>">Rekap Statistik</a>
+
+            <a href="/Magang_Damkar/pages/export_excel.php"
+                class="<?= $current_page == 'export_excel.php' ? 'active' : '' ?>">Cetak & Export</a>
 
         </div>
+
+        <a href="<?= $base_url ?>pages/manajemen_user.php"
+            class="<?= $current_page == 'manajemen_user.php' ? 'active' : '' ?>">
+            <i class="bi bi-person"></i> Manajemen User
+        </a>
+
+        <a href="<?= $base_url ?>logout.php" class="mt-4 text-danger">
+            <i class="bi bi-box-arrow-left"></i> Keluar
+        </a>
+
     </div>
+</div>
 </div>
