@@ -67,7 +67,8 @@ $base_url = str_repeat('../', $levels);
                     class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
 
-            <a href="<?= $base_url ?>pages/personil.php" class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
+            <a href="<?= $base_url ?>pages/melani/personil.php"
+                class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
                 <i class="bi bi-people"></i> Personil
             </a>
         </div>
@@ -99,13 +100,13 @@ $base_url = str_repeat('../', $levels);
         <div class="collapse <?= in_array($current_page, ['laporan_kejadian.php', 'rekap_statistik.php', 'export_excel.php']) ? 'show' : '' ?> sub-menu"
             id="menuLaporan">
 
-            <a href="/Magang_Damkar/pages/laporan_kejadian.php"
+            <a href="<?= $base_url ?>pages/laporan_kejadian.php"
                 class="<?= $current_page == 'laporan_kejadian.php' ? 'active' : '' ?>">Laporan Kejadian</a>
 
-            <a href="/Magang_Damkar/pages/rekap_statistik.php"
+            <a href="<?= $base_url ?>pages/rekap_statistik.php"
                 class="<?= $current_page == 'rekap_statistik.php' ? 'active' : '' ?>">Rekap Statistik</a>
 
-            <a href="/Magang_Damkar/pages/export_excel.php"
+            <a href="<?= $base_url ?>pages/export_excel.php"
                 class="<?= $current_page == 'export_excel.php' ? 'active' : '' ?>">Cetak & Export</a>
 
         </div>

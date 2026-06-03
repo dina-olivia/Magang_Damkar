@@ -45,7 +45,10 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="<?= $base_url ?>assets/css/style.css">
     <style>
-        body { background-color: #f8f9fa; }
+        body {
+            background-color: #f8f9fa;
+        }
+
         .stat-card {
             background: white;
             padding: 20px;
@@ -53,15 +56,43 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
             box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
             border-bottom: 4px solid #dee2e6;
         }
-        .stat-total { border-bottom-color: #0d6efd; }
-        .stat-masuk { border-bottom-color: #dc3545; }
-        .stat-proses { border-bottom-color: #ffc107; }
-        .stat-selesai { border-bottom-color: #198754; }
-        
+
+        .stat-total {
+            border-bottom-color: #0d6efd;
+        }
+
+        .stat-masuk {
+            border-bottom-color: #dc3545;
+        }
+
+        .stat-proses {
+            border-bottom-color: #ffc107;
+        }
+
+        .stat-selesai {
+            border-bottom-color: #198754;
+        }
+
         @media print {
-            #config\2f sidebar, .sidebar, #filter-box, .btn-print-group, .th-aksi, .td-aksi { display: none !important; }
-            #main-content { margin-left: 0 !important; padding: 0 !important; }
-            .card { shadow: none !important; border: 1px solid #000 !important; }
+
+            #config\2f sidebar,
+            .sidebar,
+            #filter-box,
+            .btn-print-group,
+            .th-aksi,
+            .td-aksi {
+                display: none !important;
+            }
+
+            #main-content {
+                margin-left: 0 !important;
+                padding: 0 !important;
+            }
+
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #000 !important;
+            }
         }
     </style>
 </head>
@@ -72,7 +103,6 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
 
     <div id="main-content" class="p-4">
 
-        <!-- HEADER UTAMA -->
         <header class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h2 class="fw-bold m-0 text-uppercase">Rekap Laporan Kejadian</h2>
@@ -88,7 +118,19 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
             </div>
         </header>
 
-        <!-- PANEL FILTER -->
+        <?php if (isset($_GET['success'])): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Sukses!</strong> Penugasan tim berhasil dikirim dan laporan diproses.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        <?php if (isset($_GET['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Gagal!</strong> <?= htmlspecialchars($_GET['error']) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
         <div class="card border-0 shadow-sm rounded-4 p-4 mb-4" id="filter-box">
             <h5 class="fw-bold text-muted mb-3"><i class="bi bi-funnel-fill me-2"></i>Filter Rentang Waktu</h5>
             <form method="GET" action="" class="row g-3 align-items-end">
@@ -104,7 +146,8 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
 
                 <div class="col-md-4 filter-field" id="field-harian" style="display:none;">
                     <label class="form-label small fw-bold">Pilih Tanggal</label>
-                    <input type="date" name="tanggal" class="form-control" value="<?= $_GET['tanggal'] ?? date('Y-m-d') ?>">
+                    <input type="date" name="tanggal" class="form-control"
+                        value="<?= $_GET['tanggal'] ?? date('Y-m-d') ?>">
                 </div>
 
                 <div class="col-md-3 filter-field" id="field-bulanan" style="display:none;">
@@ -112,9 +155,18 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
                     <select name="bulan" class="form-select">
                         <?php
                         $months = [
-                            '01'=>'Januari', '02'=>'Februari', '03'=>'Maret', '04'=>'April', 
-                            '05'=>'Mei', '06'=>'Juni', '07'=>'Juli', '08'=>'Agustus', 
-                            '09'=>'September', '10'=>'Oktober', '11'=>'November', '12'=>'Desember'
+                            '01' => 'Januari',
+                            '02' => 'Februari',
+                            '03' => 'Maret',
+                            '04' => 'April',
+                            '05' => 'Mei',
+                            '06' => 'Juni',
+                            '07' => 'Juli',
+                            '08' => 'Agustus',
+                            '09' => 'September',
+                            '10' => 'Oktober',
+                            '11' => 'November',
+                            '12' => 'Desember'
                         ];
                         foreach ($months as $num => $name) {
                             $selected = ($_GET['bulan'] ?? date('m')) == $num ? 'selected' : '';
@@ -144,7 +196,6 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
             </form>
         </div>
 
-        <!-- REKAP STATISTIK -->
         <div class="row g-4 mb-4">
             <div class="col-md-3">
                 <div class="stat-card stat-total text-center">
@@ -172,11 +223,12 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
             </div>
         </div>
 
-        <!-- TABEL LAPORAN KEJADIAN TERPADU -->
         <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
             <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
-                <h5 class="m-0 fw-bold text-dark"><i class="bi bi-table me-2 text-danger"></i>Data Integrasi Kejadian, Personil & Armada</h5>
-                <input type="text" id="searchInput" class="form-control form-control-sm w-25" placeholder="Cari laporan...">
+                <h5 class="m-0 fw-bold text-dark"><i class="bi bi-table me-2 text-danger"></i>Data Integrasi Kejadian,
+                    Personil & Armada</h5>
+                <input type="text" id="searchInput" class="form-control form-control-sm w-25"
+                    placeholder="Cari laporan...">
             </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle mb-0">
@@ -195,14 +247,19 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
                         <?php if (mysqli_num_rows($result_tabel) > 0): ?>
                             <?php while ($row = mysqli_fetch_assoc($result_tabel)):
                                 $st = strtolower($row['status']);
-                                if ($st === 'selesai') $badge = 'bg-success text-white';
-                                elseif ($st === 'proses') $badge = 'bg-warning text-dark';
-                                else $badge = 'bg-danger text-white';
-                            ?>
+                                if ($st === 'selesai')
+                                    $badge = 'bg-success text-white';
+                                elseif ($st === 'proses')
+                                    $badge = 'bg-warning text-dark';
+                                else
+                                    $badge = 'bg-danger text-white';
+                                ?>
                                 <tr>
                                     <td class="py-3 px-4">
-                                        <small class="text-muted d-block fw-semibold mb-1"><?= htmlspecialchars($row['nomor_laporan']) ?></small>
-                                        <span class="fw-bold text-danger text-uppercase d-block"><?= htmlspecialchars($row['jenis_kejadian']) ?></span>
+                                        <small
+                                            class="text-muted d-block fw-semibold mb-1"><?= htmlspecialchars($row['nomor_laporan']) ?></small>
+                                        <span
+                                            class="fw-bold text-danger text-uppercase d-block"><?= htmlspecialchars($row['jenis_kejadian']) ?></span>
                                     </td>
                                     <td>
                                         <small class="text-muted d-block text-wrap" style="max-width:220px">
@@ -211,35 +268,42 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
                                     </td>
                                     <td>
                                         <span class="fw-semibold d-block"><?= htmlspecialchars($row['pelapor']) ?></span>
-                                        <small class="text-muted"><i class="bi bi-whatsapp text-success me-1"></i><?= htmlspecialchars($row['no_hp'] ?? '-') ?></small>
+                                        <small class="text-muted"><i
+                                                class="bi bi-whatsapp text-success me-1"></i><?= htmlspecialchars($row['no_hp'] ?? '-') ?></small>
                                     </td>
-                                    <!-- Kolom Integrasi Personil & Sarpras -->
                                     <td>
                                         <small class="d-block text-dark fw-medium">
-                                            <i class="bi bi-people-fill text-secondary me-1"></i>Regu: <?= htmlspecialchars($row['personil_regu'] ?? 'Belum Ditugaskan') ?>
+                                            <i class="bi bi-people-fill text-secondary me-1"></i>Regu:
+                                            <?= htmlspecialchars($row['personil_regu'] ?? 'Belum Ditugaskan') ?>
                                         </small>
                                         <small class="d-block text-muted">
-                                            <i class="bi bi-truck text-secondary me-1"></i>Armada: <?= htmlspecialchars($row['armada_sarpras'] ?? '-') ?>
+                                            <i class="bi bi-truck text-secondary me-1"></i>Armada:
+                                            <?= htmlspecialchars($row['armada_sarpras'] ?? '-') ?>
                                         </small>
                                     </td>
                                     <td>
-                                        <small class="fw-medium text-dark"><?= date('d M Y', strtotime($row['tanggal'])) ?></small>
+                                        <small
+                                            class="fw-medium text-dark"><?= date('d M Y', strtotime($row['tanggal'])) ?></small>
                                     </td>
                                     <td>
-                                        <span class="badge <?= $badge ?> rounded-pill px-3 py-2 small text-uppercase"><?= htmlspecialchars($row['status']) ?></span>
+                                        <span
+                                            class="badge <?= $badge ?> rounded-pill px-3 py-2 small text-uppercase"><?= htmlspecialchars($row['status']) ?></span>
                                     </td>
-                                    <!-- Kolom Aksi Perubahan Status Langsung -->
                                     <td class="text-center td-aksi">
                                         <?php if ($st === 'masuk'): ?>
-                                            <a href="../manajemen_kejadian/proses_laporan.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm fw-bold shadow-sm px-3">
+                                            <a href="proses.php?id=<?= $row['id'] ?>"
+                                                class="btn btn-warning btn-sm fw-bold shadow-sm px-3">
                                                 <i class="bi bi-arrow-right-circle me-1"></i> Proses
                                             </a>
                                         <?php elseif ($st === 'proses'): ?>
-                                            <a href="../manajemen_kejadian/selesai_laporan.php?id=<?= $row['id'] ?>" class="btn btn-success btn-sm fw-bold shadow-sm px-3" onclick="return confirm('Apakah penanganan laporan ini sudah benar-benar selesai?')">
+                                            <a href="proses_selesai.php?id=<?= $row['id'] ?>"
+                                                class="btn btn-success btn-sm fw-bold shadow-sm px-3"
+                                                onclick="return confirm('Apakah penanganan laporan ini sudah benar-benar selesai?')">
                                                 <i class="bi bi-check-circle me-1"></i> Selesai
                                             </a>
                                         <?php else: ?>
-                                            <button class="btn btn-light btn-sm text-muted border-0" disabled><i class="bi bi-check-all text-success"></i> Tuntas</button>
+                                            <button class="btn btn-light btn-sm text-muted border-0" disabled><i
+                                                    class="bi bi-check-all text-success"></i> Tuntas</button>
                                         <?php endif; ?>
                                     </td>
                                 </tr>
@@ -258,11 +322,12 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function toggleFilterFields() {
             const tipe = document.getElementById('filter_tipe').value;
             document.querySelectorAll('.filter-field').forEach(el => el.style.display = 'none');
-            
+
             if (tipe === 'harian') {
                 document.getElementById('field-harian').style.display = 'block';
             } else if (tipe === 'bulanan') {
@@ -272,13 +337,11 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
                 document.getElementById('field-tahun').style.display = 'block';
             }
         }
-
         document.addEventListener("DOMContentLoaded", toggleFilterFields);
 
-        document.getElementById('searchInput').addEventListener('input', function() {
+        document.getElementById('searchInput').addEventListener('input', function () {
             const keyword = this.value.toLowerCase();
             const rows = document.querySelectorAll('#tabelBody tr:not(#emptyRow)');
-            
             rows.forEach(row => {
                 const text = row.innerText.toLowerCase();
                 row.style.display = text.includes(keyword) ? '' : 'none';
@@ -286,4 +349,5 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
         });
     </script>
 </body>
+
 </html>
