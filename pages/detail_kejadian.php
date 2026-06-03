@@ -24,10 +24,14 @@ if (!$data) {
     echo "<script>alert('Data tidak ditemukan!'); window.location='monitoring_kejadian.php';</script>";
     exit;
 }
-
 $lokasi    = isset($data['lokasi']) ? $data['lokasi'] : 'Lokasi tidak spesifik';
 $deskripsi = isset($data['deskripsi']) ? $data['deskripsi'] : 'Tidak ada rincian tambahan.';
-$waktu_awal = date('H:i', strtotime($data['tanggal'])); // Jam Laporan Masuk
+
+// --- PERBAIKAN DI SINI ---
+$status       = strtolower($data['status']);
+$waktu_awal   = date('H:i', strtotime($data['tanggal'])); // Jam Laporan Masuk (Contoh: 10:00)
+$jam_dasar    = date('G', strtotime($data['tanggal']));   // Ambil angka jam saja (0-23)
+$menit_dasar  = date('i', strtotime($data['tanggal']));   // Ambil angka menit saja (0-59)
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +40,7 @@ $waktu_awal = date('H:i', strtotime($data['tanggal'])); // Jam Laporan Masuk
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detail Laporan #<?= $no_lp ?></title>
-     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     
@@ -160,41 +164,81 @@ $waktu_awal = date('H:i', strtotime($data['tanggal'])); // Jam Laporan Masuk
                             <i class="bi bi-clock-history text-danger me-2"></i> Progres Lapangan
                         </h5>
                         
-                        <div class="timeline">
-                            <?php 
-                                $status = strtolower($data['status']);
-                                // Simulasi Waktu (Bisa diganti field DB jika ada)
-                                $waktu_proses = date('H:i', strtotime($data['tanggal'] . ' + 5 minutes'));
-                                $waktu_selesai = date('H:i', strtotime($data['tanggal'] . ' + 45 minutes'));
-                            ?>
+                        <div class="timeline" id="timeline-container" 
+     data-jam="<?= $jam_dasar ?>" 
+     data-menit="<?= $menit_dasar ?>" 
+     data-status="<?= $status ?>">
+    
+    <div class="timeline-item">
+        <div class="timeline-marker marker-active"></div>
+        <span class="time-badge"><?= $waktu_awal ?> WIB</span>
+        <h6 class="fw-bold mb-1">Laporan Masuk</h6>
+        <p class="small text-muted mb-0">Informasi diterima oleh sistem Pusdalops.</p>
+    </div>
 
-                            <div class="timeline-item">
-                                <div class="timeline-marker marker-active"></div>
-                                <span class="time-badge"><?= $waktu_awal ?> WIB</span>
-                                <h6 class="fw-bold mb-1">Laporan Masuk</h6>
-                                <p class="small text-muted mb-0">Informasi diterima oleh sistem Pusdalops.</p>
-                            </div>
+    <div class="timeline-item">
+        <div class="timeline-marker <?= ($status == 'proses' || $status == 'selesai') ? 'marker-active' : '' ?>"></div>
+        <span class="time-badge" id="waktu-proses">--:--</span>
+        <h6 class="fw-bold mb-1 <?= ($status == 'masuk') ? 'text-muted' : '' ?>">Penanganan</h6>
+        <p class="small text-muted mb-0">Unit armada terdekat dikerahkan ke lokasi.</p>
+    </div>
 
-                            <div class="timeline-item">
-                                <div class="timeline-marker <?= ($status == 'proses' || $status == 'selesai') ? 'marker-active' : '' ?>"></div>
-                                <span class="time-badge"><?= ($status == 'proses' || $status == 'selesai') ? $waktu_proses . ' WIB' : '--:--' ?></span>
-                                <h6 class="fw-bold mb-1 <?= ($status == 'masuk') ? 'text-muted' : '' ?>">Penanganan</h6>
-                                <p class="small text-muted mb-0">Unit armada terdekat dikerahkan ke lokasi.</p>
-                            </div>
+    <div class="timeline-item mb-0">
+        <div class="timeline-marker <?= ($status == 'selesai') ? 'marker-active' : '' ?>"></div>
+        <span class="time-badge" id="waktu-selesai">--:--</span>
+        <h6 class="fw-bold mb-1 <?= ($status != 'selesai') ? 'text-muted' : '' ?>">Selesai</h6>
+        <p class="small text-muted mb-0">Kondisi dinyatakan aman (Hijau).</p>
+    </div>
+</div>
 
-                            <div class="timeline-item mb-0">
-                                <div class="timeline-marker <?= ($status == 'selesai') ? 'marker-active' : '' ?>"></div>
-                                <span class="time-badge"><?= ($status == 'selesai') ? $waktu_selesai . ' WIB' : '--:--' ?></span>
-                                <h6 class="fw-bold mb-1 <?= ($status != 'selesai') ? 'text-muted' : '' ?>">Selesai</h6>
-                                <p class="small text-muted mb-0">Kondisi dinyatakan aman (Hijau).</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const container = document.getElementById('timeline-container');
+    const status = container.getAttribute('data-status');
+    
+    // Ambil angka jam dan menit murni dari PHP
+    const jamAwal = parseInt(container.getAttribute('data-jam'), 10);
+    const menitAwal = parseInt(container.getAttribute('data-menit'), 10);
+    
+    // Fungsi untuk menghitung penambahan menit dengan aman (menghindari error overload 60 menit)
+    const hitungWaktuOtomatis = (menitTambah) => {
+        let totalMenit = menitAwal + menitTambah;
+        let jamBaru = jamAwal + Math.floor(totalMenit / 60);
+        let menitBaru = totalMenit % 60;
+        
+        // Jika jam melewati pukul 23:59 malam, reset kembali ke 00
+        jamBaru = jamBaru % 24; 
+        
+        // Format string agar selalu 2 digit (contoh: "05" bukan "5")
+        const strJam = String(jamBaru).padStart(2, '0');
+        const strMenit = String(menitBaru).padStart(2, '0');
+        
+        return `${strJam}:${strMenit} WIB`;
+    };
 
+    const elProses = document.getElementById('waktu-proses');
+    const elSelesai = document.getElementById('waktu-selesai');
+
+    // Tampilkan jam otomatis hanya jika status database sesuai
+    if (status === 'proses' || status === 'selesai') {
+        elProses.innerText = hitungWaktuOtomatis(5); // Otomatis tambah 5 Menit
+    } else {
+        elProses.innerText = "--:--";
+    }
+
+    if (status === 'selesai') {
+        elSelesai.innerText = hitungWaktuOtomatis(45); // Otomatis tambah 45 Menit
+    } else {
+        elSelesai.innerText = "--:--";
+    }
+});
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
