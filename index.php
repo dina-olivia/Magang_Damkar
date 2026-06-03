@@ -1,11 +1,16 @@
 <!-- komentar -->
-<?php include 'config/koneksi.php'; ?>
-<?php
-$total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian"));
-$menunggu = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='menunggu'"));
-$proses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='proses'"));
-$selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='selesai'"));
-$armada = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM armada WHERE status='siaga'"));
+<?php 
+include 'config/koneksi.php';
+
+if (!isset($conn)) {
+    die("Error: Database connection failed");
+}
+
+$total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian")) ?: ['t' => 0];
+$menunggu = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='menunggu'")) ?: ['t' => 0];
+$proses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='proses'")) ?: ['t' => 0];
+$selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='selesai'")) ?: ['t' => 0];
+$armada = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM armada WHERE status='siaga'")) ?: ['t' => 0];
 
 $stats = [
     ['Laporan Masuk', $menunggu['t'], 'bi-megaphone'],
@@ -47,17 +52,6 @@ $stats = [
                     <a href="pages/monitoring_kejadian.php">Monitoring Kejadian</a>
                     <a href="pages/detail_kejadian.php">Detail Kejadian</a>
                 
-                </div>
-
-                <a href="#menuSarpras" data-bs-toggle="collapse"
-                    class="d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-tools"></i> Sarpras</span>
-                    <i class="bi bi-chevron-down small"></i>
-                </a>
-                <div class="collapse sub-menu" id="menuSarpras">
-                    <a href="pages/sarpras.php">Data Sarpras</a>
-                    <a href="pages/master_bidang.php">Master Bidang</a>
-                    <a href="pages/master_kategori.php">Master Kategori</a>
                 </div>
 
                 <a href="#menuOperasional" data-bs-toggle="collapse"

@@ -60,9 +60,21 @@ $base_url = str_repeat('../', $levels);
                     class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
 
-            <a href="<?= $base_url ?>pages/personil.php" class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
-                <i class="bi bi-people"></i> Personil
-            </a>
+           <div class="collapse <?= in_array($current_page, ['personil.php', 'penempatan_pos.php', 'jadwal_piket.php', 'riwayat_tugas.php']) ? 'show' : '' ?> sub-menu"
+                id="menuPersonil">
+
+                <a href="<?= $base_url ?>pages/melani/personil.php"
+                    class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">Data Personil</a>
+
+                <a href="<?= $base_url ?>pages/melani/penempatan_pos.php"
+                    class="<?= $current_page == 'penempatan_pos.php' ? 'active' : '' ?>">Penempatan Pos</a>
+
+                <a href="<?= $base_url ?>pages/melani/jadwal_piket.php"
+                    class="<?= $current_page == 'jadwal_piket.php' ? 'active' : '' ?>">Jadwal Piket</a>
+
+                <a href="<?= $base_url ?>pages/melani/riwayat_tugas.php"
+                    class="<?= $current_page == 'riwayat_tugas.php' ? 'active' : '' ?>">Riwayat Tugas</a>
+            </div>
         </div>
 
         <!-- SARPRAS -->

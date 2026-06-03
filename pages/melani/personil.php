@@ -130,7 +130,7 @@ if (!isset($conn)) {
                 <h2 class="fw-bold m-0 text-uppercase">PERSONIL DAMKAR</h2>
                 <div class="text-muted small">Sistem Informasi Manajemen Personil Pemadam Kebakaran</div>
             </div>
-            <button class="btn btn-danger fw-bold px-4 rounded-3" onclick="openModal()">
+            <button class="btn btn-danger fw-bold px-4 rounded-3" data-bs-toggle="modal" data-bs-target="#modalTambah">
                 <i class="bi bi-plus-circle me-2"></i>Tambah Personil
             </button>
         </div>
@@ -371,16 +371,38 @@ if (!isset($conn)) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        let input = this.value.toLowerCase();
+    function filterTable() {
+        let searchText = document.getElementById('searchInput').value.toLowerCase();
+        let jabatanFilter = document.getElementById('filterJabatan').value.toLowerCase();
+        let statusFilter = document.getElementById('filterStatus').value.toLowerCase();
         let rows = document.querySelectorAll('#tabelPersonil tbody tr');
         
         rows.forEach(row => {
             if(row.querySelector('.empty-state')) return;
-            let text = row.innerText.toLowerCase();
-            row.style.display = text.includes(input) ? '' : 'none';
+            
+            let cells = row.getElementsByTagName('td');
+            if (cells.length < 7) return;
+
+            let nip = cells[0].innerText.toLowerCase();
+            let nama = cells[1].innerText.toLowerCase();
+            let jabatan = cells[2].innerText.toLowerCase().trim();
+            let status = cells[6].innerText.toLowerCase().trim();
+            
+            let matchesSearch = nip.includes(searchText) || nama.includes(searchText);
+            let matchesJabatan = jabatanFilter === "" || jabatan === jabatanFilter;
+            let matchesStatus = statusFilter === "" || status === statusFilter;
+            
+            if (matchesSearch && matchesJabatan && matchesStatus) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
         });
-    });
+    }
+
+    document.getElementById('searchInput').addEventListener('keyup', filterTable);
+    document.getElementById('filterJabatan').addEventListener('change', filterTable);
+    document.getElementById('filterStatus').addEventListener('change', filterTable);
     </script>
 </body>
 </html>
