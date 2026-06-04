@@ -106,8 +106,8 @@ $base_url = str_repeat('../', $levels);
             <a href="<?= $base_url ?>pages/rekap_statistik.php"
                 class="<?= $current_page == 'rekap_statistik.php' ? 'active' : '' ?>">Rekap Statistik</a>
 
-            <a href="<?= $base_url ?>pages/export_excel.php"
-                class="<?= $current_page == 'export_excel.php' ? 'active' : '' ?>">Cetak & Export</a>
+            <a href="<?= $base_url ?>pages/cetak_export.php"
+                class="<?= $current_page == 'cetak_export.php' ? 'active' : '' ?>">Cetak & Export</a>
 
         </div>
 

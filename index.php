@@ -96,7 +96,7 @@ $stats = [
 
                     <a href="pages/laporan/rekap_statistik.php">Rekap Statistik & Grafik</a>
 
-                    <a href="pages/laporan/export_excel.php">Cetak & Export Dokumen</a>
+                    <a href="pages/laporan/cetak_export.php">Cetak & Export Dokumen</a>
                 </div>
                 <a href="pages/manajemen_user.php"><i class="bi bi-person"></i> Manajemen User</a>
 
