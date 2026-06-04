@@ -73,25 +73,116 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
             border-bottom-color: #198754;
         }
 
+        /* ── CSS MODIFIKASI KHUSUS SAAT PRINTER BEKERJA (DI-UPDATE) ── */
         @media print {
 
+            /* 1. Sembunyikan ALL elemen navigasi, sidebar, tombol, dan background gelap global */
             #config\2f sidebar,
             .sidebar,
-            #filter-box,
-            .btn-print-group,
-            .th-aksi,
-            .td-aksi {
+            #sidebar,
+            #sidebar-wrapper,
+            .sidebar-nav,
+            .btn-action-area,
+            .btn-back-nav,
+            .preview-header-monitor,
+            header,
+            nav,
+            .navbar,
+            #wrapper.toggled #sidebar-wrapper {
                 display: none !important;
+                width: 0 !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
             }
 
-            #main-content {
+            /* 2. Paksa Konten Utama Bergeser Full ke Kiri (Menghapus Margin Kiri) */
+            #main-content,
+            .main-content,
+            #page-content-wrapper,
+            .content-wrapper {
                 margin-left: 0 !important;
                 padding: 0 !important;
+                width: 100% !important;
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                background: #fff !important;
+            }
+
+            /* 3. Rapikan Halaman Dasar Kertas */
+            body {
+                background: #fff !important;
+                font-family: 'Times New Roman', Times, serif;
+                color: #000 !important;
+                padding: 0 !important;
+                margin: 0 !important;
             }
 
             .card {
                 box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+                background: transparent !important;
+            }
+
+            /* 4. Munculkan Kop Surat & Ttd Dinas di Kertas */
+            .kop-surat-cetak {
+                display: block !important;
+                text-align: center;
+                border-bottom: 3px double #000 !important;
+                padding-bottom: 5px !important;
+                margin-bottom: 20px !important;
+            }
+
+            .kop-surat-cetak h4 {
+                margin: 2px 0 !important;
+                font-size: 14px !important;
+                font-weight: normal !important;
+            }
+
+            .kop-surat-cetak h2 {
+                margin: 2px 0 !important;
+                font-size: 18px !important;
+                font-weight: bold !important;
+            }
+
+            .kop-surat-cetak p {
+                margin: 2px 0 !important;
+                font-size: 11px !important;
+                font-style: italic !important;
+            }
+
+            .ttd-area-cetak {
+                display: block !important;
+                margin-top: 50px !important;
+                float: right !important;
+                text-align: center !important;
+                width: 250px !important;
+            }
+
+            .ttd-space {
+                height: 60px !important;
+            }
+
+            /* 5. Format Tabel Hitam Putih Solid */
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+            }
+
+            table th {
+                background-color: #f2f2f2 !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            table th,
+            table td {
                 border: 1px solid #000 !important;
+                padding: 6px !important;
+                color: #000 !important;
+                font-size: 11px !important;
             }
         }
     </style>
@@ -109,10 +200,11 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
                 <p class="text-muted m-0">Sistem Monitoring & Pelaporan Operasional DAMKAR Kota Padang</p>
             </div>
             <div class="btn-print-group">
-                <button onclick="window.print()" class="btn btn-dark shadow-sm me-2">
+                <a href="cetak_export.php?<?= http_build_query($_GET) ?>" class="btn btn-dark shadow-sm me-2">
                     <i class="bi bi-printer me-2"></i> Cetak Dokumen
-                </button>
-                <a href="export_excel.php?<?= http_build_query($_GET) ?>" class="btn btn-success shadow-sm">
+                </a>
+                <a href="cetak_export.php?unduh=excel&<?= http_build_query($_GET) ?>"
+                    class=" btn btn-success shadow-sm">
                     <i class="bi bi-file-earmark-excel me-2"></i> Export Excel
                 </a>
             </div>

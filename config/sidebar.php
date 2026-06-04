@@ -10,14 +10,14 @@ $base_url = str_repeat('../', $levels);
 <div id="sidebar" class="shadow">
     <div class="sidebar-header">
         <img src="/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
-        <span class="fw-bold ms-2">DAMKAR PADANG</span>
+        <span class="fw-bold ms-2">DAMKAR PADANG</span> 
     </div>
 
     <div class="sidebar-content">
         <div class="nav flex-column mt-2">
 
             <!-- DASHBOARD -->
-            <a href="<?= $base_url ?>index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
+            <a href="<?= $base_url ?index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
