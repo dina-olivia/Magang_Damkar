@@ -48,7 +48,7 @@ $base_url = ($directory == 'pages') ? '../' : '';
                 <i class="bi bi-people"></i> Personil
             </a>
 
-            <a href="<?= $base_url ?>pages/armada.php" class="<?= $current_page == 'armada.php' ? 'active' : '' ?>">
+            <a href="<?= $base_url ?>pages/cindy/armada.php" class="<?= $current_page == 'armada.php' ? 'active' : '' ?>">
                 <i class="bi bi-truck"></i> Armada
             </a>
 
