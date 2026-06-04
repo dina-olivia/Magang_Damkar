@@ -103,13 +103,13 @@ $base_url = str_repeat('../', $levels);
         <div class="collapse <?= in_array($current_page, ['laporan_kejadian.php', 'rekap_statistik.php', 'export_excel.php']) ? 'show' : '' ?> sub-menu"
             id="menuLaporan">
 
-            <a href="/Magang_Damkar/pages/laporan_kejadian.php"
+            <a href="<?= $base_url ?>pages/laporan/laporan_kejadian.php"
                 class="<?= $current_page == 'laporan_kejadian.php' ? 'active' : '' ?>">Laporan Kejadian</a>
 
-            <a href="/Magang_Damkar/pages/rekap_statistik.php"
+            <a href="<?= $base_url ?>pages/laporan/rekap_statistik.php"
                 class="<?= $current_page == 'rekap_statistik.php' ? 'active' : '' ?>">Rekap Statistik</a>
 
-            <a href="/Magang_Damkar/pages/export_excel.php"
+            <a href="<?= $base_url ?>pages/laporan/export_excel.php"
                 class="<?= $current_page == 'export_excel.php' ? 'active' : '' ?>">Cetak & Export</a>
 
         </div>
