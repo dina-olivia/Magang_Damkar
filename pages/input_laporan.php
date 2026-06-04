@@ -83,11 +83,14 @@ if (isset($_POST['simpan'])) {
     <div class="d-flex">
         <?php include '../config/sidebar.php'; ?>
         
+        
         <div class="main-content flex-grow-1 p-4">
+             <a href=../index.php><i class="bi bi-speedometer2"></i>Dashboard</a>
             <div class="container-fluid">
                 <div class="form-card mx-auto" style="max-width: 900px;">
                     <div class="card-header-gradient d-flex justify-content-between align-items-center">
                         <div>
+                            
                             <h4 class="m-0 fw-bold"><i class="bi bi-megaphone-fill me-2"></i> INPUT KEJADIAN BARU</h4>
                             <small class="opacity-75">Sistem Pelaporan DAMKAR</small>
                         </div>

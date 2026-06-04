@@ -9,11 +9,10 @@ $base_url = str_repeat('../', $levels);
 
 <div id="sidebar" class="shadow">
     <div class="sidebar-header">
-        <img src="<?= $base_url ?>assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
-            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+       <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
-<!-- jgkjghjhkjh -->
+<!--  -->
     <div class="sidebar-content">
         <div class="nav flex-column mt-2">
 

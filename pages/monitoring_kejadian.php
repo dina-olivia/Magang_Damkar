@@ -96,7 +96,8 @@ if (isset($_GET['hapus'])) {
     <?php include '../config/sidebar.php'; ?>
 
     <div class="main-wrapper w-100">
-        
+        <a href=../index.php><i class="bi bi-speedometer2"></i>Dashboard</a>
+            <div class="container-fluid">
         <div class="content-card-wrapper">
             
             <div class="custom-header-red">

@@ -36,8 +36,7 @@ $stats = [
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-            <img src="assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
-                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+           <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
 
@@ -45,7 +44,11 @@ $stats = [
             <div class="nav flex-column mt-2">
                 <a href="index.php" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
 
-                <a href="pages/manajemen_kejadian.php"><i class="bi bi-megaphone"></i> Manajemen Kejadian</a>
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-clipboard-check"></i> Manajemen Kejadian</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
 
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
                     <a href="pages/input_laporan.php">Input Laporan</a>
