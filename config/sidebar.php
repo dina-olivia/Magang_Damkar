@@ -9,8 +9,7 @@ $base_url = str_repeat('../', $levels);
 
 <div id="sidebar" class="shadow">
     <div class="sidebar-header">
-        <img src="<?= $base_url ?>assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
-            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+       <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
 <!-- jgkjghjhkjh -->
@@ -18,17 +17,19 @@ $base_url = str_repeat('../', $levels);
         <div class="nav flex-column mt-2">
 
             <!-- DASHBOARD -->
-            <a href="<?= $base_url ?>index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
+            <a href="<?= $base_url ?>../index.php" class="<?= $current_page == '../index.php' ? 'active' : '' ?>">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
 
-            <a href="<?= $base_url ?>pages/manajemen_kejadian.php"
-                class="<?= $current_page == 'manajemen_kejadian.php' ? 'active' : '' ?>">
-                <i class="bi bi-megaphone"></i> Manajemen Kejadian
+           <a href="#menuManajemenKejadian" data-bs-toggle="collapse"
+                class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-clipboard-check"></i> Manajemen Kejadian</span>
+                <i class="bi bi-chevron-down small"></i>
             </a>
-           <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_kejadian.php',]) ? 'show' : '' ?> sub-menu" id="menuManajemen">
+           <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_kejadian.php',]) ? 'show' : '' ?> sub-menu" 
+           id="menuManajemenKejadian">
 
-            <a href="/MAGANG/Magang_Damkar/pages/input_laporan.php"
+          <a href="/MAGANG/Magang_Damkar/pages/input_laporan.php"
             class="<?= $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
             
             <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
@@ -36,6 +37,7 @@ $base_url = str_repeat('../', $levels);
             
             <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
             class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
+
         </div>
 
             <a href="#menuOperasional" data-bs-toggle="collapse"
@@ -47,7 +49,7 @@ $base_url = str_repeat('../', $levels);
             <div class="collapse <?= in_array($current_page, ['penugasan_tim.php', 'monitoring_armada.php', 'status_penanganan.php', 'riwayat_penugasan.php']) ? 'show' : '' ?> sub-menu"
                 id="menuOperasional">
 
-                <a href="<?= $base_url ?>pages/penugasan_tim.php"
+                <a href="<?= $base_url ?>pages/melani/penugasan_tim.php"
                     class="<?= $current_page == 'penugasan_tim.php' ? 'active' : '' ?>">Penugasan Tim</a>
 
                 <a href="<?= $base_url ?>pages/monitoring_armada.php"
