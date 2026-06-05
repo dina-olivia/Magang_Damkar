@@ -1,7 +1,7 @@
 <?php echo "";
 $current_page = basename($_SERVER['PHP_SELF']);
 $path = $_SERVER['PHP_SELF'];
-$root_folder = '/Magang_DAMKAR';
+$root_folder = '/Magang_Damkar';
 $clean_path = str_replace($root_folder, '', $path);
 $levels = substr_count($clean_path, '/');
 $base_url = str_repeat('../', $levels);
@@ -17,11 +17,11 @@ $base_url = str_repeat('../', $levels);
         <div class="nav flex-column mt-2">
 
             <!-- DASHBOARD -->
-            <a href="<?= $base_url ?>index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-
-            <a href="<?= $base_url ?>pages/manajemen_kejadian.php"
+            <a href="/MAGANG/Magang_Damkar/index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
+    <i class="bi bi-speedometer2"></i> Dashboard
+</a>
+<!-- MANAJEMEN KEJADIAN -->
+            <a href="/MAGANG/Magang_Damkar/pages/manajemen_kejadian.php"
                 class="<?= $current_page == 'manajemen_kejadian.php' ? 'active' : '' ?>">
                 <i class="bi bi-megaphone"></i> Manajemen Kejadian
             </a>

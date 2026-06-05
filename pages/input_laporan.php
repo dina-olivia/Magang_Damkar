@@ -85,7 +85,6 @@ if (isset($_POST['simpan'])) {
         
         
         <div class="main-content flex-grow-1 p-4">
-             <a href=../index.php><i class="bi bi-speedometer2"></i>Dashboard</a>
             <div class="container-fluid">
                 <div class="form-card mx-auto" style="max-width: 900px;">
                     <div class="card-header-gradient d-flex justify-content-between align-items-center">
