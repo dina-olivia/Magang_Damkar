@@ -1,7 +1,7 @@
 <?php echo "";
 $current_page = basename($_SERVER['PHP_SELF']);
 $path = $_SERVER['PHP_SELF'];
-$root_folder = '/Magang_DAMKAR';
+$root_folder = '/Magang_Damkar';
 $clean_path = str_replace($root_folder, '', $path);
 $levels = substr_count($clean_path, '/');
 $base_url = str_repeat('../', $levels);
@@ -9,20 +9,19 @@ $base_url = str_repeat('../', $levels);
 
 <div id="sidebar" class="shadow">
     <div class="sidebar-header">
-        <img src="<?= $base_url ?>assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
-            onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+       <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
-<!-- jgkjghjhkjh -->
+<!--  -->
     <div class="sidebar-content">
         <div class="nav flex-column mt-2">
 
             <!-- DASHBOARD -->
-            <a href="<?= $base_url ?>index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-
-            <a href="<?= $base_url ?>pages/manajemen_kejadian.php"
+            <a href="/MAGANG/Magang_Damkar/index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
+    <i class="bi bi-speedometer2"></i> Dashboard
+</a>
+<!-- MANAJEMEN KEJADIAN -->
+            <a href="/MAGANG/Magang_Damkar/pages/manajemen_kejadian.php"
                 class="<?= $current_page == 'manajemen_kejadian.php' ? 'active' : '' ?>">
                 <i class="bi bi-megaphone"></i> Manajemen Kejadian
             </a>
@@ -104,13 +103,13 @@ $base_url = str_repeat('../', $levels);
         <div class="collapse <?= in_array($current_page, ['laporan_kejadian.php', 'rekap_statistik.php', 'export_excel.php']) ? 'show' : '' ?> sub-menu"
             id="menuLaporan">
 
-            <a href="/Magang_Damkar/pages/laporan_kejadian.php"
+            <a href="<?= $base_url ?>pages/laporan/laporan_kejadian.php"
                 class="<?= $current_page == 'laporan_kejadian.php' ? 'active' : '' ?>">Laporan Kejadian</a>
 
-            <a href="/Magang_Damkar/pages/rekap_statistik.php"
+            <a href="<?= $base_url ?>pages/laporan/rekap_statistik.php"
                 class="<?= $current_page == 'rekap_statistik.php' ? 'active' : '' ?>">Rekap Statistik</a>
 
-            <a href="/Magang_Damkar/pages/export_excel.php"
+            <a href="<?= $base_url ?>pages/laporan/export_excel.php"
                 class="<?= $current_page == 'export_excel.php' ? 'active' : '' ?>">Cetak & Export</a>
 
         </div>
