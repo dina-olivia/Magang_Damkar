@@ -355,6 +355,7 @@ $query_riwayat = mysqli_query($conn, "
                     <a href="../input_laporan.php">Input Laporan</a>
                     <a href="../monitoring_kejadian.php">Monitoring Kejadian</a>
                     <a href="../detail_kejadian.php">Detail Kejadian</a>
+                   
                 </div>
 
                 <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
