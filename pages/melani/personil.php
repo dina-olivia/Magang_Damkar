@@ -85,7 +85,7 @@ if (!isset($conn)) {
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuOperasional">
-                    <a href="../penugasan_tim.php">Penugasan Tim</a>
+                    <a href="penugasan_tim.php">Penugasan Tim</a>
                     <a href="../monitoring_armada.php">Monitoring Armada</a>
                     <a href="../status_penanganan.php">Status Penanganan</a>
                     <a href="../riwayat_penugasan.php">Riwayat Penugasan</a>
@@ -114,7 +114,16 @@ if (!isset($conn)) {
                     <a href="../master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="../dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+               <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-text"></i> Laporan & Statistik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="../laporan/laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="../laporan/export_excel.php">Cetak & Export Dokumen</a>
+                </div>
+
                 <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
 
                 <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>

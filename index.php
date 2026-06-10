@@ -93,7 +93,7 @@ $stats = [
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-           <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
+            <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
 
@@ -119,7 +119,7 @@ $stats = [
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuOperasional">
-                    <a href="pages/penugasan_tim.php">Penugasan Tim</a>
+                    <a href="pages/melani/penugasan_tim.php">Penugasan Tim</a>
                     <a href="pages/monitoring_armada.php">Monitoring Armada</a>
                     <a href="pages/status_penanganan.php">Status Penanganan</a>
                     <a href="pages/riwayat_penugasan.php">Riwayat Penugasan</a>
