@@ -92,7 +92,7 @@ CREATE TABLE `jadwal_piket` (
   `shift` varchar(50) NOT NULL,
   `jam_kerja` varchar(50) NOT NULL,
   `nama_personil` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `jadwal_piket`
@@ -234,7 +234,7 @@ CREATE TABLE `riwayat_tugas` (
   `durasi_jam` int NOT NULL,
   `kejadian_ditangani` int NOT NULL,
   `rating` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -271,7 +271,7 @@ CREATE TABLE `spt` (
   `nama_regu` varchar(50) NOT NULL,
   `waktu_keberangkatan` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` enum('berangkat','tiba','selesai','bata') NOT NULL DEFAULT 'berangkat'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `spt`
@@ -298,7 +298,7 @@ CREATE TABLE `tbl_daftar` (
   `email` varchar(50) NOT NULL,
   `tanggal_lahir` date NOT NULL,
   `status` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_daftar`
