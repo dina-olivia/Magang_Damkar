@@ -68,7 +68,11 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table
     <title>Laporan Kejadian - E-DAMKAR</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<<<<<<< HEAD
     <link rel="stylesheet" href="../../assets/css/style.css">
+=======
+    <link rel="stylesheet" href="../assets/css/style.css">
+>>>>>>> c234622724096cb442c46a5afba35dc345b8abe9
     <style>
         body {
             background-color: #f8f9fa;

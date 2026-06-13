@@ -1,6 +1,14 @@
 <?php
 $page = 'rekap_statistik';
-include '../../config/koneksi.php'; // Pastikan path koneksi Anda benar
+
+$koneksiPath = dirname(__DIR__, 2) . '/config/koneksi.php';
+if (!file_exists($koneksiPath)) {
+    die('File koneksi tidak ditemukan: ' . $koneksiPath);
+}
+require_once $koneksiPath;
+if (!isset($conn)) {
+    die('Koneksi database gagal: variabel $conn tidak terdefinisi.');
+}
 
 // ── 1. Mengatur Filter Tahun (Gunakan type casting integer untuk keamanan query) ──
 $filter_tahun = isset($_GET['tahun']) ? (int) $_GET['tahun'] : (int) date('Y');
@@ -152,7 +160,9 @@ if ($result) {
                 <h2 class="fw-bold m-0 text-uppercase"><i class="bi bi-graph-up-arrow text-danger me-2"></i>Rekap
                     Statistik Kejadian</h2>
                 <p class="text-muted m-0">Visualisasi Data Tren Kebakaran, Operasi Rescue & Estimasi Kerugian Kota
-                    Padang Tahun <?= $filter_tahun ?></p>
+                    Padang Tahun
+                    <?= $filter_tahun ?>
+                </p>
             </div>
             <div class="btn-print-group">
                 <button onclick="window.print()" class="btn btn-dark shadow-sm px-3">
@@ -187,22 +197,28 @@ if ($result) {
             <div class="col-md-4">
                 <div class="stat-box border-kebakaran">
                     <span class="text-muted text-uppercase small fw-bold d-block mb-1">Total Insiden Kebakaran</span>
-                    <h2 class="fw-extrabold m-0 text-danger"><?= number_format($total_kebakaran, 0, ',', '.') ?> <small
-                            class="fs-6 text-muted fw-normal">Kasus</small></h2>
+                    <h2 class="fw-extrabold m-0 text-danger">
+                        <?= number_format($total_kebakaran, 0, ',', '.') ?> <small
+                            class="fs-6 text-muted fw-normal">Kasus</small>
+                    </h2>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="stat-box border-rescue">
                     <span class="text-muted text-uppercase small fw-bold d-block mb-1">Total Penyelamatan
                         (Rescue)</span>
-                    <h2 class="fw-extrabold m-0 text-info"><?= number_format($total_rescue, 0, ',', '.') ?> <small
-                            class="fs-6 text-muted fw-normal">Aksi</small></h2>
+                    <h2 class="fw-extrabold m-0 text-info">
+                        <?= number_format($total_rescue, 0, ',', '.') ?> <small
+                            class="fs-6 text-muted fw-normal">Aksi</small>
+                    </h2>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="stat-box border-kerugian">
                     <span class="text-muted text-uppercase small fw-bold d-block mb-1">Total Nilai Kerugian</span>
-                    <h2 class="fw-extrabold m-0 text-warning">Rp <?= number_format($total_kerugian, 0, ',', '.') ?></h2>
+                    <h2 class="fw-extrabold m-0 text-warning">Rp
+                        <?= number_format($total_kerugian, 0, ',', '.') ?>
+                    </h2>
                 </div>
             </div>
         </div>
@@ -237,9 +253,15 @@ if ($result) {
                             <tbody>
                                 <?php foreach ($months_name as $code => $name): ?>
                                     <tr>
-                                        <td class="text-start ps-3 fw-bold"><?= $name ?></td>
-                                        <td class="text-danger fw-semibold"><?= $kebakaran_chart[$code] ?></td>
-                                        <td class="text-info fw-semibold"><?= $rescue_chart[$code] ?></td>
+                                        <td class="text-start ps-3 fw-bold">
+                                            <?= $name ?>
+                                        </td>
+                                        <td class="text-danger fw-semibold">
+                                            <?= $kebakaran_chart[$code] ?>
+                                        </td>
+                                        <td class="text-info fw-semibold">
+                                            <?= $rescue_chart[$code] ?>
+                                        </td>
                                         <td class="text-end pe-3 text-muted">Rp
                                             <?= number_format($kerugian_chart[$code], 0, ',', '.') ?>
                                         </td>

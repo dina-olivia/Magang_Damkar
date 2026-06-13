@@ -1,5 +1,12 @@
 <?php
-include '../config/koneksi.php';
+$config_path = __DIR__ . '/../config/koneksi.php';
+if (!file_exists($config_path)) {
+    die('Database configuration file not found.');
+}
+require_once $config_path;
+if (!isset($conn)) {
+    die('Database connection not established.');
+}
 
 $current_page = basename($_SERVER['PHP_SELF']);
 $path = $_SERVER['PHP_SELF'];

@@ -408,8 +408,7 @@ $query = mysqli_query($conn, "
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
-                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+            <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
 
@@ -425,7 +424,7 @@ $query = mysqli_query($conn, "
                     <a href="../input_laporan.php">Input Laporan</a>
                     <a href="../monitoring_kejadian.php">Monitoring Kejadian</a>
                     <a href="../detail_kejadian.php">Detail Kejadian</a>
-                    <a href="../timeline_kronologi.php">Timeline Kronologi</a>
+                 
                 </div>
 
                 <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">

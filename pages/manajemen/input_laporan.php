@@ -154,13 +154,20 @@ if (isset($_POST['simpan'])) {
 
 <body>
     <div class="d-flex">
+<<<<<<< HEAD:pages/manajemen/input_laporan.php
         <?php include '../../config/sidebar.php'; ?>
 
+=======
+        <?php include '../config/sidebar.php'; ?>
+        
+        
+>>>>>>> c234622724096cb442c46a5afba35dc345b8abe9:pages/input_laporan.php
         <div class="main-content flex-grow-1 p-4">
             <div class="container-fluid">
                 <div class="form-card mx-auto" style="max-width: 900px;">
                     <div class="card-header-gradient d-flex justify-content-between align-items-center">
                         <div>
+                            
                             <h4 class="m-0 fw-bold"><i class="bi bi-megaphone-fill me-2"></i> INPUT KEJADIAN BARU</h4>
                             <small class="opacity-75">Sistem Pelaporan DAMKAR</small>
                         </div>
