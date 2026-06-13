@@ -1,13 +1,10 @@
 <?php
 include '../../config/koneksi.php';
-<<<<<<< HEAD
-=======
 
 // Memastikan variabel $conn sudah siap digunakan
 if (!isset($conn)) {
     die("Error: Variabel koneksi database \$conn tidak ditemukan. Periksa kembali file koneksi.php Anda.");
 }
->>>>>>> 5ae06108ae9ebf503b23a0acf337cdb9b94895d0
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -33,7 +30,7 @@ if (!isset($conn)) {
             justify-content: center !important;
             align-items: center !important;
             z-index: 9999 !important;
-            display: none !important; 
+            display: none !important;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -49,7 +46,7 @@ if (!isset($conn)) {
             width: 550px !important;
             max-width: 90% !important;
             overflow: hidden !important;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
             transform: translateY(-50px);
             transition: transform 0.3s ease;
         }
@@ -72,8 +69,9 @@ if (!isset($conn)) {
         <div class="sidebar-content">
             <div class="nav flex-column mt-2">
                 <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                
-                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -84,7 +82,8 @@ if (!isset($conn)) {
                     <a href="../timeline_kronologi.php">Timeline Kronologi</a>
                 </div>
 
-                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuOperasional" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -95,7 +94,8 @@ if (!isset($conn)) {
                     <a href="../riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
-                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuPersonil" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-people"></i> Personil</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -108,7 +108,8 @@ if (!isset($conn)) {
 
                 <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
 
-                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuSarpras" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-tools"></i> Sarpras</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -189,7 +190,8 @@ if (!isset($conn)) {
             <div class="main-card-header">
                 <h6><i class="bi bi-people me-2 text-danger"></i>Daftar Personil</h6>
                 <div class="d-flex gap-2 filter-bar flex-wrap">
-                    <input type="text" id="searchInput" class="form-control" style="width:220px" placeholder="🔍  Cari nama / NIP...">
+                    <input type="text" id="searchInput" class="form-control" style="width:220px"
+                        placeholder="🔍  Cari nama / NIP...">
                     <select id="filterJabatan" class="form-select" style="width:170px">
                         <option value="">Semua Jabatan</option>
                         <option value="Komandan Regu">Komandan Regu</option>
@@ -220,89 +222,94 @@ if (!isset($conn)) {
                             </tr>
                         </thead>
                         <tbody>
-                        <?php
-                        $colors = ['#e53935','#1d4ed8','#16a34a','#d97706','#7c3aed','#0891b2','#db2777'];
-                        $badge_map = [
-                            'Komandan Regu' => ['bg-danger-subtle',   'text-danger'],
-                            'Pengemudi'     => ['bg-primary-subtle',  'text-primary'],
-                            'Petugas'       => ['bg-success-subtle',  'text-success'],
-                        ];
+                            <?php
+                            $colors = ['#e53935', '#1d4ed8', '#16a34a', '#d97706', '#7c3aed', '#0891b2', '#db2777'];
+                            $badge_map = [
+                                'Komandan Regu' => ['bg-danger-subtle', 'text-danger'],
+                                'Pengemudi' => ['bg-primary-subtle', 'text-primary'],
+                                'Petugas' => ['bg-success-subtle', 'text-success'],
+                            ];
 
-                        $result = mysqli_query($conn, "SELECT * FROM tbl_daftar ORDER BY nip ASC");
+                            $result = mysqli_query($conn, "SELECT * FROM tbl_daftar ORDER BY nip ASC");
 
-                        if ($result && mysqli_num_rows($result) > 0):
-                            $i = 0;
-                            while ($row = mysqli_fetch_assoc($result)):
-                                $nama_personil = !empty($row['nama_personil']) ? $row['nama_personil'] : (!empty($row['nama']) ? $row['nama'] : 'Tanpa Nama');
-                                $inisial   = strtoupper(substr($nama_personil, 0, 1));
-                                $warna     = $colors[$i % count($colors)];
-                                $tgl       = ($row['tanggal_lahir'] != '0000-00-00' && !empty($row['tanggal_lahir'])) ? date('d M Y', strtotime($row['tanggal_lahir'])) : '-';
-                                $umur      = ($row['tanggal_lahir'] != '0000-00-00' && !empty($row['tanggal_lahir'])) ? date('Y') - date('Y', strtotime($row['tanggal_lahir'])) : '-';
-                                [$bg, $tc] = $badge_map[$row['jabatan']] ?? ['bg-secondary-subtle', 'text-secondary'];
-                                $i++;
-                        ?>
-                            <tr>
-                                <td class="fw-semibold text-muted small"><?= htmlspecialchars($row['nip']) ?></td>
-                                <td>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="avatar-circle" style="background:<?= $warna ?>">
-                                            <?= $inisial; ?>
-                                        </div>
-                                        <div>
-                                            <div class="fw-semibold text-dark"><?= htmlspecialchars($nama_personil) ?></div>
-                                            <div class="text-muted" style="font-size:11px">
-                                                Umur <?= $umur ?> tahun
+                            if ($result && mysqli_num_rows($result) > 0):
+                                $i = 0;
+                                while ($row = mysqli_fetch_assoc($result)):
+                                    $nama_personil = !empty($row['nama_personil']) ? $row['nama_personil'] : (!empty($row['nama']) ? $row['nama'] : 'Tanpa Nama');
+                                    $inisial = strtoupper(substr($nama_personil, 0, 1));
+                                    $warna = $colors[$i % count($colors)];
+                                    $tgl = ($row['tanggal_lahir'] != '0000-00-00' && !empty($row['tanggal_lahir'])) ? date('d M Y', strtotime($row['tanggal_lahir'])) : '-';
+                                    $umur = ($row['tanggal_lahir'] != '0000-00-00' && !empty($row['tanggal_lahir'])) ? date('Y') - date('Y', strtotime($row['tanggal_lahir'])) : '-';
+                                    [$bg, $tc] = $badge_map[$row['jabatan']] ?? ['bg-secondary-subtle', 'text-secondary'];
+                                    $i++;
+                                    ?>
+                                    <tr>
+                                        <td class="fw-semibold text-muted small"><?= htmlspecialchars($row['nip']) ?></td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="avatar-circle" style="background:<?= $warna ?>">
+                                                    <?= $inisial; ?>
+                                                </div>
+                                                <div>
+                                                    <div class="fw-semibold text-dark"><?= htmlspecialchars($nama_personil) ?>
+                                                    </div>
+                                                    <div class="text-muted" style="font-size:11px">
+                                                        Umur <?= $umur ?> tahun
+                                                    </div>
+                                                </div>
                                             </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-jabatan <?= $bg ?> <?= $tc ?>">
+                                                <?= htmlspecialchars($row['jabatan']) ?>
+                                            </span>
+                                        </td>
+                                        <td><?= htmlspecialchars($row['telepon']) ?></td>
+                                        <td class="text-muted"><?= htmlspecialchars($row['email']) ?></td>
+                                        <td><?= $tgl ?></td>
+                                        <td>
+                                            <?php if ($row['status'] === 'Aktif'): ?>
+                                                <span class="badge bg-success-subtle text-success fw-semibold">
+                                                    <i class="bi bi-check-circle me-1"></i>Aktif
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="badge bg-secondary-subtle text-secondary fw-semibold">
+                                                    <i class="bi bi-dash-circle me-1"></i>Tidak Aktif
+                                                </span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <a href="detail.php?menu=tbl_daftar&id=<?= $row['id'] ?>"
+                                                    class="btn btn-sm btn-outline-secondary" title="Detail">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <a href="edit.php?menu=tbl_daftar&id=<?= $row['id'] ?>"
+                                                    class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a href="hapus.php?menu=tbl_daftar&id=<?= $row['id'] ?>"
+                                                    class="btn btn-sm btn-outline-danger" title="Hapus"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data <?= htmlspecialchars($nama_personil) ?>?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                endwhile;
+                            else:
+                                ?>
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="empty-state">
+                                            <i class="bi bi-people"></i>
+                                            <strong class="d-block text-dark mb-1">Belum Ada Data Personil</strong>
+                                            <p>Klik tombol "Tambah Personil" untuk menambahkan data.</p>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="badge badge-jabatan <?= $bg ?> <?= $tc ?>">
-                                        <?= htmlspecialchars($row['jabatan']) ?>
-                                    </span>
-                                </td>
-                                <td><?= htmlspecialchars($row['telepon']) ?></td>
-                                <td class="text-muted"><?= htmlspecialchars($row['email']) ?></td>
-                                <td><?= $tgl ?></td>
-                                <td>
-                                    <?php if ($row['status'] === 'Aktif'): ?>
-                                        <span class="badge bg-success-subtle text-success fw-semibold">
-                                            <i class="bi bi-check-circle me-1"></i>Aktif
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="badge bg-secondary-subtle text-secondary fw-semibold">
-                                            <i class="bi bi-dash-circle me-1"></i>Tidak Aktif
-                                        </span>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <div class="d-flex gap-1">
-                                        <a href="detail.php?menu=tbl_daftar&id=<?= $row['id'] ?>" class="btn btn-sm btn-outline-secondary" title="Detail">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a href="edit.php?menu=tbl_daftar&id=<?= $row['id'] ?>" class="btn btn-sm btn-outline-warning" title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <a href="hapus.php?menu=tbl_daftar&id=<?= $row['id'] ?>" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus data <?= htmlspecialchars($nama_personil) ?>?')">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php
-                            endwhile;
-                        else:
-                        ?>
-                            <tr>
-                                <td colspan="8">
-                                    <div class="empty-state">
-                                        <i class="bi bi-people"></i>
-                                        <strong class="d-block text-dark mb-1">Belum Ada Data Personil</strong>
-                                        <p>Klik tombol "Tambah Personil" untuk menambahkan data.</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -328,7 +335,8 @@ if (!isset($conn)) {
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold small">Nama Lengkap</label>
-                                <input type="text" name="nama" class="form-control" placeholder="Nama lengkap personil" required>
+                                <input type="text" name="nama" class="form-control" placeholder="Nama lengkap personil"
+                                    required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold small">Jabatan</label>
@@ -372,53 +380,54 @@ if (!isset($conn)) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
-    function filterTable() {
-        let searchText = document.getElementById('searchInput').value.toLowerCase();
-        let jabatanFilter = document.getElementById('filterJabatan').value.toLowerCase();
-        let statusFilter = document.getElementById('filterStatus').value.toLowerCase();
-        let rows = document.querySelectorAll('#tabelPersonil tbody tr');
-        
-        rows.forEach(row => {
-            if(row.querySelector('.empty-state')) return;
-            
-            let cells = row.getElementsByTagName('td');
-            if (cells.length < 7) return;
+        function filterTable() {
+            let searchText = document.getElementById('searchInput').value.toLowerCase();
+            let jabatanFilter = document.getElementById('filterJabatan').value.toLowerCase();
+            let statusFilter = document.getElementById('filterStatus').value.toLowerCase();
+            let rows = document.querySelectorAll('#tabelPersonil tbody tr');
 
-            let nip = cells[0].innerText.toLowerCase();
-            let nama = cells[1].innerText.toLowerCase();
-            let jabatan = cells[2].innerText.toLowerCase().trim();
-            let status = cells[6].innerText.toLowerCase().trim();
-            
-            let matchesSearch = nip.includes(searchText) || nama.includes(searchText);
-            let matchesJabatan = jabatanFilter === "" || jabatan === jabatanFilter;
-            let matchesStatus = statusFilter === "" || status === statusFilter;
-            
-            if (matchesSearch && matchesJabatan && matchesStatus) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
+            rows.forEach(row => {
+                if (row.querySelector('.empty-state')) return;
 
-    document.getElementById('searchInput').addEventListener('keyup', filterTable);
-    document.getElementById('filterJabatan').addEventListener('change', filterTable);
-    document.getElementById('filterStatus').addEventListener('change', filterTable);
+                let cells = row.getElementsByTagName('td');
+                if (cells.length < 7) return;
+
+                let nip = cells[0].innerText.toLowerCase();
+                let nama = cells[1].innerText.toLowerCase();
+                let jabatan = cells[2].innerText.toLowerCase().trim();
+                let status = cells[6].innerText.toLowerCase().trim();
+
+                let matchesSearch = nip.includes(searchText) || nama.includes(searchText);
+                let matchesJabatan = jabatanFilter === "" || jabatan === jabatanFilter;
+                let matchesStatus = statusFilter === "" || status === statusFilter;
+
+                if (matchesSearch && matchesJabatan && matchesStatus) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', filterTable);
+        document.getElementById('filterJabatan').addEventListener('change', filterTable);
+        document.getElementById('filterStatus').addEventListener('change', filterTable);
     </script>
 </body>
+
 </html>
 
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['simpan'])) {
-    $nip           = mysqli_real_escape_string($conn, $_POST['nip']);
-    $nama          = mysqli_real_escape_string($conn, $_POST['nama']);
-    $jabatan       = mysqli_real_escape_string($conn, $_POST['jabatan']);
+    $nip = mysqli_real_escape_string($conn, $_POST['nip']);
+    $nama = mysqli_real_escape_string($conn, $_POST['nama']);
+    $jabatan = mysqli_real_escape_string($conn, $_POST['jabatan']);
     $tanggal_lahir = mysqli_real_escape_string($conn, $_POST['tanggal_lahir']);
-    $telepon       = mysqli_real_escape_string($conn, $_POST['telepon']);
-    $email         = mysqli_real_escape_string($conn, $_POST['email']);
-    $status        = mysqli_real_escape_string($conn, $_POST['status']);
+    $telepon = mysqli_real_escape_string($conn, $_POST['telepon']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $status = mysqli_real_escape_string($conn, $_POST['status']);
 
     $query_insert = "INSERT INTO tbl_daftar (nip, nama_personil, jabatan, tanggal_lahir, telepon, email, status) 
                      VALUES ('$nip', '$nama', '$jabatan', '$tanggal_lahir', '$telepon', '$email', '$status')";

@@ -9,6 +9,17 @@ $clean_path = str_replace($root_folder, '', $path);
 $levels = substr_count($clean_path, '/');
 $base_url = ($levels > 1) ? str_repeat('../', $levels - 1) : '';
 
+// Pastikan koneksi $conn tersedia. Jika belum, coba include file koneksi standar proyek.
+if (!isset($conn) || !$conn) {
+    $koneksi_file = $_SERVER['DOCUMENT_ROOT'] . $root_folder . '/config/koneksi.php';
+    if (file_exists($koneksi_file)) {
+        include_once $koneksi_file;
+    } else {
+        // Fallback: buat koneksi mysqli dasar (sesuaikan jika perlu)
+        $conn = @mysqli_connect('localhost', 'root', '', '') or $conn = false;
+    }
+}
+
 // ── 1. Filter Waktu (Harian, Bulanan, Tahunan) ──
 $filter_tipe = $_GET['filter_tipe'] ?? 'semua';
 $where_date_clause = " WHERE 1=1 ";
