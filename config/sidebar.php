@@ -111,30 +111,6 @@ $base_url = str_repeat('../', $levels);
                 <i class="bi bi-person"></i> Manajemen User
             </a>
 
-            <a href="<?= $base_url ?>pages/master_bidang.php"
-                class="<?= $current_page == 'master_bidang.php' ? 'active' : '' ?>">Master Bidang</a>
-
-            <a href="<?= $base_url ?>pages/master_kategori.php"
-                class="<?= $current_page == 'master_kategori.php' ? 'active' : '' ?>">Master Kategori</a>
-        </div>
-
-        <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
-            <span><i class="bi bi-file-earmark-bar-graph"></i> Laporan & Analitik</span>
-            <i class="bi bi-chevron-down small"></i>
-        </a>
-
-        <div class="collapse <?= in_array($current_page, ['laporan_kejadian.php', 'rekap_statistik.php', 'export_excel.php']) ? 'show' : '' ?> sub-menu"
-            id="menuLaporan">
-
-            <a href="<?= $base_url ?>pages/laporan/laporan_kejadian.php"
-                class="<?= $current_page == 'laporan_kejadian.php' ? 'active' : '' ?>">Laporan Kejadian</a>
-
-            <a href="<?= $base_url ?>pages/laporan/rekap_statistik.php"
-                class="<?= $current_page == 'rekap_statistik.php' ? 'active' : '' ?>">Rekap Statistik</a>
-
-            <a href="<?= $base_url ?>pages/laporan/export_excel.php"
-                class="<?= $current_page == 'export_excel.php' ? 'active' : '' ?>">Cetak & Export</a>
-
         </div>
     </div>
 </div>
