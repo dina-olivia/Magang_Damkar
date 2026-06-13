@@ -1,4 +1,20 @@
-<?php include 'config/koneksi.php'; ?>
+<?php
+include 'config/koneksi.php';
+
+$total = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM laporan_kejadian"));
+$menunggu = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='menunggu'"));
+$proses = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='proses'"));
+$selesai = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='selesai'"));
+$armada = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM armada WHERE status='siaga'"));
+
+$stats = [
+    ['Laporan Masuk', $menunggu['t'], 'bi-megaphone'],
+    ['Dalam Proses', $proses['t'], 'bi-exclamation-triangle'],
+    ['Selesai', $selesai['t'], 'bi-check-circle'],
+    ['Armada Siaga', $armada['t'], 'bi-truck']
+];
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -16,7 +32,7 @@
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-            <img src="assets/logo_damkar.png" alt="Logo" width="140" height="80"
+            <img src="assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
                 onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
@@ -24,7 +40,16 @@
         <div class="sidebar-content">
             <div class="nav flex-column mt-2">
                 <a href="index.php" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
                 <a href="pages/manajemen_kejadian.php"><i class="bi bi-megaphone"></i> Manajemen Kejadian</a>
+
+                <div class="collapse sub-menu" id="menuManajemenKejadian">
+                    <a href="pages/input_laporan.php">Input Laporan</a>
+                    <a href="pages/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="pages/detail_kejadian.php">Detail Kejadian</a>
+                
+                </div>
+
 
                 <a href="#menuOperasional" data-bs-toggle="collapse"
                     class="d-flex justify-content-between align-items-center">
@@ -38,7 +63,17 @@
                     <a href="pages/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
-                <a href="pages/personil.php"><i class="bi bi-people"></i> Personil</a>
+                <a href="#menuPersonil" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-clipboard-check"></i> Personil</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuPersonil">
+                    <a href="pages/melani/personil.php">Data Personil</a>
+                    <a href="pages/melani/penempatan_pos.php">Penempatan Pos</a>
+                    <a href="pages/melani/jadwal_piket.php">Jadwal Piket</a>
+                    <a href="pages/melani/riwayat_tugas.php">Riwayat Tugas</a>
+                </div>
                 <a href="pages/armada.php"><i class="bi bi-truck"></i> Armada</a>
 
                 <a href="#menuSarpras" data-bs-toggle="collapse"
@@ -52,8 +87,19 @@
                     <a href="pages/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="pages/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
-                <a href="pages/pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+                <a href="#menuLaporan" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-bar-graph"></i> Laporan & Statistik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="pages/laporan/laporan_kejadian.php">Laporan Kejadian</a>
+
+                    <a href="pages/laporan/rekap_statistik.php">Rekap Statistik & Grafik</a>
+
+                    <a href="pages/laporan/export_excel.php">Cetak & Export Dokumen</a>
+                </div>
+                <a href="pages/manajemen_user.php"><i class="bi bi-person"></i> Manajemen User</a>
 
                 <a href="logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>

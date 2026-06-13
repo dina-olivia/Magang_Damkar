@@ -1,7 +1,14 @@
 <?php
+$host = "localhost";
+$user = "root";
+$password = "";
+$database = "app_damkar";
 
-$koneksi = mysqli_connect("localhost", "root", "", "app_damkar");
+$conn = mysqli_connect($host, $user, $password, $database);
+if (!$conn) {
 
-if (!$koneksi) {
-    die("Koneksi gagal: " . mysqli_connect_error());
+    die("Koneksi gagal");
+
 }
+
+?>
