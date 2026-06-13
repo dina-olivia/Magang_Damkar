@@ -62,7 +62,7 @@ if (isset($_POST['simpan'])) {
     <title>Input Laporan Kejadian - DAMKAR</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
 
     <style>
         :root {
@@ -154,7 +154,7 @@ if (isset($_POST['simpan'])) {
 
 <body>
     <div class="d-flex">
-        <?php include '../config/sidebar.php'; ?>
+        <?php include '../../config/sidebar.php'; ?>
 
         <div class="main-content flex-grow-1 p-4">
             <div class="container-fluid">

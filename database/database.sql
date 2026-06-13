@@ -55,6 +55,9 @@ CREATE TABLE `laporan_kejadian` (
   `jenis_kejadian` enum('kebakaran','banjir','rescue','lainnya') NOT NULL,
   `deskripsi` text DEFAULT NULL,
   `status` enum('masuk','proses','selesai') DEFAULT 'masuk',
+  `verifikasi` enum('pending','valid','palsu') DEFAULT 'pending',
+  `catatan_verifikasi` text DEFAULT NULL,
+  `verifikasi_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

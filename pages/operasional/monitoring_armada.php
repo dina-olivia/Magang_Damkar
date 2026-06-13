@@ -1,6 +1,6 @@
 <?php $page = 'dashboard'; ?>
 <?php
-include '../config/koneksi.php';
+include '../../config/koneksi.php';
 
 $current_page = basename($_SERVER['PHP_SELF']);
 $path = $_SERVER['PHP_SELF'];
@@ -34,7 +34,7 @@ if (!empty($_GET['id'])) {
     <title>Monitoring Armada - E-DAMKAR</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
         body {
             background-color: #f4f5f7;
@@ -229,7 +229,7 @@ if (!empty($_GET['id'])) {
 
 <body>
 
-    <?php include '../config/sidebar.php'; ?>
+    <?php include '../../config/sidebar.php'; ?>
 
     <div id="main-content">
 

@@ -11,28 +11,42 @@ $base_url = ($levels > 1) ? str_repeat('../', $levels - 1) : '';
 
 // ── 1. Filter Waktu (Harian, Bulanan, Tahunan) ──
 $filter_tipe = $_GET['filter_tipe'] ?? 'semua';
-$where_clause = " WHERE 1=1 ";
+$where_date_clause = " WHERE 1=1 ";
 
 if ($filter_tipe == 'harian') {
     $tgl = $_GET['tanggal'] ?? date('Y-m-d');
-    $where_clause .= " AND DATE(tanggal) = '$tgl' ";
+    $where_date_clause .= " AND DATE(tanggal) = '$tgl' ";
 } elseif ($filter_tipe == 'bulanan') {
     $bulan = $_GET['bulan'] ?? date('m');
     $tahun = $_GET['tahun'] ?? date('Y');
-    $where_clause .= " AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' ";
+    $where_date_clause .= " AND MONTH(tanggal) = '$bulan' AND YEAR(tanggal) = '$tahun' ";
 } elseif ($filter_tipe == 'tahunan') {
     $tahun = $_GET['tahun'] ?? date('Y');
-    $where_clause .= " AND YEAR(tanggal) = '$tahun' ";
+    $where_date_clause .= " AND YEAR(tanggal) = '$tahun' ";
 }
 
 // ── 2. Rekap Statistik (Sesuai Filter) ──
-$row_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total FROM laporan_kejadian $where_clause"));
-$row_masuk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS masuk FROM laporan_kejadian $where_clause AND status = 'masuk'"));
-$row_proses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS proses FROM laporan_kejadian $where_clause AND status = 'proses'"));
-$row_selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS selesai FROM laporan_kejadian $where_clause AND status = 'selesai'"));
+// Gunakan klausa tanggal untuk rekap, tapi tabel di halaman Laporan hanya menampilkan
+// data yang belum diverifikasi dan berstatus 'masuk' (tugas: verifikasi saja).
+$row_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total FROM laporan_kejadian $where_date_clause"));
+$row_masuk = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS masuk FROM laporan_kejadian $where_date_clause AND status = 'masuk'"));
+$row_proses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS proses FROM laporan_kejadian $where_date_clause AND status = 'proses'"));
+$row_selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS selesai FROM laporan_kejadian $where_date_clause AND status = 'selesai'"));
 
-// Data tabel terkoneksi langsung dari database manajemen kejadian
-$result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_clause ORDER BY id DESC");
+// Data tabel: hanya laporan dengan status 'masuk' dan verifikasi belum dilakukan
+// Namun jika kolom `verifikasi` belum ada di DB, jangan gunakan kondisi tersebut.
+$verifikasi_exists = false;
+$check = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'verifikasi'");
+if ($check && mysqli_num_rows($check) > 0) {
+    $verifikasi_exists = true;
+}
+
+$where_table = $where_date_clause . " AND status = 'masuk'";
+if ($verifikasi_exists) {
+    $where_table .= " AND (verifikasi IS NULL OR verifikasi = '' OR verifikasi = 'pending')";
+}
+
+$result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table ORDER BY id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -43,7 +57,7 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
     <title>Laporan Kejadian - E-DAMKAR</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -71,6 +85,17 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
 
         .stat-selesai {
             border-bottom-color: #198754;
+        }
+
+        #main-content {
+            margin-left: 260px;
+            transition: margin 0.3s ease;
+        }
+
+        @media (max-width: 991px) {
+            #main-content {
+                margin-left: 0;
+            }
         }
 
         /* ── CSS MODIFIKASI KHUSUS SAAT PRINTER BEKERJA (DI-UPDATE) ── */
@@ -107,49 +132,6 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
                 left: 0 !important;
                 top: 0 !important;
                 background: #fff !important;
-            }
-
-            /* 3. Rapikan Halaman Dasar Kertas */
-            body {
-                background: #fff !important;
-                font-family: 'Times New Roman', Times, serif;
-                color: #000 !important;
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-
-            .card {
-                box-shadow: none !important;
-                border: none !important;
-                padding: 0 !important;
-                background: transparent !important;
-            }
-
-            /* 4. Munculkan Kop Surat & Ttd Dinas di Kertas */
-            .kop-surat-cetak {
-                display: block !important;
-                text-align: center;
-                border-bottom: 3px double #000 !important;
-                padding-bottom: 5px !important;
-                margin-bottom: 20px !important;
-            }
-
-            .kop-surat-cetak h4 {
-                margin: 2px 0 !important;
-                font-size: 14px !important;
-                font-weight: normal !important;
-            }
-
-            .kop-surat-cetak h2 {
-                margin: 2px 0 !important;
-                font-size: 18px !important;
-                font-weight: bold !important;
-            }
-
-            .kop-surat-cetak p {
-                margin: 2px 0 !important;
-                font-size: 11px !important;
-                font-style: italic !important;
             }
 
             .ttd-area-cetak {
@@ -190,25 +172,9 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
 
 <body>
 
-    <?php include $base_url . 'config/sidebar.php'; ?>
+    <?php include '../../config/sidebar.php'; ?>
 
     <div id="main-content" class="p-4">
-
-        <header class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="fw-bold m-0 text-uppercase">Rekap Laporan Kejadian</h2>
-                <p class="text-muted m-0">Sistem Monitoring & Pelaporan Operasional DAMKAR Kota Padang</p>
-            </div>
-            <div class="btn-print-group">
-                <a href="cetak_export.php?<?= http_build_query($_GET) ?>" class="btn btn-dark shadow-sm me-2">
-                    <i class="bi bi-printer me-2"></i> Cetak Dokumen
-                </a>
-                <a href="cetak_export.php?unduh=excel&<?= http_build_query($_GET) ?>"
-                    class=" btn btn-success shadow-sm">
-                    <i class="bi bi-file-earmark-excel me-2"></i> Export Excel
-                </a>
-            </div>
-        </header>
 
         <?php if (isset($_GET['success'])): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -380,13 +346,43 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
                                     <td>
                                         <span
                                             class="badge <?= $badge ?> rounded-pill px-3 py-2 small text-uppercase"><?= htmlspecialchars($row['status']) ?></span>
+                                        <?php if (!empty($row['verifikasi'])): ?>
+                                            <?php if ($row['verifikasi'] === 'valid'): ?>
+                                                <div class="mt-1"><span class="badge bg-success small">Terverifikasi</span></div>
+                                            <?php elseif ($row['verifikasi'] === 'palsu'): ?>
+                                                <div class="mt-1"><span class="badge bg-danger small">Ditolak</span></div>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="text-center td-aksi">
                                         <?php if ($st === 'masuk'): ?>
-                                            <a href="proses.php?id=<?= $row['id'] ?>"
-                                                class="btn btn-warning btn-sm fw-bold shadow-sm px-3">
-                                                <i class="bi bi-arrow-right-circle me-1"></i> Proses
-                                            </a>
+                                            <button class="btn btn-primary btn-sm fw-bold shadow-sm px-3 btn-open-detail"
+                                                data-id="<?= $row['id'] ?>"
+                                                data-nomor-laporan="<?= htmlspecialchars($row['nomor_laporan']) ?>"
+                                                data-jenis="<?= htmlspecialchars($row['jenis_kejadian']) ?>"
+                                                data-lokasi="<?= htmlspecialchars($row['lokasi']) ?>"
+                                                data-pelapor="<?= htmlspecialchars($row['pelapor']) ?>"
+                                                data-no-hp="<?= htmlspecialchars($row['no_hp'] ?? '') ?>"
+                                                data-deskripsi="<?= htmlspecialchars($row['deskripsi'] ?? '') ?>"
+                                                data-personil-regu="<?= htmlspecialchars($row['personil_regu'] ?? '') ?>"
+                                                data-armada-sarpras="<?= htmlspecialchars($row['armada_sarpras'] ?? '') ?>"
+                                                data-tanggal="<?= htmlspecialchars($row['tanggal']) ?>"
+                                                data-status="<?= htmlspecialchars($row['status']) ?>"
+                                                data-verifikasi="<?= htmlspecialchars($row['verifikasi'] ?? '') ?>">
+                                                <i class="bi bi-check2-square me-1"></i> Verifikasi
+                                            </button>
+                                            <button class="btn btn-light btn-sm ms-1 btn-open-detail" data-id="<?= $row['id'] ?>"
+                                                data-nomor-laporan="<?= htmlspecialchars($row['nomor_laporan']) ?>"
+                                                data-jenis="<?= htmlspecialchars($row['jenis_kejadian']) ?>"
+                                                data-lokasi="<?= htmlspecialchars($row['lokasi']) ?>"
+                                                data-pelapor="<?= htmlspecialchars($row['pelapor']) ?>"
+                                                data-no-hp="<?= htmlspecialchars($row['no_hp'] ?? '') ?>"
+                                                data-deskripsi="<?= htmlspecialchars($row['deskripsi'] ?? '') ?>"
+                                                data-personil-regu="<?= htmlspecialchars($row['personil_regu'] ?? '') ?>"
+                                                data-armada-sarpras="<?= htmlspecialchars($row['armada_sarpras'] ?? '') ?>"
+                                                data-tanggal="<?= htmlspecialchars($row['tanggal']) ?>"
+                                                data-status="<?= htmlspecialchars($row['status']) ?>"
+                                                data-verifikasi="<?= htmlspecialchars($row['verifikasi'] ?? '') ?>">Detail</button>
                                         <?php elseif ($st === 'proses'): ?>
                                             <a href="proses_selesai.php?id=<?= $row['id'] ?>"
                                                 class="btn btn-success btn-sm fw-bold shadow-sm px-3"
@@ -439,6 +435,100 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_claus
                 row.style.display = text.includes(keyword) ? '' : 'none';
             });
         });
+    </script>
+    <!-- Modal Detail & Verifikasi -->
+    <div class="modal fade" id="modalDetail" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Laporan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="detailContent">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h6 id="modalJenis" class="fw-bold text-danger"></h6>
+                                <small id="modalNomor" class="text-muted d-block mb-2"></small>
+                                <p id="modalDeskripsi" style="white-space:pre-wrap;">-</p>
+                                <p><strong>Lokasi:</strong> <span id="modalLokasi"></span></p>
+                                <p><strong>Pelapor:</strong> <span id="modalPelapor"></span> <small id="modalNoHp"
+                                        class="text-muted"></small></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Tanggal:</strong> <span id="modalTanggal"></span></p>
+                                <p><strong>Regu:</strong> <span id="modalRegu"></span></p>
+                                <p><strong>Armada:</strong> <span id="modalArmada"></span></p>
+                                <p><strong>Status:</strong> <span id="modalStatus" class="fw-bold"></span></p>
+                                <p><strong>Verifikasi:</strong> <span id="modalVerifikasi" class="fw-semibold"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <form id="formVerifikasi" method="POST" action="proses_verifikasi.php">
+                        <input type="hidden" name="id_laporan" id="form_id_laporan" value="">
+                        <input type="hidden" name="status_verifikasi" id="status_verifikasi" value="">
+                        <input type="hidden" name="verifikasi_laporan" value="1">
+                        <div class="mb-3">
+                            <label class="form-label">Catatan Operator (opsional)</label>
+                            <textarea name="catatan_operator" id="catatan_operator" class="form-control"
+                                rows="3"></textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" id="btnSetuju" class="btn btn-success">Setuju</button>
+                            <button type="button" id="btnTolak" class="btn btn-danger">Tolak</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.btn-open-detail').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const id = this.dataset.id || '';
+                document.getElementById('form_id_laporan').value = id;
+                document.getElementById('modalNomor').innerText = this.dataset.nomorLaporan || '';
+                document.getElementById('modalJenis').innerText = this.dataset.jenis || '';
+                document.getElementById('modalLokasi').innerText = this.dataset.lokasi || '';
+                document.getElementById('modalPelapor').innerText = this.dataset.pelapor || '';
+                document.getElementById('modalNoHp').innerText = this.dataset.noHp ? '(' + this.dataset.noHp + ')' : '';
+                document.getElementById('modalDeskripsi').innerText = this.dataset.deskripsi || '-';
+                document.getElementById('modalRegu').innerText = this.dataset.personilRegu || '-';
+                document.getElementById('modalArmada').innerText = this.dataset.armadaSarpras || '-';
+                document.getElementById('modalTanggal').innerText = this.dataset.tanggal ? new Date(this.dataset.tanggal).toLocaleString() : '-';
+                document.getElementById('modalStatus').innerText = this.dataset.status || '-';
+                document.getElementById('modalVerifikasi').innerText = this.dataset.verifikasi || 'Belum';
+                // show bootstrap modal programmatically
+                const modalEl = document.getElementById('modalDetail');
+                const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                bsModal.show();
+            });
+        });
+
+        // Tombol Setuju / Tolak: set nilai dan submit form
+        const form = document.getElementById('formVerifikasi');
+        const inputStatus = document.getElementById('status_verifikasi');
+        const btnSetuju = document.getElementById('btnSetuju');
+        const btnTolak = document.getElementById('btnTolak');
+
+        if (btnSetuju) {
+            btnSetuju.addEventListener('click', function () {
+                if (!confirm('Konfirmasi: Setuju verifikasi laporan ini?')) return;
+                inputStatus.value = 'setuju';
+                form.submit();
+            });
+        }
+        if (btnTolak) {
+            btnTolak.addEventListener('click', function () {
+                if (!confirm('Konfirmasi: Tolak laporan ini?')) return;
+                inputStatus.value = 'tolak';
+                form.submit();
+            });
+        }
     </script>
 </body>
 
