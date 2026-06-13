@@ -8,7 +8,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 $id_bidang = $_GET['id'];
 
-$query = mysqli_query($koneksi, 
+$query = mysqli_query($conn, 
 "SELECT * FROM bidang WHERE id_bidang = '$id_bidang'");
 $data  = mysqli_fetch_assoc($query);
 
@@ -23,7 +23,7 @@ if(isset($_POST['update'])){
     $deskripsi   = $_POST['deskripsi'];
     $urutan      = $_POST['urutan'];
 
-    mysqli_query($koneksi, "UPDATE bidang SET
+    mysqli_query($conn, "UPDATE bidang SET
         nama_bidang='$nama_bidang',
         deskripsi='$deskripsi',
         urutan='$urutan'
@@ -73,6 +73,8 @@ if(isset($_POST['update'])){
     background-color: var(--fire-red);
     color: white;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
 

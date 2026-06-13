@@ -3,7 +3,7 @@ include '../config/koneksi.php';
 
 $id = $_GET['id'];
 
-$query = mysqli_query($koneksi, "DELETE FROM sarpras WHERE id_sarpras='$id'");
+$query = mysqli_query($conn, "DELETE FROM sarpras WHERE id_sarpras='$id'");
 
 if ($query) {
     echo "<script>

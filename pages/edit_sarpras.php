@@ -3,7 +3,7 @@ include '../config/koneksi.php';
 
 $id = $_GET['id'];
 
-$data = mysqli_query($koneksi, "SELECT * FROM sarpras WHERE id_sarpras='$id'");
+$data = mysqli_query($conn, "SELECT * FROM sarpras WHERE id_sarpras='$id'");
 $row = mysqli_fetch_assoc($data);
 
 if (isset($_POST['update'])) {
@@ -12,7 +12,7 @@ if (isset($_POST['update'])) {
     $kondisi   = $_POST['kondisi'];
     $lokasi    = $_POST['lokasi'];
 
-    $update = mysqli_query($koneksi, "UPDATE sarpras SET
+    $update = mysqli_query($conn, "UPDATE sarpras SET
         nama_alat='$nama_alat',
         jenis='$jenis',
         kondisi='$kondisi',

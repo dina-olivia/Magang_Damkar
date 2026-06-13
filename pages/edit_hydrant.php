@@ -2,7 +2,7 @@
 include '../config/koneksi.php';
 
 $id = $_GET['id'];
-$data = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM hydrant WHERE id_hydrant='$id'"));
+$data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM hydrant WHERE id_hydrant='$id'"));
 ?>
 
 <!DOCTYPE html>
@@ -54,7 +54,7 @@ if(isset($_POST['update'])){
     $kondisi = $_POST['kondisi'];
     $keterangan = $_POST['keterangan'];
 
-    mysqli_query($koneksi, "UPDATE hydrant SET
+    mysqli_query($conn, "UPDATE hydrant SET
         nama_hydrant='$nama',
         lokasi='$lokasi',
         kondisi='$kondisi',

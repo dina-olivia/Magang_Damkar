@@ -3,7 +3,7 @@ include '../config/koneksi.php';
 
 $id = $_GET['id'];
 
-$query = mysqli_query($koneksi, "SELECT * FROM kategori WHERE id_kategori='$id'");
+$query = mysqli_query($conn, "SELECT * FROM kategori WHERE id_kategori='$id'");
 $data = mysqli_fetch_assoc($query);
 
 if(isset($_POST['update'])){
@@ -14,7 +14,7 @@ if(isset($_POST['update'])){
     $status        = $_POST['status'];
     $keadaan          = $_POST['keadaan'];
 
-    $update = mysqli_query($koneksi, "UPDATE kategori SET
+    $update = mysqli_query($conn, "UPDATE kategori SET
         nama_kategori='$nama_kategori',
         bidang='$bidang',
         unit='$unit',

@@ -6,7 +6,7 @@
     <title>Master Bidang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css"> 
 
     <style>
         * { box-sizing: border-box; }
@@ -30,15 +30,17 @@
             z-index: 1000;
         }
 
-        .sidebar-header {
+       .sidebar-header {
     padding: 20px;
-    background-color: var(--fire-red);
+    background-color: #b91c1c;
     color: white;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 12px;
     flex-shrink: 0;
+    min-height: 100px;
 }
 
         .sidebar-content { flex-grow: 1; overflow-y: auto; overflow-x: hidden; }
@@ -67,13 +69,14 @@
         .sub-menu a { padding-left: 50px !important; font-size: 0.85rem !important; }
 
         
-        .main-content {
-            margin-left: 280px;
-            min-height: 100vh;
-            padding: 32px;
-            position: relative;
-            z-index: 10;
-        }
+       .main-content {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    min-height: 100vh;
+    padding: 32px;
+    position: relative;
+    z-index: 10;
+}
 
         .page-header {
             display: flex; justify-content: space-between; align-items: flex-start;
@@ -98,6 +101,7 @@
             padding: 14px 16px; margin-bottom: 28px;
             display: flex; gap: 10px; align-items: center;
             border: 1.5px solid #e5e7eb;
+            width: 100%;
         }
         .search-box input {
             flex: 1; border: none; outline: none;
@@ -116,17 +120,24 @@
         .btn-cari:hover { background: #e63946; }
 
         .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
 
         .card-bidang {
-            background: #fff; border-radius: 16px;
-            border: 1.5px solid #e5e7eb; padding: 22px;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            position: relative; overflow: hidden;
-        }
+    background: #fff;
+    border-radius: 16px;
+    border: 1.5px solid #e5e7eb;
+    padding: 22px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+
+    width: 100%;
+    width: 100%;
+    max-width: none;
+}
         .card-bidang::before {
             content: ''; position: absolute;
             top: 0; left: 0; right: 0; height: 4px;
@@ -181,50 +192,7 @@
 </head>
 <body>
 
-<div id="sidebar" class="shadow">
-    <div class="sidebar-header text-center flex-column">
-    <img src="../assets/logo_damkar.png" width="70"
-         onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
-    <h6 class="fw-bold mt-2 mb-0">DAMKAR PADANG</h6>
-</div>
-
-    <div class="sidebar-content">
-        <div class="nav flex-column mt-2">
-            <a href="../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a href="manajemen_kejadian.php"><i class="bi bi-megaphone"></i> Manajemen Kejadian</a>
-
-            <a href="#menuOperasional" data-bs-toggle="collapse"
-               class="d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-clipboard-check"></i> Operasional</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse sub-menu" id="menuOperasional">
-                <a href="penugasan_tim.php"><i class="bi bi-dot"></i> Penugasan Tim</a>
-                <a href="monitoring_armada.php"><i class="bi bi-dot"></i> Monitoring Armada</a>
-                <a href="status_penanganan.php"><i class="bi bi-dot"></i> Status Penanganan</a>
-                <a href="riwayat_penugasan.php"><i class="bi bi-dot"></i> Riwayat Penugasan</a>
-            </div>
-
-            <a href="personil.php"><i class="bi bi-people"></i> Personil</a>
-            <a href="armada.php"><i class="bi bi-truck"></i> Armada</a>
-
-            <a href="#menuSarpras" data-bs-toggle="collapse"
-               class="d-flex justify-content-between align-items-center active">
-                <span><i class="bi bi-tools"></i> Sarpras</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse show sub-menu" id="menuSarpras">
-                <a href="sarpras.php"><i class="bi bi-dot"></i> Data Sarpras</a>
-                <a href="master_bidang.php" class="active"><i class="bi bi-dot"></i> Master Bidang</a>
-                <a href="master_kategori.php"><i class="bi bi-dot"></i> Master Kategori</a>
-            </div>
-
-            <a href="laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
-            <a href="pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
-            <a href="../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
-        </div>
-    </div>
-</div>
+<?php include '../config/sidebar.php'; ?>
 
 <!-- MAIN CONTENT -->
 <div class="main-content">
@@ -263,10 +231,10 @@
 <?php
 
 $keyword = isset($_GET['keyword'])
-    ? mysqli_real_escape_string($koneksi, $_GET['keyword'])
+    ? mysqli_real_escape_string($conn, $_GET['keyword'])
     : '';
 
-$query = mysqli_query($koneksi, "
+$query = mysqli_query($conn, "
     SELECT * FROM bidang
     WHERE nama_bidang LIKE '%$keyword%'
 ");
