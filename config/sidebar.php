@@ -111,6 +111,11 @@ $base_url = str_repeat('../', $levels);
                 <i class="bi bi-person"></i> Manajemen User
             </a>
 
+            <a href="<?= $base_url ?>pages/pengaturan.php"
+                class="<?= $current_page == 'pengaturan.php' ? 'active' : '' ?>">
+                <i class="bi bi-gear"></i> Pengaturan
+            </a>
+
         </div>
     </div>
 </div>
