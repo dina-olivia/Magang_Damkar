@@ -1,16 +1,5 @@
-<<<<<<< HEAD
-<?php
-include 'config/koneksi.php';
-
-$total = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM laporan_kejadian"));
-$menunggu = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='menunggu'"));
-$proses = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='proses'"));
-$selesai = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='selesai'"));
-$armada = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as t FROM armada WHERE status='siaga'"));
-=======
 <?php 
 include 'config/koneksi.php';
->>>>>>> a4740392c1e99c441775feadbf89c51a7554897a
 
 if (!isset($conn)) {
     die("Error: Database connection failed");
@@ -123,13 +112,7 @@ $stats = [
                     <a href="pages/input_laporan.php">Input Laporan</a>
                     <a href="pages/monitoring_kejadian.php">Monitoring Kejadian</a>
                     <a href="pages/detail_kejadian.php">Detail Kejadian</a>
-<<<<<<< HEAD
-                
                 </div>
-
-=======
-                </div>
->>>>>>> a4740392c1e99c441775feadbf89c51a7554897a
 
                 <a href="#menuOperasional" data-bs-toggle="collapse"
                     class="d-flex justify-content-between align-items-center">

@@ -1,15 +1,10 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF']);
-<<<<<<< HEAD
-$directory = basename(dirname($_SERVER['PHP_SELF']));
-$base_url = ($directory == 'pages') ? '../' : '';
-=======
 $path = $_SERVER['PHP_SELF'];
 $root_folder = '/Magang_Damkar';
 $clean_path = str_replace($root_folder, '', $path);
 $levels = substr_count($clean_path, '/');
 $base_url = str_repeat('../', $levels);
->>>>>>> a4740392c1e99c441775feadbf89c51a7554897a
 ?>
 
 <div id="sidebar" class="shadow">
@@ -17,34 +12,11 @@ $base_url = str_repeat('../', $levels);
        <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
-<<<<<<< HEAD
-
-=======
 <!--  -->
->>>>>>> a4740392c1e99c441775feadbf89c51a7554897a
     <div class="sidebar-content">
         <div class="nav flex-column mt-2">
 
             <!-- DASHBOARD -->
-<<<<<<< HEAD
-            <a href="<?= $base_url ?>index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
-                <i class="bi bi-speedometer2"></i> Dashboard
-            </a>
-
-            <!-- MANAJEMEN KEJADIAN -->
-            <a href="<?= $base_url ?>pages/manajemen_kejadian.php"
-                class="<?= $current_page == 'manajemen_kejadian.php' ? 'active' : '' ?>">
-                <i class="bi bi-megaphone"></i> Manajemen Kejadian
-            </a>
-            <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_kejadian.php']) ? 'show' : '' ?> sub-menu" id="menuManajemen">
-                <a href="/MAGANG/Magang_Damkar/pages/input_laporan.php"
-                    class="<?= $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
-                <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
-                    class="<?= $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
-                <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
-                    class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
-            </div>
-=======
             <a href="/MAGANG/Magang_Damkar/index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
     <i class="bi bi-speedometer2"></i> Dashboard
 </a>
@@ -66,7 +38,6 @@ $base_url = str_repeat('../', $levels);
             class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
 
         </div>
->>>>>>> a4740392c1e99c441775feadbf89c51a7554897a
 
             <!-- OPERASIONAL -->
             <a href="#menuOperasional" data-bs-toggle="collapse"
@@ -76,12 +47,8 @@ $base_url = str_repeat('../', $levels);
             </a>
             <div class="collapse <?= in_array($current_page, ['penugasan_tim.php', 'monitoring_armada.php', 'status_penanganan.php', 'riwayat_penugasan.php']) ? 'show' : '' ?> sub-menu"
                 id="menuOperasional">
-<<<<<<< HEAD
-                <a href="<?= $base_url ?>pages/penugasan_tim.php"
-=======
 
                 <a href="<?= $base_url ?>pages/melani/penugasan_tim.php"
->>>>>>> a4740392c1e99c441775feadbf89c51a7554897a
                     class="<?= $current_page == 'penugasan_tim.php' ? 'active' : '' ?>">Penugasan Tim</a>
                 <a href="<?= $base_url ?>pages/monitoring_armada.php"
                     class="<?= $current_page == 'monitoring_armada.php' ? 'active' : '' ?>">Monitoring Armada</a>
@@ -91,12 +58,6 @@ $base_url = str_repeat('../', $levels);
                     class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
 
-<<<<<<< HEAD
-            <!-- PERSONIL -->
-            <a href="<?= $base_url ?>pages/personil.php" class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
-                <i class="bi bi-people"></i> Personil
-            </a>
-=======
            <div class="collapse <?= in_array($current_page, ['personil.php', 'penempatan_pos.php', 'jadwal_piket.php', 'riwayat_tugas.php']) ? 'show' : '' ?> sub-menu"
                 id="menuPersonil">
 
@@ -113,7 +74,6 @@ $base_url = str_repeat('../', $levels);
                     class="<?= $current_page == 'riwayat_tugas.php' ? 'active' : '' ?>">Riwayat Tugas</a>
             </div>
         </div>
->>>>>>> a4740392c1e99c441775feadbf89c51a7554897a
 
             <!-- SARPRAS -->
             <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
@@ -151,12 +111,6 @@ $base_url = str_repeat('../', $levels);
                 <i class="bi bi-person"></i> Manajemen User
             </a>
 
-<<<<<<< HEAD
-            <!-- KELUAR -->
-            <a href="<?= $base_url ?>logout.php" class="mt-4 text-danger">
-                <i class="bi bi-box-arrow-left"></i> Keluar
-            </a>
-=======
             <a href="<?= $base_url ?>pages/master_bidang.php"
                 class="<?= $current_page == 'master_bidang.php' ? 'active' : '' ?>">Master Bidang</a>
 
@@ -180,7 +134,6 @@ $base_url = str_repeat('../', $levels);
 
             <a href="<?= $base_url ?>pages/laporan/export_excel.php"
                 class="<?= $current_page == 'export_excel.php' ? 'active' : '' ?>">Cetak & Export</a>
->>>>>>> a4740392c1e99c441775feadbf89c51a7554897a
 
         </div>
     </div>
