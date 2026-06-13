@@ -1,6 +1,14 @@
 <?php 
 $page = 'rekap_statistik'; 
-include '../../config/koneksi.php'; // Pastikan path koneksi Anda benar [cite: 3]
+
+$koneksiPath = dirname(__DIR__, 2) . '/config/koneksi.php';
+if (!file_exists($koneksiPath)) {
+    die('File koneksi tidak ditemukan: ' . $koneksiPath);
+}
+require_once $koneksiPath;
+if (!isset($conn)) {
+    die('Koneksi database gagal: variabel $conn tidak terdefinisi.');
+}
 
 // ── 1. Mengatur Filter Tahun ─────────────────────────────────
 $filter_tahun = $_GET['tahun'] ?? date('Y');
