@@ -1,6 +1,16 @@
 <?php $page = 'laporan_kejadian'; ?>
 <?php
-include '../../config/koneksi.php';
+require_once __DIR__ . '/../../config/koneksi.php';
+
+if (!isset($conn) && isset($koneksi)) {
+    $conn = $koneksi;
+}
+if (!isset($conn) && isset($db)) {
+    $conn = $db;
+}
+if (!isset($conn)) {
+    trigger_error('Database connection not found. Please verify config/koneksi.php defines $conn.', E_USER_ERROR);
+}
 
 $current_page = basename($_SERVER['PHP_SELF']);
 $path = $_SERVER['PHP_SELF'];
