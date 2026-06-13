@@ -185,7 +185,7 @@ CREATE TABLE `penempatan_pos` (
   `tanggal_penempatan` date NOT NULL,
   `masa_penugasan` varchar(100) NOT NULL,
   `status` enum('Aktif','Non-Aktif') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `penempatan_pos`
