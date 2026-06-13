@@ -13,7 +13,7 @@ if (!$conn) {
 
 // Set timezone agar waktu otomatis sesuai dengan lokasi Indonesia
 date_default_timezone_set('Asia/Jakarta');
-
+//
 // --- 1. LOGIKA GENERATE NOMOR LAPORAN ---
 $tgl_prefix = date('Ymd');
 $check_lp = mysqli_query($conn, "SELECT nomor_laporan FROM laporan_kejadian WHERE nomor_laporan LIKE 'LP-$tgl_prefix-%' ORDER BY nomor_laporan DESC LIMIT 1");
