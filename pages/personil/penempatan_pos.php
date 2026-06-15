@@ -90,29 +90,34 @@ $query = mysqli_query($conn, "
             color: #718096;
         }
 
+         /* ================= HEADER RIGHT (LIVE CLOCK STYLE) ================= */
         .header-right {
-            text-align: right;
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 5px;
+            align-items: center;
+            gap: 15px;
         }
 
-        .status-badge {
-            background: #e53e3e;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 13px;
-            letter-spacing: 0.5px;
+        .header-right .bg-danger {
+            background-color: #dc3545 !important;
+            padding: 8px 16px !important;
+            font-size: 14px !important;
+            border-radius: 8px !important;
         }
 
         .timestamp {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 15px;
-            font-weight: 600;
             color: #4a5568;
+            font-weight: 500;
         }
+
+        .timestamp i {
+            color: #dc3545;
+            font-size: 18px;
+        }
+
 
         /* ================= STATISTIC CARDS ================= */
         .cards-grid {
@@ -487,8 +492,11 @@ $query = mysqli_query($conn, "
                 <p>Kelola Penempatan Personil Disetiap Pos Damkar</p>
             </div>
             <div class="header-right">
-                <div class="status-badge">SIAGA 1</div>
-                <div class="timestamp"><?= date('d M Y | H:i'); ?> WIB</div>
+                <span class="badge bg-danger text-white fw-bold px-3 py-2 rounded-3" style="font-size: 14px; letter-spacing: 0.5px;">SIAGA 1</span>
+                <div class="timestamp">
+                    <i class="bi bi-clock-fill"></i>
+                    <span id="live-clock">-- --- ---- | --:--:-- WIB</span>
+                </div>
             </div>
         </div>
 
@@ -667,6 +675,28 @@ $query = mysqli_query($conn, "
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // LOGIKA LIVE CLOCK REALTIME (DENGAN NAMA BULAN TEKS PENDEK & DETIK BERJALAN)
+        function updateLiveClock() {
+            const clockElement = document.getElementById('live-clock');
+            const now = new Date();
+            
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            
+            const dateStr = String(now.getDate()).padStart(2, '0');
+            const monthStr = months[now.getMonth()];
+            const yearStr = now.getFullYear();
+            
+            const hoursStr = String(now.getHours()).padStart(2, '0');
+            const minutesStr = String(now.getMinutes()).padStart(2, '0');
+            const secondsStr = String(now.getSeconds()).padStart(2, '0');
+            
+            clockElement.innerHTML = `${dateStr} ${monthStr} ${yearStr} | ${hoursStr}:${minutesStr}:${secondsStr} WIB`;
+        }
+        
+        // Jalankan saat halaman pertama kali dibuka, lalu perbarui setiap 1000ms (1 detik)
+        updateLiveClock();
+        setInterval(updateLiveClock, 1000);
+
         function openModal() {
             document.getElementById('modalTambah').classList.add('open');
         }

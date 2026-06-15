@@ -1,5 +1,5 @@
 <?php 
-include '../config/koneksi.php';
+require_once __DIR__ . '/../../config/koneksi.php';
 
 $id = $_GET['id'];
 $data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM hydrant WHERE id_hydrant='$id'"));

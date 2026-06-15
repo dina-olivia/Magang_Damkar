@@ -1,5 +1,8 @@
-<?php 
-include '../config/koneksi.php'; 
+<?php
+include_once __DIR__ . '/../../config/koneksi.php';
+if (!isset($conn) && isset($koneksi)) {
+    $conn = $koneksi;
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -63,60 +66,81 @@ include '../config/koneksi.php';
 </head>
 <body>
 
-<div id="sidebar" class="shadow">
-    <div class="sidebar-header">
-       <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
-        <span class="fw-bold ms-2">DAMKAR PADANG</span>
-    </div>
-    
-    <div class="sidebar-content">
-        <div class="nav flex-column mt-2">
-            <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            
-            <!-- Manajemen Kejadian -->
-            <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse sub-menu" id="menuManajemenKejadian">
-                <a href="../input_laporan.php">Input Laporan</a>
-                <a href="../monitoring_kejadian.php">Monitoring Kejadian</a>
-                <a href="../detail_kejadian.php">Detail Kejadian</a>
+ <div id="sidebar" class="shadow">
+        <div class="sidebar-header">
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+            <span class="fw-bold ms-2">DAMKAR PADANG</span>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="nav flex-column mt-2">
+                <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
+                <!-- Manajemen Kejadian -->
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuManajemenKejadian">
+                    <a href="../manajemen/input_laporan.php">Input Laporan</a>
+                    <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
+                </div>
+
+                <!-- Operasional (Aktif & Terbuka Otomatis) -->
+                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
+                    <span><i class="bi bi-clipboard-check"></i> Operasional</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuOperasional">
+                    <a href="../operasional/penugasan_tim.php" class="active">Penugasan Tim</a>
+                    <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
+                    <a href="../operasional/status_penanganan.php">Status Penanganan</a>
+                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
+                </div>
+
+                <!-- Personil -->
+                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-people"></i> Personil</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuPersonil">
+                    <a href="../personil/personil.php">Data Personil</a>
+                    <a href="../personil/penempatan_pos.php">Penempatan Pos</a>
+                    <a href="../personil/jadwal_piket.php">Jadwal Piket</a>
+                    <a href="../personil/riwayat_tugas.php">Riwayat Tugas</a>
+                </div>
+
+                <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
+
+                <!-- Sarpras -->
+                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-tools"></i> Sarpras</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu show" id="menuSarpras">
+                    <a href="sarpras.php">Data Sarpras</a>
+                    <a href="master_bidang.php">Master Bidang</a>
+                    <a href="master_kategori.php">Master Kategori</a>
+                </div>
+
+                <!-- Laporan & Analitik -->
+                <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="../laporan/laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="../laporan/cetak_export.php">Cetak & Export Dokumen</a>
+                </div>
+                
+                <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+                <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>
-
-            <!-- Operasional -->
-            <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-clipboard-check"></i> Operasional</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse sub-menu" id="menuOperasional">
-                <a href="penugasan_tim.php"><i class="bi bi-dot"></i> Penugasan Tim</a>
-                <a href="monitoring_armada.php"><i class="bi bi-dot"></i> Monitoring Armada</a>
-                <a href="status_penanganan.php"><i class="bi bi-dot"></i> Status Penanganan</a>
-                <a href="riwayat_penugasan.php"><i class="bi bi-dot"></i> Riwayat Penugasan</a>
-            </div>
-
-            <a href="personil.php"><i class="bi bi-people"></i> Personil</a>
-            <a href="armada.php"><i class="bi bi-truck"></i> Armada</a>
-
-            <!-- SARPRAS dengan submenu -->
-            <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center active">
-                <span><i class="bi bi-tools"></i> Sarpras</span>
-                <i class="bi bi-chevron-down small"></i>
-            </a>
-            <div class="collapse show sub-menu" id="menuSarpras">
-                <a href="sarpras.php" class="active"><i class="bi bi-dot"></i> Data Sarpras</a>
-                <a href="master_bidang.php"><i class="bi bi-dot"></i> Master Bidang</a>
-                <a href="master_kategori.php"><i class="bi bi-dot"></i> Master Kategori</a>
-            </div>
-
-            <a href="laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
-            <a href="pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
-            
-            <a href="../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
         </div>
     </div>
-</div>
 
 <div id="main-content">
     <div class="d-flex justify-content-between align-items-center mb-4">

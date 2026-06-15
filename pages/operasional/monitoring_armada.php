@@ -10,14 +10,14 @@ $levels = substr_count($clean_path, '/');
 $base_url = ($levels > 1) ? str_repeat('../', $levels - 1) : '';
 
 // Statistik armada dari database
-$total_armada = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS n FROM armada"))['n'] ?? 0;
-$armada_siap = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS n FROM armada WHERE status='Siap'"))['n'] ?? 0;
-$armada_jalan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS n FROM armada WHERE status='Berangkat' OR status='Di Lokasi'"))['n'] ?? 0;
-$result_armada = mysqli_query($conn, "SELECT * FROM armada ORDER BY id ASC");
+$total_armada = isset($conn) ? (mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS n FROM armada"))['n'] ?? 0) : 0;
+$armada_siap = isset($conn) ? (mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS n FROM armada WHERE status='Siap'"))['n'] ?? 0) : 0;
+$armada_jalan = isset($conn) ? (mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS n FROM armada WHERE status='Berangkat' OR status='Di Lokasi'"))['n'] ?? 0) : 0;
+$result_armada = isset($conn) ? mysqli_query($conn, "SELECT * FROM armada ORDER BY id ASC") : null;
 
 // Laporan terkait jika ada ?id=
 $data_laporan = null;
-if (!empty($_GET['id'])) {
+if (!empty($_GET['id']) && isset($conn)) {
     $id_laporan = (int) $_GET['id'];
     $q = mysqli_prepare($conn, "SELECT * FROM laporan_kejadian WHERE id = ?");
     mysqli_stmt_bind_param($q, 'i', $id_laporan);
@@ -233,14 +233,85 @@ if (!empty($_GET['id'])) {
 </head>
 
 <body>
-    <div class="d-flex">
-        <?php include '../config/sidebar.php'; ?>
+    <div id="sidebar" class="shadow">
+        <div class="sidebar-header">
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+            <span class="fw-bold ms-2">DAMKAR PADANG</span>
+        </div>
 
-<<<<<<< HEAD:pages/operasional/monitoring_armada.php
-    <?php include '../../config/sidebar.php'; ?>
-=======
+        <div class="sidebar-content">
+            <div class="nav flex-column mt-2">
+                <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
+                <!-- Manajemen Kejadian -->
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuManajemenKejadian">
+                    <a href="../manajemen/input_laporan.php">Input Laporan</a>
+                    <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
+                    <a href="../manajemen/timeline_kronologi.php">Timeline Kronologi</a>
+                </div>
+
+                <!-- Operasional (Aktif & Terbuka Otomatis) -->
+                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
+                    <span><i class="bi bi-clipboard-check"></i> Operasional</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu show" id="menuOperasional">
+                    <a href="penugasan_tim.php" class="active">Penugasan Tim</a>
+                    <a href="monitoring_armada.php">Monitoring Armada</a>
+                    <a href="status_penanganan.php">Status Penanganan</a>
+                    <a href="riwayat_penugasan.php">Riwayat Penugasan</a>
+                </div>
+
+                <!-- Personil -->
+                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-people"></i> Personil</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuPersonil">
+                    <a href="../personil/personil.php">Data Personil</a>
+                    <a href="../personil/penempatan_pos.php">Penempatan Pos</a>
+                    <a href="../personil/jadwal_piket.php">Jadwal Piket</a>
+                    <a href="../personil/riwayat_tugas.php">Riwayat Tugas</a>
+                </div>
+
+                <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
+
+                <!-- Sarpras -->
+                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-tools"></i> Sarpras</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuSarpras">
+                    <a href="../Sarpras/sarpras.php">Data Sarpras</a>
+                    <a href="../Sarpras/master_bidang.php">Master Bidang</a>
+                    <a href="../Sarpras/master_kategori.php">Master Kategori</a>
+                </div>
+
+                <!-- Laporan & Analitik -->
+                <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="../laporan/laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="../laporan/cetak_export.php">Cetak & Export Dokumen</a>
+                </div>
+                
+                <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+                <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
+            </div>
+        </div>
+    </div>
+
+
         <div class="main-content flex-grow-1 p-4">
->>>>>>> c234622724096cb442c46a5afba35dc345b8abe9:pages/monitoring_armada.php
 
             <div class="mb-3">
                 <span style="font-size:.85rem;color:#6c757d;font-weight:600;letter-spacing:.5px">

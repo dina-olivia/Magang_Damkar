@@ -159,7 +159,6 @@ $stats = [
                     <a href="pages/manajemen/input_laporan.php">Input Laporan</a>
                     <a href="pages/manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
                     <a href="pages/manajemen/detail_kejadian.php">Detail Kejadian</a>
-                    <a href="pages/manajemen/timeline_kronologi.php">Timeline Kronologi</a>
                 </div>
 
                 <a href="#menuOperasional" data-bs-toggle="collapse"
