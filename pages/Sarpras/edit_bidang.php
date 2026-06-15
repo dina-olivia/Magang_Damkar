@@ -1,5 +1,6 @@
 <?php 
-include '../config/koneksi.php'; 
+// ensure correct include paths regardless of current working directory
+require_once __DIR__ . '/../../config/koneksi.php'; 
 
 if (!isset($_GET['id']) || empty($_GET['id'])) {
     echo "<script>alert('ID Bidang tidak ditemukan!'); window.location.href='master_bidang.php';</script>";
@@ -133,7 +134,7 @@ body {
 </head>
 <body>
 
-    <?php include '../config/sidebar.php'; ?>
+    <?php require_once __DIR__ . '/../../config/sidebar.php'; ?>
 
     <div class="main-content">
         <div class="form-card">

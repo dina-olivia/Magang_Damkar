@@ -1,5 +1,10 @@
 <?php
-include '../koneksi.php';
+require_once __DIR__ . '/../koneksi.php';
+
+// Ensure $conn is available from koneksi.php
+if (!isset($conn)) {
+    die('Database connection ($conn) is not defined. Check koneksi.php');
+}
 
 $id = $_GET['id'];
 

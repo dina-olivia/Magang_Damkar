@@ -167,7 +167,7 @@ $query = mysqli_query($conn, "
             </div>
             <div class="text-end">
                 <span class="badge bg-danger mb-1">SIAGA 1</span>
-                <div class="fw-bold small"><?php echo date('d M Y | H:i'); ?> WIB</div>
+                <div id="liveClock" class="fw-bold small">Memuat waktu...</div>
             </div>
         </header>
 
@@ -328,6 +328,35 @@ $query = mysqli_query($conn, "
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Fungsi Live Clock Realtime (Bahasa Indonesia)
+        function updateLiveClock() {
+            const clockElement = document.getElementById('liveClock');
+            if (!clockElement) return;
+
+            const sekarang = new Date();
+            
+            // Array nama hari dan bulan Indonesia
+            const namaHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            
+            const hari = namaHari[sekarang.getDay()];
+            const tanggal = String(sekarang.getDate()).padStart(2, '0');
+            const bulan = namaBulan[sekarang.getMonth()];
+            const tahun = sekarang.getFullYear();
+            
+            const jam = String(sekarang.getHours()).padStart(2, '0');
+            const menit = String(sekarang.getMinutes()).padStart(2, '0');
+            const detik = String(sekarang.getSeconds()).padStart(2, '0');
+            
+            // Format output: Senin, 15 Jun 2026 | 08:30:05 WIB
+            clockElement.innerHTML = `${hari}, ${tanggal} ${bulan} ${tahun} | ${jam}:${menit}:${detik} WIB`;
+        }
+
+        // Jalankan fungsi jam pertama kali, lalu update setiap 1 detik (1000ms)
+        updateLiveClock();
+        setInterval(updateLiveClock, 1000);
+
+        // Fungsi Modal
         function openModal() { 
             document.getElementById('modalTambah').classList.add('open'); 
         }
@@ -336,7 +365,6 @@ $query = mysqli_query($conn, "
             document.getElementById('modalTambah').classList.remove('open'); 
         }
 
-        // Menutup modal jika user klik area abu-abu di luar kotak form
         window.onclick = function(event) {
             const overlay = document.getElementById('modalTambah');
             if (event.target == overlay) {

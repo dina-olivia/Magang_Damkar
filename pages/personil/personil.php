@@ -79,7 +79,6 @@ if (!isset($conn)) {
                     <a href="../manajemen/input_laporan.php">Input Laporan</a>
                     <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
                     <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
-                    <a href="../manajemen/timeline_kronologi.php">Timeline Kronologi</a>
                 </div>
 
                 <a href="#menuOperasional" data-bs-toggle="collapse"

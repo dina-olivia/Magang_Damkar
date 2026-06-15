@@ -1,7 +1,10 @@
 <?php
-include '../config/koneksi.php';
+require_once __DIR__ . '/../config/koneksi.php';
+if (!isset($conn)) {
+    die('Error: Database connection not established.');
+}
 
-$kategori = mysqli_query($koneksi, "SELECT * FROM kategori");
+$kategori = mysqli_query($conn, "SELECT * FROM kategori");
 
 if(isset($_POST['simpan'])){
 
@@ -10,7 +13,7 @@ if(isset($_POST['simpan'])){
     $kondisi = $_POST['kondisi'];
     $lokasi = $_POST['lokasi'];
 
-    $query = mysqli_query($koneksi, "INSERT INTO sarpras
+    $query = mysqli_query($conn, "INSERT INTO sarpras
     (nama_alat, jenis, kondisi, lokasi)
     VALUES(
         '$nama',
@@ -22,7 +25,7 @@ if(isset($_POST['simpan'])){
     if($query){
         echo "<script>alert('Data berhasil disimpan!')</script>";
     } else {
-        die("Error: " . mysqli_error($koneksi));
+        die("Error: " . mysqli_error($conn));
     }
 }
 ?>
