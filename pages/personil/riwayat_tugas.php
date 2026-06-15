@@ -352,9 +352,9 @@ $query_riwayat = mysqli_query($conn, "
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
-                    <a href="../input_laporan.php">Input Laporan</a>
-                    <a href="../monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../detail_kejadian.php">Detail Kejadian</a>
+                    <a href="../manajemen/input_laporan.php">Input Laporan</a>
+                    <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                    
                 </div>
 
@@ -363,10 +363,10 @@ $query_riwayat = mysqli_query($conn, "
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuOperasional">
-                    <a href="../penugasan_tim.php">Penugasan Tim</a>
-                    <a href="../monitoring_armada.php">Monitoring Armada</a>
-                    <a href="../status_penanganan.php">Status Penanganan</a>
-                    <a href="../riwayat_penugasan.php">Riwayat Penugasan</a>
+                    <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
+                    <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
+                    <a href="../operasional/status_penanganan.php">Status Penanganan</a>
+                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
                 <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
@@ -387,12 +387,20 @@ $query_riwayat = mysqli_query($conn, "
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuSarpras">
-                    <a href="../sarpras.php">Data Sarpras</a>
-                    <a href="../master_bidang.php">Master Bidang</a>
-                    <a href="../master_kategori.php">Master Kategori</a>
+                    <a href="../Sarpras/sarpras.php">Data Sarpras</a>
+                    <a href="../Sarpras/master_bidang.php">Master Bidang</a>
+                    <a href="../Sarpras/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="../dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+               <a href="#menuLaporan" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="../laporan/laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="../laporan/cetak_export.php">Cetak & Export Dokumen</a>
                 <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
 
                 <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
