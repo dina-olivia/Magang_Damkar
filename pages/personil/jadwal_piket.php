@@ -88,15 +88,17 @@ $query = mysqli_query($conn, "
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-            <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
 
         <div class="sidebar-content">
             <div class="nav flex-column mt-2">
                 <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                
-                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -104,10 +106,11 @@ $query = mysqli_query($conn, "
                     <a href="../manajemen/input_laporan.php">Input Laporan</a>
                     <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
                     <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
-                 
+                    <a href="../manajemen/timeline_kronologi.php">Timeline Kronologi</a>
                 </div>
 
-                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuOperasional" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -118,7 +121,8 @@ $query = mysqli_query($conn, "
                     <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
-                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuPersonil" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-people"></i> Personil</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -131,7 +135,8 @@ $query = mysqli_query($conn, "
 
                 <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
 
-                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuSarpras" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-tools"></i> Sarpras</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -141,7 +146,7 @@ $query = mysqli_query($conn, "
                     <a href="../Sarpras/master_kategori.php">Master Kategori</a>
                 </div>
 
-               <a href="#menuLaporan" data-bs-toggle="collapse"
+                <a href="#menuLaporan" data-bs-toggle="collapse"
                     class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
                     <i class="bi bi-chevron-down small"></i>
@@ -151,7 +156,6 @@ $query = mysqli_query($conn, "
                     <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
                     <a href="../laporan/cetak_export.php">Cetak & Export Dokumen</a>
                 </div>
-
                 <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
 
                 <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
