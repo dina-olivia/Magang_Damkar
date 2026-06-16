@@ -216,12 +216,12 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table
                 </div>
 
                 <!-- Operasional (Aktif & Terbuka Otomatis) -->
-                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
+                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
-                <div class="collapse sub-menu " id="menuOperasional">
-                    <a href="../operasional/penugasan_tim.php" class="active">Penugasan Tim</a>
+                <div class="collapse sub-menu" id="menuOperasional">
+                    <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
                     <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="../operasional/status_penanganan.php">Status Penanganan</a>
                     <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
@@ -239,7 +239,14 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table
                     <a href="../personil/riwayat_tugas.php">Riwayat Tugas</a>
                 </div>
 
-                <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
+                 <!-- Armada -->
+                <a href="#menuArmada" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-truck"></i> Armada</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuArmada">
+                    <a href="../armada/armada.php">Data Armada</a>
+                </div>
 
                 <!-- Sarpras -->
                 <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
@@ -253,12 +260,12 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table
                 </div>
 
                 <!-- Laporan & Analitik -->
-                <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
                     <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu show" id="menuLaporan">
-                    <a href="laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="laporan_kejadian.php" class="active">Laporan Kejadian</a>
                     <a href="rekap_statistik.php">Rekap Statistik & Analisis</a>
                     <a href="cetak_export.php">Cetak & Export Dokumen</a>
                 </div>

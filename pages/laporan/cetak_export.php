@@ -278,7 +278,14 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
                     <a href="../personil/riwayat_tugas.php">Riwayat Tugas</a>
                 </div>
 
-                <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
+                 <!-- Armada -->
+                <a href="#menuArmada" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-truck"></i> Armada</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuArmada">
+                    <a href="../armada/armada.php">Data Armada</a>
+                </div>
 
                 <!-- Sarpras -->
                 <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
@@ -311,11 +318,6 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
     <div id="main-content" class="p-4">
         <div class="container-fluid">
 
-            <div class="mb-3 btn-back-nav">
-                <a href="laporan_kejadian.php" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-arrow-left"></i> Kembali ke Rekap Utama
-                </a>
-            </div>
 
             <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white btn-action-area">
                 <div class="d-flex justify-content-between align-items-center flex-wrap g-3">

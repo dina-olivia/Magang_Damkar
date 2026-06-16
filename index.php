@@ -185,7 +185,14 @@ $stats = [
                     <a href="pages/personil/riwayat_tugas.php">Riwayat Tugas</a>
                 </div>
 
-                <a href="pages/armada.php"><i class="bi bi-truck"></i> Armada</a>
+                <a href="#menuArmada" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center collapsed">
+                    <span><i class="bi bi-truck"></i> Armada</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuArmada">
+                    <a href="pages/armada/armada.php">Data Armada</a>
+                </div>
 
                 <a href="#menuSarpras" data-bs-toggle="collapse"
                     class="d-flex justify-content-between align-items-center collapsed">
@@ -209,7 +216,7 @@ $stats = [
                     <a href="pages/laporan/cetak_export.php">Cetak & Export Dokumen</a>
                 </div>
 
-                <a href="pages/pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+                <a href="pages/manajemen_user.php"><i class="bi bi-gear"></i> Manajemen User</a>
 
                 <a href="logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>
