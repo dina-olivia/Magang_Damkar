@@ -3,93 +3,37 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Master Bidang</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Bidang - DAMKAR Padang</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css"> 
-
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    
     <style>
-        * { box-sizing: border-box; }
         body {
-            background: #f0f2f5;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0; padding: 0;
+            background-color: #f8f9fa;
         }
 
-        :root {
-            --fire-red: #b91c1c;
-            --dark-sidebar: #0f172a;
-            --sidebar-text: #94a3b8;
+        #main-content {
+            margin-left: 260px;
+            transition: margin 0.3s ease;
         }
 
-        #sidebar {
-            width: 280px; height: 100vh;
-            position: fixed; left: 0; top: 0;
-            background-color: var(--dark-sidebar);
-            display: flex; flex-direction: column;
-            z-index: 1000;
+        @media (max-width: 991px) {
+            #main-content {
+                margin-left: 0;
+            }
         }
 
-       .sidebar-header {
-    padding: 20px;
-    background-color: #b91c1c;
-    color: white;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    flex-shrink: 0;
-    min-height: 100px;
-}
-
-        .sidebar-content { flex-grow: 1; overflow-y: auto; overflow-x: hidden; }
-        .sidebar-content::-webkit-scrollbar { width: 5px; }
-        .sidebar-content::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-
-        #sidebar a {
-            color: var(--sidebar-text);
-            text-decoration: none;
-            padding: 12px 25px;
-            display: flex; align-items: center;
-            font-size: 0.95rem;
-            border-left: 4px solid transparent;
-            transition: 0.2s;
-        }
-
-        #sidebar a i { margin-right: 12px; font-size: 1.1rem; }
-
-        #sidebar a:hover, #sidebar a.active {
-            background-color: #1e293b;
-            color: white;
-            border-left: 4px solid #ef4444;
-        }
-
-        .sub-menu { background-color: #1a2236; }
-        .sub-menu a { padding-left: 50px !important; font-size: 0.85rem !important; }
-
+        .card-custom { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         
-       .main-content {
-    margin-left: 280px;
-    width: calc(100% - 280px);
-    min-height: 100vh;
-    padding: 32px;
-    position: relative;
-    z-index: 10;
-}
-
-        .page-header {
-            display: flex; justify-content: space-between; align-items: flex-start;
-            margin-bottom: 28px;
-        }
-        .page-header h1 { font-size: 26px; font-weight: 700; color: #1a1f2e; margin: 0 0 4px 0; }
-        .page-header p { font-size: 14px; color: #6b7280; margin: 0; }
-
+        /* Specific styles for master_bidang cards if needed, 
+           but trying to keep it consistent with sarpras.php layout */
         .btn-tambah {
             background: #e63946; color: #fff;
             border: none; border-radius: 10px;
             padding: 10px 20px; font-size: 14px; font-weight: 600;
-            font-family: 'Plus Jakarta Sans', sans-serif;
             display: flex; align-items: center; gap: 7px;
             cursor: pointer; text-decoration: none; white-space: nowrap;
             transition: background 0.2s, transform 0.15s;
@@ -105,48 +49,33 @@
         }
         .search-box input {
             flex: 1; border: none; outline: none;
-            font-size: 14px; font-family: 'Plus Jakarta Sans', sans-serif;
-            color: #1a1f2e; background: transparent;
+            font-size: 14px; color: #1a1f2e; background: transparent;
         }
-        .search-box input::placeholder { color: #9ca3af; }
-        .search-box .search-icon { color: #9ca3af; font-size: 17px; }
         .btn-cari {
             background: #1a1f2e; color: #fff;
             border: none; border-radius: 8px;
             padding: 8px 18px; font-size: 13px; font-weight: 600;
-            font-family: 'Plus Jakarta Sans', sans-serif;
             cursor: pointer; transition: background 0.2s;
         }
         .btn-cari:hover { background: #e63946; }
 
-        .cards-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
         .card-bidang {
-    background: #fff;
-    border-radius: 16px;
-    border: 1.5px solid #e5e7eb;
-    padding: 22px;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    position: relative;
-    overflow: hidden;
-
-    width: 100%;
-    width: 100%;
-    max-width: none;
-}
+            background: #fff;
+            border-radius: 16px;
+            border: 1.5px solid #e5e7eb;
+            padding: 22px;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin-bottom: 24px;
+        }
         .card-bidang::before {
             content: ''; position: absolute;
             top: 0; left: 0; right: 0; height: 4px;
             border-radius: 16px 16px 0 0;
         }
         .card-bidang.danger::before  { background: #e63946; }
-        .card-bidang.success::before { background: #2d9e6b; }
-        .card-bidang.warning::before { background: #f59e0b; }
-        .card-bidang.info::before    { background: #3b82f6; }
         .card-bidang:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.09); border-color: #d1d5db; }
 
         .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
@@ -156,15 +85,11 @@
             font-size: 24px; color: #fff; flex-shrink: 0;
         }
         .icon-box.danger  { background: #e63946; }
-        .icon-box.success { background: #2d9e6b; }
-        .icon-box.warning { background: #f59e0b; }
-        .icon-box.info    { background: #3b82f6; }
 
         .card-actions { display: flex; gap: 6px; }
         .btn-edit, .btn-hapus {
             border: none; border-radius: 8px;
             padding: 6px 14px; font-size: 12px; font-weight: 600;
-            font-family: 'Plus Jakarta Sans', sans-serif;
             cursor: pointer; text-decoration: none;
             display: inline-flex; align-items: center; gap: 4px;
             transition: opacity 0.2s, transform 0.15s;
@@ -175,9 +100,6 @@
 
         .card-title { font-size: 16px; font-weight: 700; margin: 16px 0 6px 0; }
         .card-title.danger  { color: #e63946; }
-        .card-title.success { color: #2d9e6b; }
-        .card-title.warning { color: #d97706; }
-        .card-title.info    { color: #2563eb; }
 
         .card-desc { font-size: 13px; color: #6b7280; margin: 0 0 18px 0; line-height: 1.6; }
 
@@ -214,13 +136,13 @@
                     <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                 </div>
 
-                <!-- Operasional (Aktif & Terbuka Otomatis) -->
-                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
+                <!-- Operasional -->
+                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuOperasional">
-                    <a href="../operasional/penugasan_tim.php" class="active">Penugasan Tim</a>
+                    <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
                     <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="../operasional/status_penanganan.php">Status Penanganan</a>
                     <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
@@ -240,14 +162,14 @@
 
                 <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
 
-                <!-- Sarpras -->
-                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <!-- Sarpras (Expanded for this page) -->
+                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
                     <span><i class="bi bi-tools"></i> Sarpras</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu show" id="menuSarpras">
                     <a href="sarpras.php">Data Sarpras</a>
-                    <a href="master_bidang.php">Master Bidang</a>
+                    <a href="master_bidang.php" class="active">Master Bidang</a>
                     <a href="master_kategori.php">Master Kategori</a>
                 </div>
 
@@ -269,7 +191,7 @@
     </div>
 
 <!-- MAIN CONTENT -->
-<div class="main-content">
+<div id="main-content" class="p-4">
 
     <div class="page-header">
         <div>

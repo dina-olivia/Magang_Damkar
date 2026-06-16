@@ -11,57 +11,29 @@ if (!isset($conn) && isset($koneksi)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarpras - DAMKAR Padang</title>
     
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     
     <style>
-        :root { 
-            --fire-red: #b91c1c; 
-            --dark-sidebar: #0f172a; 
-            --sidebar-text: #94a3b8;
-        }
-        
-        body { background-color: #f8f9fa; margin: 0; padding: 0; display: flex; }
-
-        /* SIDEBAR FIXED & SCROLLABLE */
-        #sidebar {
-            width: 280px; height: 100vh; position: fixed; left: 0; top: 0;
-            background-color: var(--dark-sidebar); display: flex; flex-direction: column; z-index: 1000;
+        body {
+            background-color: #f8f9fa;
         }
 
-        .sidebar-header {
-            padding: 20px; background-color: var(--fire-red); color: white;
-            display: flex; align-items: center; flex-shrink: 0;
-        }
-
-        .sidebar-content { flex-grow: 1; overflow-y: auto; overflow-x: hidden; }
-        .sidebar-content::-webkit-scrollbar { width: 5px; }
-        .sidebar-content::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-
-        #sidebar a {
-            color: var(--sidebar-text); text-decoration: none; padding: 12px 25px;
-            display: flex; align-items: center; font-size: 0.95rem; border-left: 4px solid transparent; transition: 0.2s;
-        }
-
-        #sidebar a i { margin-right: 12px; font-size: 1.1rem; }
-
-        #sidebar a:hover, #sidebar a.active {
-            background-color: #1e293b; color: white; border-left: 4px solid #ef4444;
-        }
-
-        /* Sub-menu styling */
-        .sub-menu { background-color: #1a2236; }
-        .sub-menu a { padding-left: 50px !important; font-size: 0.85rem !important; }
-
-        /* AREA KONTEN UTAMA */
         #main-content {
-            margin-left: 280px; padding: 40px; width: calc(100% - 280px); min-height: 100vh;
+            margin-left: 260px;
+            transition: margin 0.3s ease;
+        }
+
+        @media (max-width: 991px) {
+            #main-content {
+                margin-left: 0;
+            }
         }
 
         .card-custom { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .nav-tabs .nav-link { color: #64748b; font-weight: 600; }
-        .nav-tabs .nav-link.active { color: var(--fire-red); border-bottom: 3px solid var(--fire-red); border-top: none; border-left: none; border-right: none; }
+        .nav-tabs .nav-link.active { color: #b91c1c; border-bottom: 3px solid #b91c1c; border-top: none; border-left: none; border-right: none; }
     </style>
 </head>
 <body>
@@ -89,12 +61,12 @@ if (!isset($conn) && isset($koneksi)) {
                 </div>
 
                 <!-- Operasional (Aktif & Terbuka Otomatis) -->
-                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
+                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuOperasional">
-                    <a href="../operasional/penugasan_tim.php" class="active">Penugasan Tim</a>
+                    <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
                     <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="../operasional/status_penanganan.php">Status Penanganan</a>
                     <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
@@ -115,12 +87,12 @@ if (!isset($conn) && isset($koneksi)) {
                 <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
 
                 <!-- Sarpras -->
-                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
                     <span><i class="bi bi-tools"></i> Sarpras</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu show" id="menuSarpras">
-                    <a href="sarpras.php">Data Sarpras</a>
+                    <a href="sarpras.php" class="active">Data Sarpras</a>
                     <a href="master_bidang.php">Master Bidang</a>
                     <a href="master_kategori.php">Master Kategori</a>
                 </div>
@@ -131,9 +103,9 @@ if (!isset($conn) && isset($koneksi)) {
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuLaporan">
-                    <a href="../laporan/laporan_kejadian.php">Laporan Kejadian</a>
-                    <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
-                    <a href="../laporan/cetak_export.php">Cetak & Export Dokumen</a>
+                    <a href="laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="cetak_export.php">Cetak & Export Dokumen</a>
                 </div>
                 
                 <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
@@ -142,7 +114,7 @@ if (!isset($conn) && isset($koneksi)) {
         </div>
     </div>
 
-<div id="main-content">
+<div id="main-content" class="p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="fw-bold m-0">Sarana & Prasarana</h2>
@@ -278,6 +250,6 @@ if ($query && mysqli_num_rows($query) > 0) {
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+</html> 
