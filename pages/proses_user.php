@@ -1,4 +1,5 @@
 <?php
+
 // Aktifkan tampilan error untuk debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -26,12 +27,12 @@ if (isset($_POST['simpan_user'])) {
     // Ambil data dari POST
     $nama     = $_POST['nama'];
     $email    = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Enkripsi password
+    $password = $_POST['password'];
     $role     = $_POST['role'];
     $opd_id   = $_POST['opd_id'];
 
     // Gunakan prepared statement untuk keamanan (mencegah SQL Injection)
-    $stmt = $conn->prepare("INSERT INTO user (nama, email, password_hash, role, opd_id) VALUES (?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO user (nama, email, password, role, opd_id) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $nama, $email, $password, $role,  $opd_id);
 
     if ($stmt->execute()) {

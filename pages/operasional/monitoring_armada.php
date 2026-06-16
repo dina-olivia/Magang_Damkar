@@ -378,25 +378,46 @@ if (!empty($_GET['id']) && isset($conn)) {
                                     $icon_class = 'text-primary';
                                 }
                                 ?>
-                                <div class="unit-card">
-                                    <span class="badge-unit <?= $badge_class ?>"><?= htmlspecialchars($st) ?></span>
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="fs-3 <?= $icon_class ?>">
-                                            <i class="bi bi-<?= $arm['jenis'] === 'Rescue' ? 'shield-shaded' : 'truck' ?>"></i>
-                                        </div>
-                                        <div>
-                                            <h6 class="fw-bold m-0"><?= htmlspecialchars($arm['kode_armada']) ?></h6>
-                                            <small class="text-muted d-block mb-1" style="font-size:.75rem">
-                                                <?= htmlspecialchars($arm['jenis']) ?> — <?= htmlspecialchars($arm['merk']) ?>
-                                                <?= $arm['tahun'] ?>
-                                            </small>
-                                            <small class="text-dark d-block fw-medium">
-                                                <i
-                                                    class="bi bi-geo-alt text-danger me-1"></i><?= htmlspecialchars($arm['pos_id']) ?>
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php if ($result_armada && mysqli_num_rows($result_armada) > 0):
+    while ($arm = mysqli_fetch_assoc($result_armada)):
+        $st = $arm['status'] ?? 'Tidak Diketahui';
+        
+        // Gunakan operator ?? '' untuk menghindari Undefined index
+        // Gunakan ?? '' sebelum htmlspecialchars untuk menghindari error null
+        $kode_armada = $arm['kode_armada'] ?? 'N/A';
+        $jenis_armada = $arm['jenis'] ?? 'Unit';
+        $merk_armada  = $arm['merk'] ?? '-';
+        $tahun_armada = $arm['tahun'] ?? '-';
+        $pos_id       = $arm['pos_id'] ?? 'Belum ada pos';
+
+        if ($st === 'Berangkat' || $st === 'Di Lokasi') {
+            $badge_class = $st === 'Di Lokasi' ? 'bg-di-lokasi' : 'bg-berangkat';
+            $icon_class = 'text-warning';
+        } else {
+            $badge_class = 'bg-siap';
+            $icon_class = 'text-primary';
+        }
+        ?>
+        <div class="unit-card">
+            <span class="badge-unit <?= $badge_class ?>"><?= htmlspecialchars($st) ?></span>
+            <div class="d-flex align-items-center gap-3">
+                <div class="fs-3 <?= $icon_class ?>">
+                    <i class="bi bi-<?= ($jenis_armada === 'Rescue' ? 'shield-shaded' : 'truck') ?>"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold m-0"><?= htmlspecialchars($kode_armada) ?></h6>
+                    <small class="text-muted d-block mb-1" style="font-size:.75rem">
+                        <?= htmlspecialchars($jenis_armada) ?> — <?= htmlspecialchars($merk_armada) ?>
+                        <?= htmlspecialchars($tahun_armada) ?>
+                    </small>
+                    <small class="text-dark d-block fw-medium">
+                        <i class="bi bi-geo-alt text-danger me-1"></i><?= htmlspecialchars($pos_id) ?>
+                    </small>
+                </div>
+            </div>
+        </div>
+    <?php endwhile; 
+endif; ?>
                             <?php endwhile; else: ?>
                             <div class="text-center text-muted py-4" style="font-size:.85rem">
                                 <i class="bi bi-truck" style="font-size:2rem;opacity:.3;display:block;margin-bottom:8px"></i>
