@@ -262,8 +262,8 @@ if (!empty($_GET['id']) && isset($conn)) {
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu show" id="menuOperasional">
-                    <a href="penugasan_tim.php" class="active">Penugasan Tim</a>
-                    <a href="monitoring_armada.php">Monitoring Armada</a>
+                    <a href="penugasan_tim.php" >Penugasan Tim</a>
+                    <a href="monitoring_armada.php" class="active">Monitoring Armada</a>
                     <a href="status_penanganan.php">Status Penanganan</a>
                     <a href="riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
