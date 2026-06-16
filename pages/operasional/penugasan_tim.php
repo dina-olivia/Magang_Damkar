@@ -99,7 +99,6 @@ if (isset($_POST['kirim_tim'])) {
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
                     <a href="../manajemen/input_laporan.php">Input Laporan</a>
                     <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                 </div>
 
                 <!-- Operasional (Aktif & Terbuka Otomatis) -->
@@ -111,7 +110,6 @@ if (isset($_POST['kirim_tim'])) {
                     <a href="penugasan_tim.php" class="active">Penugasan Tim</a>
                     <a href="monitoring_armada.php">Monitoring Armada</a>
                     <a href="status_penanganan.php">Status Penanganan</a>
-                    <a href="riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
                 <!-- Personil -->

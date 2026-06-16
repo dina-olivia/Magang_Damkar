@@ -253,7 +253,6 @@ if (!empty($_GET['id']) && isset($conn)) {
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
                     <a href="../manajemen/input_laporan.php">Input Laporan</a>
                     <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                 </div>
 
                 <!-- Operasional (Aktif & Terbuka Otomatis) -->
@@ -265,7 +264,6 @@ if (!empty($_GET['id']) && isset($conn)) {
                     <a href="penugasan_tim.php" >Penugasan Tim</a>
                     <a href="monitoring_armada.php" class="active">Monitoring Armada</a>
                     <a href="status_penanganan.php">Status Penanganan</a>
-                    <a href="riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
                 <!-- Personil -->

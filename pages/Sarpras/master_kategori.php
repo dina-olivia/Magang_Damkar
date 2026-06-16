@@ -96,7 +96,6 @@ if (!($conn instanceof mysqli)) {
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
                     <a href="../manajemen/input_laporan.php">Input Laporan</a>
                     <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                 </div>
 
                 <!-- Operasional -->
@@ -108,7 +107,6 @@ if (!($conn instanceof mysqli)) {
                     <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
                     <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="../operasional/status_penanganan.php">Status Penanganan</a>
-                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
                 <!-- Personil -->
