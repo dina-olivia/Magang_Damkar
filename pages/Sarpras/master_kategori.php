@@ -20,116 +20,60 @@ if (!($conn instanceof mysqli)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Master Kategori</title>
-
+    <title>Master Kategori - DAMKAR Padang</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
-
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    
     <style>
-
-:root{
-    --fire-red:#b91c1c;
-    --dark-sidebar:#0f172a;
-    --sidebar-text:#94a3b8;
-}
-
-#sidebar{
-    width:280px;
-    height:100vh;
-    position:fixed;
-    left:0;
-    top:0;
-    background:var(--dark-sidebar);
-    display:flex;
-    flex-direction:column;
-}
-
-#sidebar a{
-    color:var(--sidebar-text);
-    text-decoration:none;
-    padding:12px 25px;
-    display:block;
-}
-
-#sidebar a:hover,
-#sidebar a.active{
-    background:#1e293b;
-    color:white;
-}
-
-.sidebar-header{
-    background:var(--fire-red);
-    color:white;
-    padding:20px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-height:100px;
-    flex-shrink:0;
-}
-
-.main-content{
-    margin-left:280px;
-    width:calc(100% - 280px);
-    min-height:100vh;
-    padding:30px;
-}
-        body{
-            background:#f5f6fa;
-            font-family:Segoe UI;
+        body {
+            background-color: #f8f9fa;
         }
 
-        .main{
-            padding:30px;
+        #main-content {
+            margin-left: 260px;
+            transition: margin 0.3s ease;
         }
 
-        .card-modern{
-            border:none;
-            border-radius:20px;
-            box-shadow:0 2px 10px rgba(0,0,0,0.05);
-             width:100%;
-    border:none;
-    border-radius:20px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+        @media (max-width: 991px) {
+            #main-content {
+                margin-left: 0;
+            }
         }
 
-        .btn-purple{
-            background:#6f42c1;
-            color:white;
-            border:none;
-            border-radius:14px;
-            padding:10px 18px;
+        .card-modern {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: #fff;
         }
 
-        .btn-purple:hover{
-            background:#5b35a0;
-            color:white;
+        .btn-purple {
+            background: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 10px 18px;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .badge-status{
-            background:#d1fae5;
-            color:#065f46;
-            padding:7px 14px;
-            border-radius:20px;
-            font-size:12px;
-            font-weight:600;
+        .btn-purple:hover {
+            background: #5b35a0;
+            color: white;
         }
 
-        .table tbody tr:hover{
-            background:#fafafa;
+        .badge-status {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
         }
-
-        .sidebar-content{
-    flex-grow:1;
-    overflow-y:auto;
-    max-height:calc(100vh - 80px);
-}
-
     </style>
 </head>
-
 <body>
 
  <div id="sidebar" class="shadow">
@@ -154,13 +98,13 @@ if (!($conn instanceof mysqli)) {
                     <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                 </div>
 
-                <!-- Operasional (Aktif & Terbuka Otomatis) -->
-                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
+                <!-- Operasional -->
+                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuOperasional">
-                    <a href="../operasional/penugasan_tim.php" class="active">Penugasan Tim</a>
+                    <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
                     <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="../operasional/status_penanganan.php">Status Penanganan</a>
                     <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
@@ -180,15 +124,15 @@ if (!($conn instanceof mysqli)) {
 
                 <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
 
-                <!-- Sarpras -->
-                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <!-- Sarpras (Expanded for this page) -->
+                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
                     <span><i class="bi bi-tools"></i> Sarpras</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu show" id="menuSarpras">
                     <a href="sarpras.php">Data Sarpras</a>
                     <a href="master_bidang.php">Master Bidang</a>
-                    <a href="master_kategori.php">Master Kategori</a>
+                    <a href="master_kategori.php" class="active">Master Kategori</a>
                 </div>
 
                 <!-- Laporan & Analitik -->
@@ -208,7 +152,7 @@ if (!($conn instanceof mysqli)) {
         </div>
     </div>
 
-<div class="main-content">
+<div id="main-content" class="p-4">
 
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
