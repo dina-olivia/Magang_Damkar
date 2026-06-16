@@ -265,11 +265,12 @@ if (isset($_POST['kirim_tim'])) {
                             </td>
                             <td class="p-3 text-center">
                                 <div class="d-flex align-items-center justify-content-center gap-2">
-                                    <button class="btn btn-sm btn-outline-secondary border-0" title="Cetak Surat Perintah">
+                                    <a href="cetak_spt.php?id=<?= $row['id']; ?>" target="_blank" class="btn btn-sm btn-outline-secondary border-0" title="Cetak Surat Perintah">
                                         <i class="bi bi-printer fs-5"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-dark px-3 rounded-2 fw-medium" style="font-size: 11px;">
+                                    </a>
+                                    <a href="monitoring_armada.php?spt_id=<?= $row['id']; ?>" class="btn btn-sm btn-dark px-3 rounded-2 fw-medium" style="font-size: 11px; text-decoration: none;">
                                         Monitor
+                                    </a>
                                     </button>
                                 </div>
                             </td>
