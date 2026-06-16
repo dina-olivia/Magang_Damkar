@@ -1,4 +1,5 @@
 <?php
+$conn = null;
 include '../../config/koneksi.php';
 if (!isset($conn)) {
     if (isset($koneksi)) {
@@ -50,7 +51,7 @@ if (!($conn instanceof mysqli)) {
         }
 
         .btn-purple {
-            background: #6f42c1;
+            background: #ba3434;
             color: white;
             border: none;
             border-radius: 14px;
@@ -60,7 +61,7 @@ if (!($conn instanceof mysqli)) {
         }
 
         .btn-purple:hover {
-            background: #5b35a0;
+            background: #cc3934;
             color: white;
         }
 

@@ -1,5 +1,11 @@
 <?php
-include '../config/koneksi.php';
+// ensure we load the database config using an absolute path relative to this file
+require_once __DIR__ . '/../../config/koneksi.php';
+
+// verify $koneksi is available
+if (!isset($conn) || !$conn) {
+    die('Database connection not established. Please check config/conn.php');
+}
 
 if(isset($_POST['simpan'])){
 
@@ -7,7 +13,7 @@ if(isset($_POST['simpan'])){
     $deskripsi   = $_POST['deskripsi'];
     $urutan      = $_POST['urutan'];
 
-    $query = mysqli_query($koneksi, "INSERT INTO bidang
+    $query = mysqli_query($conn, "INSERT INTO bidang
     (nama_bidang, deskripsi, urutan)
     VALUES(
         '$nama_bidang',
@@ -21,7 +27,7 @@ if(isset($_POST['simpan'])){
             window.location='master_bidang.php';
         </script>";
     } else {
-        echo mysqli_error($koneksi);
+        echo mysqli_error($conn);
     }
 }
 ?>
