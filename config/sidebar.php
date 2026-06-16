@@ -37,13 +37,13 @@ if (strpos($user_nama, ' ') !== false) {
             <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_kejadian.php',]) ? 'show' : '' ?> sub-menu"
                 id="menuManajemenKejadian">
 
-                <a href="/MAGANG/Magang_Damkar/pages/input_laporan.php"
+                <a href="/MAGANG/Magang_Damkar/pages/manajemen/input_laporan.php"
                     class="<?= $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
 
-                <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
+                <a href="/MAGANG/Magang_Damkar/pages/manajemen/monitoring_kejadian.php"
                     class="<?= $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
 
-                <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
+                <a href="/MAGANG/Magang_Damkar/pages/manajemen/detail_kejadian.php"
                     class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
 
             </div>
@@ -58,37 +58,53 @@ if (strpos($user_nama, ' ') !== false) {
             <div class="collapse <?= in_array($current_page, ['penugasan_tim.php', 'monitoring_armada.php', 'status_penanganan.php', 'riwayat_penugasan.php']) ? 'show' : '' ?> sub-menu"
                 id="menuOperasional">
 
-                <a href="<?= $base_url ?>pages/melani/penugasan_tim.php"
+                <a href="<?= $base_url ?>pages/operasional/penugasan_tim.php"
                     class="<?= $current_page == 'penugasan_tim.php' ? 'active' : '' ?>">Penugasan Tim</a>
-                <a href="<?= $base_url ?>pages/monitoring_armada.php"
+                <a href="<?= $base_url ?>pages/operasional/monitoring_armada.php"
                     class="<?= $current_page == 'monitoring_armada.php' ? 'active' : '' ?>">Monitoring Armada</a>
-                <a href="<?= $base_url ?>pages/status_penanganan.php"
+                <a href="<?= $base_url ?>pages/operasional/status_penanganan.php"
                     class="<?= $current_page == 'status_penanganan.php' ? 'active' : '' ?>">Status Penanganan</a>
-                <a href="<?= $base_url ?>pages/riwayat_penugasan.php"
+                <a href="<?= $base_url ?>pages/operasional/riwayat_penugasan.php"
                     class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
 
             <!-- PERSONIL -->
-            <a href="<?= $base_url ?>MAGANG_DAMKAR/pages/personil/personil.php"
-                class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
-                <i class="bi bi-people"></i> Personil
-            </a>
-
-            <!-- SARPRAS -->
-            <a href="#menuSarpras" data-bs-toggle="collapse"
+           <a href="#menuPersonil" data-bs-toggle="collapse"
                 class="d-flex justify-content-between align-items-center
-               <?= in_array($current_page, ['sarpras.php', 'master_bidang.php', 'master_kategori.php']) ? 'active' : '' ?>">
-                <span><i class="bi bi-tools"></i> Sarpras</span>
+               <?= in_array($current_page, ['personil.php', 'penempatan_pos.php', 'jadwal_piket.php', 'riwayat_tugas.php']) ? 'active' : '' ?>">
+                <span><i class="bi bi-people"></i> Personil</span>
                 <i class="bi bi-chevron-down small"></i>
             </a>
-            <div class="collapse <?= in_array($current_page, ['sarpras.php', 'master_bidang.php', 'master_kategori.php']) ? 'show' : '' ?> sub-menu"
-                id="menuSarpras">
-                <a href="<?= $base_url ?>MAGANG_DAMKAR/pages/sarpras.php"
-                    class="<?= $current_page == 'sarpras.php' ? 'active' : '' ?>">Data Sarpras</a>
-                <a href="<?= $base_url ?>MAGANG_DAMKAR/pages/master_bidang.php"
-                    class="<?= $current_page == 'master_bidang.php' ? 'active' : '' ?>">Master Bidang</a>
-                <a href="<?= $base_url ?>MAGANG_DAMKAR/pages/master_kategori.php"
-                    class="<?= $current_page == 'master_kategori.php' ? 'active' : '' ?>">Master Kategori</a>
+            <div class="collapse <?= in_array($current_page, ['personil.php', 'penempatan_pos.php', 'jadwal_piket.php', 'riwayat_tugas.php']) ? 'show' : '' ?> sub-menu"
+                id="menuPersonil">
+
+                <a href="<?= $base_url ?>pages/personil/personil.php"
+                    class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">Data Personil</a>
+                <a href="<?= $base_url ?>pages/personil/penempatan_pos.php"
+                    class="<?= $current_page == 'penempatan_pos.php' ? 'active' : '' ?>">Penempatan Pos</a>
+                <a href="<?= $base_url ?>pages/personil/jadwal_piket.php"
+                    class="<?= $current_page == 'jadwal_piket.php' ? 'active' : '' ?>">Jadwal Piket</a>
+                <a href="<?= $base_url ?>pages/personil/riwayat_tugas.php"
+                    class="<?= $current_page == 'riwayat_tugas.php' ? 'active' : '' ?>">Riwayat Tugas</a>
+            </div>
+
+                    class="<?= $current_page == 'status_penanganan.php' ? 'active' : '' ?>">Status Penanganan</a>
+                <a href="<?= $base_url ?>pages/operasional/riwayat_penugasan.php"
+                    class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
+            </div>
+
+
+            <!-- ARMADA -->
+            <a href="#menuArmada" data-bs-toggle="collapse"
+                class="d-flex justify-content-between align-items-center
+               <?= in_array($current_page, ['armada.php']) ? 'active' : '' ?>">
+                <span><i class="bi bi-truck"></i> Armada</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse <?= in_array($current_page, ['armada.php']) ? 'show' : '' ?> sub-menu"
+                id="menuArmada">
+                <a href="<?= $base_url ?>MAGANG_DAMKAR/pages/armada/armada.php"
+                    class="<?= $current_page == 'armada.php' ? 'active' : '' ?>">Data Armada</a>
             </div>
 
             <!-- SARPRAS -->

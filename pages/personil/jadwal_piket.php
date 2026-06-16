@@ -133,7 +133,14 @@ $query = mysqli_query($conn, "
                     <a href="riwayat_tugas.php">Riwayat Tugas</a>
                 </div>
 
-                <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
+                 <!-- Armada -->
+                <a href="#menuArmada" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-truck"></i> Armada</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuArmada">
+                    <a href="../armada/armada.php">Data Armada</a>
+                </div>
 
                 <a href="#menuSarpras" data-bs-toggle="collapse"
                     class="d-flex justify-content-between align-items-center">

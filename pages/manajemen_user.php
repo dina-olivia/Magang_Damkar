@@ -1,4 +1,4 @@
-<?php
+0<?php
 $config_path = __DIR__ . '/../config/koneksi.php';
 if (!file_exists($config_path)) {
     die('Database configuration file not found.');
@@ -48,13 +48,13 @@ $result_users = mysqli_query($conn, "SELECT * FROM user ORDER BY id DESC");
         }
 
         .btn-hijau {
-            background-color: #60cf10;
+            background-color: #b43b19;
             color: white;
             border: none;
         }
 
         .btn-hijau:hover {
-            background-color: #4fb30d;
+            background-color: #c72828;
             color: white;
         }
 
@@ -74,7 +74,88 @@ $result_users = mysqli_query($conn, "SELECT * FROM user ORDER BY id DESC");
 
 <body>
 
-    <?php include '../config/sidebar.php'; ?>
+    <div id="sidebar" class="shadow">
+        <div class="sidebar-header">
+            <img src="../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
+            <span class="fw-bold ms-2">DAMKAR PADANG</span>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="nav flex-column mt-2">
+                <a href="../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
+                <!-- Manajemen Kejadian -->
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuManajemenKejadian">
+                    <a href="../manajemen/input_laporan.php">Input Laporan</a>
+                    <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
+                </div>
+
+                <!-- Operasional (Aktif & Terbuka Otomatis) -->
+                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-clipboard-check"></i> Operasional</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuOperasional">
+                    <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
+                    <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
+                    <a href="../operasional/status_penanganan.php">Status Penanganan</a>
+                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
+                </div>
+
+                <!-- Personil -->
+                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-people"></i> Personil</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuPersonil">
+                    <a href="../personil/personil.php">Data Personil</a>
+                    <a href="../personil/penempatan_pos.php">Penempatan Pos</a>
+                    <a href="../personil/jadwal_piket.php">Jadwal Piket</a>
+                    <a href="../personil/riwayat_tugas.php">Riwayat Tugas</a>
+                </div>
+
+                 <!-- Armada -->
+                <a href="#menuArmada" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-truck"></i> Armada</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuArmada">
+                    <a href="../armada/armada.php">Data Armada</a>
+                </div>
+
+                <!-- Sarpras -->
+                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-tools"></i> Sarpras</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuSarpras">
+                    <a href="../Sarpras/sarpras.php">Data Sarpras</a>
+                    <a href="../Sarpras/master_bidang.php">Master Bidang</a>
+                    <a href="../Sarpras/master_kategori.php">Master Kategori</a>
+                </div>
+
+                <!-- Laporan & Analitik -->
+                <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="cetak_export.php">Cetak & Export Dokumen</a>
+                </div>
+                
+                <a href="manajemen_user.php"><i class="bi bi-gear"></i> Manajemen User</a>
+                <a href="../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
+            </div>
+        </div>
+    </div>
 
     <div id="main-content" class="p-4" style="margin-left: 260px;">
 
@@ -205,25 +286,20 @@ $result_users = mysqli_query($conn, "SELECT * FROM user ORDER BY id DESC");
                         <div class="row g-3">
                             <div class="col-md-12">
                                 <label class="form-label fw-bold small text-muted">Nama Lengkap</label>
-                                <input type="text" name="nama" class="form-control bg-light border-0"
-                                    placeholder="Masukkan nama lengkap" required>
+                                <input type="text" name="nama" class="form-control" placeholder="Nama lengkap" required>
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label fw-bold small text-muted">Email</label>
-                                <input type="email" name="email" class="form-control bg-light border-0"
-                                    placeholder="Contoh: nama@damkar-padang.go.id" required>
+                                <input type="email" name="email" class="form-control" placeholder="nama@email.com" required>
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label fw-bold small text-muted">Kata Sandi (Password)</label>
-                                <input type="password" name="password" class="form-control bg-light border-0"
-                                    placeholder="Minimal 6 karakter" required>
+                                <label class="form-label fw-bold small text-muted">Kata Sandi</label>
+                                <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter" required>
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label fw-bold small text-muted">OPD ID</label>
-                                <input type="text" name="opd_id" class="form-control bg-light border-0"
-                                    value="DAMKAR-PDG" placeholder="Contoh: DAMKAR-PDG">
+                                <input type="text" name="opd_id" class="form-control" value="DAMKAR-PDG" readonly>
                             </div>
-
                             <input type="hidden" name="role" value="petugas">
                             <input type="hidden" name="status" value="aktif">
                         </div>
