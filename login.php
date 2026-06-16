@@ -1,11 +1,13 @@
 <?php
 session_start();
 
+// HANYA redirect jika user SUDAH login
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
 
+// handle messages
 $error = '';
 if (isset($_GET['error'])) {
     if ($_GET['error'] == 'invalid')  $error = 'Email atau password salah. Silakan coba lagi.';
