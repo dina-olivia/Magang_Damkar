@@ -1,6 +1,6 @@
 <?php $page = 'dashboard'; ?>
 <?php
-include '../config/koneksi.php';
+require_once __DIR__ . '/../config/koneksi.php';
 
 $current_page = basename($_SERVER['PHP_SELF']);
 $path = $_SERVER['PHP_SELF'];
