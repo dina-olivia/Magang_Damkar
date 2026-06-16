@@ -155,7 +155,6 @@ $total_halaman = ceil($total_data / $limit);
                     <a href="../operasional/penugasan_tim.php" class="active">Penugasan Tim</a>
                     <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="../operasional/status_penanganan.php">Status Penanganan</a>
-                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
                 <!-- Personil -->

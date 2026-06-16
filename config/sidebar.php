@@ -43,9 +43,6 @@ if (strpos($user_nama, ' ') !== false) {
                 <a href="/MAGANG/Magang_Damkar/pages/manajemen/monitoring_kejadian.php"
                     class="<?= $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
 
-                <a href="/MAGANG/Magang_Damkar/pages/manajemen/detail_kejadian.php"
-                    class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
-
             </div>
 
             <!-- OPERASIONAL -->
@@ -64,8 +61,6 @@ if (strpos($user_nama, ' ') !== false) {
                     class="<?= $current_page == 'monitoring_armada.php' ? 'active' : '' ?>">Monitoring Armada</a>
                 <a href="<?= $base_url ?>pages/operasional/status_penanganan.php"
                     class="<?= $current_page == 'status_penanganan.php' ? 'active' : '' ?>">Status Penanganan</a>
-                <a href="<?= $base_url ?>pages/operasional/riwayat_penugasan.php"
-                    class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
 
             <!-- PERSONIL -->

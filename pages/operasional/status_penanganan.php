@@ -108,7 +108,6 @@
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
                     <a href="../manajemen/input_laporan.php">Input Laporan</a>
                     <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                 </div>
 
                 <!-- Operasional (Aktif & Terbuka Otomatis) -->
@@ -120,7 +119,6 @@
                     <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
                     <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="status_penanganan.php" class="active">Status Penanganan</a>
-                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
                 <!-- Personil -->

@@ -351,7 +351,6 @@ $query_riwayat = mysqli_query($conn, "
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
                     <a href="../manajemen/input_laporan.php">Input Laporan</a>
                     <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                 </div>
 
                 <a href="#menuOperasional" data-bs-toggle="collapse"
@@ -363,7 +362,6 @@ $query_riwayat = mysqli_query($conn, "
                     <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
                     <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="../operasional/status_penanganan.php">Status Penanganan</a>
-                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
                 <a href="#menuPersonil" data-bs-toggle="collapse"

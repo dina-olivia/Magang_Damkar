@@ -79,7 +79,6 @@ if (!isset($conn)) {
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
                     <a href="../manajemen/input_laporan.php">Input Laporan</a>
                     <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                 </div>
 
                 <!-- Operasional (Aktif & Terbuka Otomatis) -->
@@ -91,7 +90,6 @@ if (!isset($conn)) {
                     <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
                     <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="../operasional/status_penanganan.php">Status Penanganan</a>
-                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
                 <!-- Personil -->
@@ -137,7 +135,7 @@ if (!isset($conn)) {
                     <a href="cetak_export.php">Cetak & Export Dokumen</a>
                 </div>
                 
-                <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+                <a href="../manajemen_user.php"><i class="bi bi-gear"></i> Manajemen User</a>
                 <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>
         </div>
@@ -188,8 +186,8 @@ if (!isset($conn)) {
               </span>
             </td>
             <td style="text-align: center;">
-              <a href="edit.php?id=<?php echo $data['id']; ?>" class="action-btn"><i class="bi bi-pencil-square"></i> Edit</a>
-              <a href="hapus.php?id=<?php echo $data['id']; ?>" class="action-btn action-delete" onclick="return confirm('Hapus unit ini?')"><i class="bi bi-trash"></i> Hapus</a>
+              <a href="edit.php?id=<?php echo $data['id']; ?>" class="action-btn"><i class="bi bi-pencil-square"></i> </a>
+              <a href="hapus.php?id=<?php echo $data['id']; ?>" class="action-btn action-delete" onclick="return confirm('Hapus unit ini?')"><i class="bi bi-trash"></i> </a>
             </td>
           </tr>
           <?php 

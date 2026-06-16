@@ -3,7 +3,7 @@ session_start();
 
 // HANYA redirect jika user SUDAH login
 if (isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+    header("Location: /Magang/Magang_Damkar/index.php");
     exit;
 }
 
@@ -35,8 +35,6 @@ $success = (isset($_GET['logout']) && $_GET['logout'] == '1');
             flex-direction: column;
             overflow-x: hidden;
         }
-
-        /* ── NAVBAR ── */
         .top-bar {
             padding: 16px 40px;
             display: flex;
@@ -76,8 +74,6 @@ $success = (isset($_GET['logout']) && $_GET['logout'] == '1');
             0%, 100% { opacity: 1; }
             50% { opacity: 0.2; }
         }
-
-        /* ── HERO ── */
         .hero {
             flex: 1;
             display: grid;
@@ -120,8 +116,6 @@ $success = (isset($_GET['logout']) && $_GET['logout'] == '1');
         .stat-num { font-size: 26px; font-weight: 800; color: white; }
         .stat-lbl { font-size: 12px; color: #64748b; margin-top: 2px; }
         .stat-divider { width: 1px; background: rgba(255,255,255,0.08); }
-
-        /* ── FORM BOX ── */
         .login-box {
             background: #1e293b;
             border: 1px solid rgba(255,255,255,0.08);
@@ -188,14 +182,11 @@ $success = (isset($_GET['logout']) && $_GET['logout'] == '1');
         }
         .info-row i { color: #475569; font-size: 16px; flex-shrink: 0; }
         .info-row p { font-size: 12px; color: #64748b; margin: 0; }
-
-        /* ── FOOTER ── */
         .footer {
             text-align: center; padding: 20px;
             font-size: 12px; color: #334155;
             border-top: 1px solid rgba(255,255,255,0.04);
         }
-
         @media (max-width: 768px) {
             .hero { grid-template-columns: 1fr; padding: 30px 20px; gap: 36px; }
             .hero-title { font-size: 30px; }
@@ -205,7 +196,6 @@ $success = (isset($_GET['logout']) && $_GET['logout'] == '1');
 </head>
 <body>
 
-<!-- Top Bar -->
 <div class="top-bar">
     <div class="top-brand">
         <div class="top-brand-icon"><i class="bi bi-fire"></i></div>
@@ -217,10 +207,7 @@ $success = (isset($_GET['logout']) && $_GET['logout'] == '1');
     <div class="top-badge">SIAGA 24/7</div>
 </div>
 
-<!-- Hero -->
 <div class="hero">
-
-    <!-- Kiri -->
     <div>
         <div class="hero-tag">
             <i class="bi bi-shield-check"></i>
@@ -252,7 +239,7 @@ $success = (isset($_GET['logout']) && $_GET['logout'] == '1');
         </div>
     </div>
 
-    <!-- Kanan: Form -->
+    <!-- Form Login -->
     <div class="login-box">
         <p class="login-box-title">Masuk ke Sistem</p>
         <p class="login-box-sub">Khusus petugas Damkar Kota Padang</p>
@@ -271,7 +258,7 @@ $success = (isset($_GET['logout']) && $_GET['logout'] == '1');
         </div>
         <?php endif; ?>
 
-        <form action="proses_login.php" method="POST">
+        <form action="/Magang/Magang_Damkar/proses_login.php" method="POST">
 
             <label class="f-label">Email</label>
             <div class="input-wrap">
@@ -305,10 +292,8 @@ $success = (isset($_GET['logout']) && $_GET['logout'] == '1');
             <p>Akun dibuat oleh administrator. Hubungi admin jika lupa password.</p>
         </div>
     </div>
-
 </div>
 
-<!-- Footer -->
 <div class="footer">
     &copy; <?= date('Y') ?> Dinas Pemadam Kebakaran Kota Padang &mdash; E-DAMKAR
 </div>

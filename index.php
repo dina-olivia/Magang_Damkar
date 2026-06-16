@@ -169,7 +169,6 @@ $stats = [
                     <a href="pages/operasional/penugasan_tim.php">Penugasan Tim</a>
                     <a href="pages/operasional/monitoring_armada.php">Monitoring Armada</a>
                     <a href="pages/operasional/status_penanganan.php">Status Penanganan</a>
-                    <a href="pages/operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
                 <a href="#menuPersonil" data-bs-toggle="collapse"

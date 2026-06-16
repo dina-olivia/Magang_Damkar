@@ -15,7 +15,7 @@
       --border: rgba(0,0,0,.1);
       --text: #1a1b1e;
       --text2: #6b7280;
-      --blue: #185FA5;
+      --blue: #ba1b1b;
       --sidebar-w: 250px;
       --radius-lg: 14px;
     }
