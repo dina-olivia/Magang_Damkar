@@ -90,29 +90,34 @@ $query = mysqli_query($conn, "
             color: #718096;
         }
 
+         /* ================= HEADER RIGHT (LIVE CLOCK STYLE) ================= */
         .header-right {
-            text-align: right;
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 5px;
+            align-items: center;
+            gap: 15px;
         }
 
-        .status-badge {
-            background: #e53e3e;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 13px;
-            letter-spacing: 0.5px;
+        .header-right .bg-danger {
+            background-color: #dc3545 !important;
+            padding: 8px 16px !important;
+            font-size: 14px !important;
+            border-radius: 8px !important;
         }
 
         .timestamp {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 15px;
-            font-weight: 600;
             color: #4a5568;
+            font-weight: 500;
         }
+
+        .timestamp i {
+            color: #dc3545;
+            font-size: 18px;
+        }
+
 
         /* ================= STATISTIC CARDS ================= */
         .cards-grid {
@@ -408,37 +413,41 @@ $query = mysqli_query($conn, "
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-            <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
 
         <div class="sidebar-content">
             <div class="nav flex-column mt-2">
                 <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                
-                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
-                    <a href="../input_laporan.php">Input Laporan</a>
-                    <a href="../monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../detail_kejadian.php">Detail Kejadian</a>
-                 
+                    <a href="../manajemen/input_laporan.php">Input Laporan</a>
+                    <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
+                    <a href="../manajemen/timeline_kronologi.php">Timeline Kronologi</a>
                 </div>
 
-                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuOperasional" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuOperasional">
-                    <a href="../penugasan_tim.php">Penugasan Tim</a>
-                    <a href="../monitoring_armada.php">Monitoring Armada</a>
-                    <a href="../status_penanganan.php">Status Penanganan</a>
-                    <a href="../riwayat_penugasan.php">Riwayat Penugasan</a>
+                    <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
+                    <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
+                    <a href="../operasional/status_penanganan.php">Status Penanganan</a>
+                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
-                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuPersonil" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-people"></i> Personil</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -451,17 +460,27 @@ $query = mysqli_query($conn, "
 
                 <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
 
-                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuSarpras" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-tools"></i> Sarpras</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuSarpras">
-                    <a href="../sarpras.php">Data Sarpras</a>
-                    <a href="../master_bidang.php">Master Bidang</a>
-                    <a href="../master_kategori.php">Master Kategori</a>
+                    <a href="../Sarpras/sarpras.php">Data Sarpras</a>
+                    <a href="../Sarpras/master_bidang.php">Master Bidang</a>
+                    <a href="../Sarpras/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="../dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                <a href="#menuLaporan" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="../laporan/laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="../laporan/cetak_export.php">Cetak & Export Dokumen</a>
+                </div>
                 <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
 
                 <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
@@ -477,8 +496,11 @@ $query = mysqli_query($conn, "
                 <p>Kelola Penempatan Personil Disetiap Pos Damkar</p>
             </div>
             <div class="header-right">
-                <div class="status-badge">SIAGA 1</div>
-                <div class="timestamp"><?= date('d M Y | H:i'); ?> WIB</div>
+                <span class="badge bg-danger text-white fw-bold px-3 py-2 rounded-3" style="font-size: 14px; letter-spacing: 0.5px;">SIAGA 1</span>
+                <div class="timestamp">
+                    <i class="bi bi-clock-fill"></i>
+                    <span id="live-clock">-- --- ---- | --:--:-- WIB</span>
+                </div>
             </div>
         </div>
 
@@ -657,6 +679,28 @@ $query = mysqli_query($conn, "
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // LOGIKA LIVE CLOCK REALTIME (DENGAN NAMA BULAN TEKS PENDEK & DETIK BERJALAN)
+        function updateLiveClock() {
+            const clockElement = document.getElementById('live-clock');
+            const now = new Date();
+            
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            
+            const dateStr = String(now.getDate()).padStart(2, '0');
+            const monthStr = months[now.getMonth()];
+            const yearStr = now.getFullYear();
+            
+            const hoursStr = String(now.getHours()).padStart(2, '0');
+            const minutesStr = String(now.getMinutes()).padStart(2, '0');
+            const secondsStr = String(now.getSeconds()).padStart(2, '0');
+            
+            clockElement.innerHTML = `${dateStr} ${monthStr} ${yearStr} | ${hoursStr}:${minutesStr}:${secondsStr} WIB`;
+        }
+        
+        // Jalankan saat halaman pertama kali dibuka, lalu perbarui setiap 1000ms (1 detik)
+        updateLiveClock();
+        setInterval(updateLiveClock, 1000);
+
         function openModal() {
             document.getElementById('modalTambah').classList.add('open');
         }

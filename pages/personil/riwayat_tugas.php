@@ -49,9 +49,10 @@ $query_riwayat = mysqli_query($conn, "
     <title>Riwayat Tugas Personil - DAMKAR PADANG</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
-        /* ================= HEADER ================= */
+        /* ================= MAIN CONTENT HEADER ================= */
         .header {
             display: flex;
             justify-content: space-between;
@@ -60,85 +61,78 @@ $query_riwayat = mysqli_query($conn, "
         }
 
         .header-left h1 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
-            color: #1a202c;
+            color: #1e293b;
             text-transform: uppercase;
+            margin: 0;
         }
 
         .header-left p {
-            margin-top: 5px;
-            font-size: 15px;
-            color: #718096;
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            color: #64748b;
         }
 
         .header-right {
-            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
-        .status-badge {
-            background: #e53e3e;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-            display: inline-block;
-            margin-bottom: 5px;
+        .header-right .bg-danger {
+            background-color: #dc3545 !important;
+            padding: 8px 16px !important;
+            font-size: 14px !important;
+            border-radius: 8px !important;
         }
 
         .timestamp {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             font-size: 15px;
-            font-weight: 600;
             color: #4a5568;
+            font-weight: 500;
+        }
+
+        .timestamp i {
+            color: #dc3545;
+            font-size: 18px;
         }
 
         /* ================= CARDS GRID ================= */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
+            gap: 24px;
             margin-bottom: 35px;
         }
 
         .stat-card {
             background: white;
-            padding: 25px;
+            padding: 24px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.02);
             display: flex;
-            align-items: center;
-            gap: 20px;
-            border-bottom: 4px solid #e53e3e;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            border-bottom: 4px solid #ef4444;
         }
-
-        .stat-card .icon-box {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .bg-blue { background: #eff6ff; color: #3b82f6; }
-        .bg-green { background: #f0fdf4; color: #22c55e; }
-        .bg-yellow { background: #fefce8; color: #eab308; }
-        .bg-purple { background: #faf5ff; color: #a855f7; }
 
         .stat-card-info h3 {
             font-size: 13px;
-            color: #718096;
+            color: #64748b;
             font-weight: 600;
+            margin: 0;
         }
 
         .stat-card-info h1 {
-            font-size: 28px;
-            color: #1a202c;
+            font-size: 32px;
+            color: #1e293b;
             font-weight: 700;
-            margin-top: 2px;
+            margin: 0;
         }
 
         /* ================= TOP 3 CONTAINER ================= */
@@ -185,25 +179,26 @@ $query_riwayat = mysqli_query($conn, "
             font-size: 16px;
             color: #1a202c;
             font-weight: 700;
+            margin: 0;
         }
 
         .top3-info p {
             font-size: 14px;
             color: #718096;
-            margin-top: 2px;
+            margin: 2px 0 0 0;
         }
 
         /* ================= TABLE DESIGN ================= */
         .section-box {
             background: white;
             border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
         .section-box h2 {
             font-size: 18px;
-            color: #1a202c;
+            color: #1e293b;
             margin-bottom: 20px;
             font-weight: 700;
         }
@@ -243,7 +238,7 @@ $query_riwayat = mysqli_query($conn, "
         }
 
         table th {
-            padding: 14px 18px;
+            padding: 14px 16px;
             background: #f8fafc;
             color: #64748b;
             font-size: 13px;
@@ -254,7 +249,7 @@ $query_riwayat = mysqli_query($conn, "
         }
 
         table td {
-            padding: 16px 18px;
+            padding: 16px 16px;
             border-bottom: 1px solid #edf2f7;
             font-size: 14px;
             color: #2d3748;
@@ -284,6 +279,7 @@ $query_riwayat = mysqli_query($conn, "
             font-size: 14px;
             font-weight: 700;
             color: #1a202c;
+            margin: 0;
         }
 
         .text-bold { font-weight: 700; color: #1a202c; }
@@ -312,8 +308,8 @@ $query_riwayat = mysqli_query($conn, "
             justify-content: center;
             gap: 6px;
             background: #fff;
-            color: #e53e3e;
-            border: 1px solid #e53e3e;
+            color: #ef4444;
+            border: 1px solid #ef4444;
             padding: 8px 14px;
             font-size: 13px;
             font-weight: 600;
@@ -322,9 +318,9 @@ $query_riwayat = mysqli_query($conn, "
             transition: all 0.2s ease;
         }
         .btn-lihat-detail:hover {
-            background: #e53e3e;
+            background: #ef4444;
             color: #fff;
-            box-shadow: 0 2px 4px rgba(229, 62, 62, 0.2);
+            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
         }
 
         .empty-row {
@@ -346,30 +342,32 @@ $query_riwayat = mysqli_query($conn, "
         <div class="sidebar-content">
             <div class="nav flex-column mt-2">
                 <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                
-                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
-                    <a href="../input_laporan.php">Input Laporan</a>
-                    <a href="../monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../detail_kejadian.php">Detail Kejadian</a>
-                   
+                    <a href="../manajemen/input_laporan.php">Input Laporan</a>
+                    <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
                 </div>
 
-                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuOperasional" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuOperasional">
-                    <a href="../penugasan_tim.php">Penugasan Tim</a>
-                    <a href="../monitoring_armada.php">Monitoring Armada</a>
-                    <a href="../status_penanganan.php">Status Penanganan</a>
-                    <a href="../riwayat_penugasan.php">Riwayat Penugasan</a>
+                    <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
+                    <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
+                    <a href="../operasional/status_penanganan.php">Status Penanganan</a>
+                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
-                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuPersonil" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-people"></i> Personil</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -382,17 +380,27 @@ $query_riwayat = mysqli_query($conn, "
 
                 <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
 
-                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuSarpras" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-tools"></i> Sarpras</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuSarpras">
-                    <a href="../sarpras.php">Data Sarpras</a>
-                    <a href="../master_bidang.php">Master Bidang</a>
-                    <a href="../master_kategori.php">Master Kategori</a>
+                    <a href="../Sarpras/sarpras.php">Data Sarpras</a>
+                    <a href="../Sarpras/master_bidang.php">Master Bidang</a>
+                    <a href="../Sarpras/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="../dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                <a href="#menuLaporan" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="../laporan/laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="../laporan/cetak_export.php">Cetak & Export Dokumen</a>
+                </div>
                 <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
 
                 <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
@@ -407,31 +415,31 @@ $query_riwayat = mysqli_query($conn, "
                 <p>Pantau performa dan riwayat penugasan personil</p>
             </div>
             <div class="header-right">
-                <div class="status-badge">SIAGA 1</div>
-                <div class="timestamp"><?= date('d M Y | H:i'); ?> WIB</div>
+                <span class="badge bg-danger text-white fw-bold px-3 py-2 rounded-3" style="font-size: 14px; letter-spacing: 0.5px;">SIAGA 1</span>
+                <div class="timestamp">
+                    <i class="bi bi-clock-fill"></i>
+                    <span id="liveClock">Memuat waktu...</span>
+                </div>
             </div>
         </div>
 
         <div class="cards-grid">
             <div class="stat-card">
-                <div class="icon-box bg-blue"><i class="fa-solid fa-file-invoice"></i></div>
                 <div class="stat-card-info"><h3>Total Personil</h3><h1><?= $total_personil; ?></h1></div>
             </div>
             <div class="stat-card">
-                <div class="icon-box bg-green"><i class="fa-solid fa-award"></i></div>
                 <div class="stat-card-info"><h3>Total Penugasan</h3><h1><?= $stat['total_penugasan']; ?></h1></div>
             </div>
             <div class="stat-card">
-                <div class="icon-box bg-yellow"><i class="fa-solid fa-star"></i></div>
                 <div class="stat-card-info"><h3>Rata-rata Rating</h3><h1><?= $stat['rata_rating']; ?> <span style="font-size:18px; color:#f59e0b;">★</span></h1></div>
             </div>
             <div class="stat-card">
-                <div class="icon-box bg-purple"><i class="fa-solid fa-clock"></i></div>
                 <div class="stat-card-info"><h3>Jam Operasional</h3><h1><?= $stat['total_jam']; ?> jam</h1></div>
             </div>
         </div>
 
         <h2 style="font-size: 18px; margin-bottom: 15px; color:#1a202c;"><i class="fa-solid fa-trophy" style="color:#d97706; margin-right:8px;"></i>Top 3 Personil Terbaik</h2>
+        
         <div class="top3-container">
             <?php 
             $rank = 1;
@@ -525,7 +533,7 @@ $query_riwayat = mysqli_query($conn, "
                     } else { 
                     ?>
                     <tr>
-                        <td colspan="7" class="empty-row"><i class="fa-solid fa-users-slash" style="font-size:30px; margin-bottom:10px; display:block;"></i>Belum Anda Data Riwayat Tugas.</td>
+                        <td colspan="7" class="empty-row"><i class="fa-solid fa-users-slash" style="font-size:30px; margin-bottom:10px; display:block;"></i>Belum Ada Data Riwayat Tugas.</td>
                     </tr>
                     <?php } ?>
                 </tbody>
@@ -535,6 +543,32 @@ $query_riwayat = mysqli_query($conn, "
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Fungsi Live Clock Realtime (Bahasa Indonesia)
+        function updateLiveClock() {
+            const clockElement = document.getElementById('liveClock');
+            if (!clockElement) return;
+
+            const sekarang = new Date();
+            
+            const namaHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            
+            const hari = namaHari[sekarang.getDay()];
+            const tanggal = String(sekarang.getDate()).padStart(2, '0');
+            const bulan = namaBulan[sekarang.getMonth()];
+            const tahun = sekarang.getFullYear();
+            
+            const jam = String(sekarang.getHours()).padStart(2, '0');
+            const menit = String(sekarang.getMinutes()).padStart(2, '0');
+            const detik = String(sekarang.getSeconds()).padStart(2, '0');
+            
+            clockElement.innerHTML = `${hari}, ${tanggal} ${bulan} ${tahun} | ${jam}:${menit}:${detik} WIB`;
+        }
+
+        // Jalankan pertama kali dan perbarui setiap 1 detik
+        updateLiveClock();
+        setInterval(updateLiveClock, 1000);
+
         // Logika Realtime Search Table
         const searchInput = document.getElementById('searchInput');
         searchInput.addEventListener('input', function() {

@@ -88,37 +88,41 @@ $query = mysqli_query($conn, "
 
     <div id="sidebar" class="shadow">
         <div class="sidebar-header">
-            <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
+            <img src="../../assets/img/logo_damkar.png" alt="Logo" width="140" height="80"
+                onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/b/b0/Logo_Damkar.png'">
             <span class="fw-bold ms-2">DAMKAR PADANG</span>
         </div>
 
         <div class="sidebar-content">
             <div class="nav flex-column mt-2">
                 <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                
-                <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+
+                <a href="#menuManajemenKejadian" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuManajemenKejadian">
-                    <a href="../input_laporan.php">Input Laporan</a>
-                    <a href="../monitoring_kejadian.php">Monitoring Kejadian</a>
-                    <a href="../detail_kejadian.php">Detail Kejadian</a>
-                 
+                    <a href="../manajemen/input_laporan.php">Input Laporan</a>
+                    <a href="../manajemen/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="../manajemen/detail_kejadian.php">Detail Kejadian</a>
+                    <a href="../manajemen/timeline_kronologi.php">Timeline Kronologi</a>
                 </div>
 
-                <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuOperasional" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuOperasional">
-                    <a href="../penugasan_tim.php">Penugasan Tim</a>
-                    <a href="../monitoring_armada.php">Monitoring Armada</a>
-                    <a href="../status_penanganan.php">Status Penanganan</a>
-                    <a href="../riwayat_penugasan.php">Riwayat Penugasan</a>
+                    <a href="../operasional/penugasan_tim.php">Penugasan Tim</a>
+                    <a href="../operasional/monitoring_armada.php">Monitoring Armada</a>
+                    <a href="../operasional/status_penanganan.php">Status Penanganan</a>
+                    <a href="../operasional/riwayat_penugasan.php">Riwayat Penugasan</a>
                 </div>
 
-                <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuPersonil" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-people"></i> Personil</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -131,17 +135,27 @@ $query = mysqli_query($conn, "
 
                 <a href="../armada.php"><i class="bi bi-truck"></i> Armada</a>
 
-                <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <a href="#menuSarpras" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-tools"></i> Sarpras</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuSarpras">
-                    <a href="../sarpras.php">Data Sarpras</a>
-                    <a href="../master_bidang.php">Master Bidang</a>
-                    <a href="../master_kategori.php">Master Kategori</a>
+                    <a href="../Sarpras/sarpras.php">Data Sarpras</a>
+                    <a href="../Sarpras/master_bidang.php">Master Bidang</a>
+                    <a href="../Sarpras/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="../dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
+                <a href="#menuLaporan" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="../laporan/laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="../laporan/cetak_export.php">Cetak & Export Dokumen</a>
+                </div>
                 <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
 
                 <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
@@ -157,7 +171,7 @@ $query = mysqli_query($conn, "
             </div>
             <div class="text-end">
                 <span class="badge bg-danger mb-1">SIAGA 1</span>
-                <div class="fw-bold small"><?php echo date('d M Y | H:i'); ?> WIB</div>
+                <div id="liveClock" class="fw-bold small">Memuat waktu...</div>
             </div>
         </header>
 
@@ -318,6 +332,35 @@ $query = mysqli_query($conn, "
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Fungsi Live Clock Realtime (Bahasa Indonesia)
+        function updateLiveClock() {
+            const clockElement = document.getElementById('liveClock');
+            if (!clockElement) return;
+
+            const sekarang = new Date();
+            
+            // Array nama hari dan bulan Indonesia
+            const namaHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const namaBulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            
+            const hari = namaHari[sekarang.getDay()];
+            const tanggal = String(sekarang.getDate()).padStart(2, '0');
+            const bulan = namaBulan[sekarang.getMonth()];
+            const tahun = sekarang.getFullYear();
+            
+            const jam = String(sekarang.getHours()).padStart(2, '0');
+            const menit = String(sekarang.getMinutes()).padStart(2, '0');
+            const detik = String(sekarang.getSeconds()).padStart(2, '0');
+            
+            // Format output: Senin, 15 Jun 2026 | 08:30:05 WIB
+            clockElement.innerHTML = `${hari}, ${tanggal} ${bulan} ${tahun} | ${jam}:${menit}:${detik} WIB`;
+        }
+
+        // Jalankan fungsi jam pertama kali, lalu update setiap 1 detik (1000ms)
+        updateLiveClock();
+        setInterval(updateLiveClock, 1000);
+
+        // Fungsi Modal
         function openModal() { 
             document.getElementById('modalTambah').classList.add('open'); 
         }
@@ -326,7 +369,6 @@ $query = mysqli_query($conn, "
             document.getElementById('modalTambah').classList.remove('open'); 
         }
 
-        // Menutup modal jika user klik area abu-abu di luar kotak form
         window.onclick = function(event) {
             const overlay = document.getElementById('modalTambah');
             if (event.target == overlay) {

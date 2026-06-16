@@ -1,128 +1,194 @@
-<?php echo "";
+<?php
 $current_page = basename($_SERVER['PHP_SELF']);
 $path = $_SERVER['PHP_SELF'];
 $root_folder = '/Magang_Damkar';
 $clean_path = str_replace($root_folder, '', $path);
 $levels = substr_count($clean_path, '/');
 $base_url = str_repeat('../', $levels);
+
+$user_nama = $_SESSION['nama'] ?? 'Admin';
+$inisial = strtoupper(substr($user_nama, 0, 1));
+if (strpos($user_nama, ' ') !== false) {
+    $parts = explode(' ', $user_nama);
+    $inisial = strtoupper($parts[0][0] . end($parts)[0]);
+}
 ?>
 
 <div id="sidebar" class="shadow">
+
+    <!-- Header -->
     <div class="sidebar-header">
-       <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
+        <img src="/MAGANG/Magang_Damkar/assets/img/logo_damkar.png" alt="Logo" width="140" height="80">
         <span class="fw-bold ms-2">DAMKAR PADANG</span>
     </div>
-<!--  -->
+    <!--  -->
     <div class="sidebar-content">
         <div class="nav flex-column mt-2">
 
             <!-- DASHBOARD -->
             <a href="/MAGANG/Magang_Damkar/index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">
-    <i class="bi bi-speedometer2"></i> Dashboard
-</a>
-<!-- MANAJEMEN KEJADIAN -->
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <!-- MANAJEMEN KEJADIAN -->
             <a href="/MAGANG/Magang_Damkar/pages/manajemen_kejadian.php"
                 class="<?= $current_page == 'manajemen_kejadian.php' ? 'active' : '' ?>">
                 <i class="bi bi-megaphone"></i> Manajemen Kejadian
             </a>
-           <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_kejadian.php',]) ? 'show' : '' ?> sub-menu" id="menuManajemen">
+            <div class="collapse <?= in_array($current_page, ['input_laporan.php', 'monitoring_kejadian.php', 'detail_kejadian.php',]) ? 'show' : '' ?> sub-menu"
+                id="menuManajemenKejadian">
 
-            <a href="/MAGANG/Magang_Damkar/pages/input_laporan.php"
-            class="<?= $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
-            
-            <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
-            class="<?= $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
-            
-            <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
-            class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
-        </div>
+                <a href="/MAGANG/Magang_Damkar/pages/input_laporan.php"
+                    class="<?= $current_page == 'input_laporan.php' ? 'active' : '' ?>">Input Laporan</a>
 
+                <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
+                    class="<?= $current_page == 'monitoring_kejadian.php' ? 'active' : '' ?>">Monitoring Kejadian</a>
+
+                <a href="/MAGANG/Magang_Damkar/pages/monitoring_kejadian.php"
+                    class="<?= $current_page == 'detail_kejadian.php' ? 'active' : '' ?>">Detail Kejadian</a>
+
+            </div>
+
+            <!-- OPERASIONAL -->
             <a href="#menuOperasional" data-bs-toggle="collapse"
-                class="d-flex justify-content-between align-items-center">
+                class="d-flex justify-content-between align-items-center
+               <?= in_array($current_page, ['penugasan_tim.php', 'monitoring_armada.php', 'status_penanganan.php', 'riwayat_penugasan.php']) ? 'active' : '' ?>">
                 <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                 <i class="bi bi-chevron-down small"></i>
             </a>
-
             <div class="collapse <?= in_array($current_page, ['penugasan_tim.php', 'monitoring_armada.php', 'status_penanganan.php', 'riwayat_penugasan.php']) ? 'show' : '' ?> sub-menu"
                 id="menuOperasional">
 
-                <a href="<?= $base_url ?>pages/penugasan_tim.php"
+                <a href="<?= $base_url ?>pages/melani/penugasan_tim.php"
                     class="<?= $current_page == 'penugasan_tim.php' ? 'active' : '' ?>">Penugasan Tim</a>
-
                 <a href="<?= $base_url ?>pages/monitoring_armada.php"
                     class="<?= $current_page == 'monitoring_armada.php' ? 'active' : '' ?>">Monitoring Armada</a>
-
                 <a href="<?= $base_url ?>pages/status_penanganan.php"
                     class="<?= $current_page == 'status_penanganan.php' ? 'active' : '' ?>">Status Penanganan</a>
-
                 <a href="<?= $base_url ?>pages/riwayat_penugasan.php"
                     class="<?= $current_page == 'riwayat_penugasan.php' ? 'active' : '' ?>">Riwayat Penugasan</a>
             </div>
 
-           <div class="collapse <?= in_array($current_page, ['personil.php', 'penempatan_pos.php', 'jadwal_piket.php', 'riwayat_tugas.php']) ? 'show' : '' ?> sub-menu"
-                id="menuPersonil">
+            <!-- PERSONIL -->
+            <a href="<?= $base_url ?>MAGANG_DAMKAR/pages/personil/personil.php"
+                class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">
+                <i class="bi bi-people"></i> Personil
+            </a>
 
-                <a href="<?= $base_url ?>pages/melani/personil.php"
-                    class="<?= $current_page == 'personil.php' ? 'active' : '' ?>">Data Personil</a>
-
-                <a href="<?= $base_url ?>pages/melani/penempatan_pos.php"
-                    class="<?= $current_page == 'penempatan_pos.php' ? 'active' : '' ?>">Penempatan Pos</a>
-
-                <a href="<?= $base_url ?>pages/melani/jadwal_piket.php"
-                    class="<?= $current_page == 'jadwal_piket.php' ? 'active' : '' ?>">Jadwal Piket</a>
-
-                <a href="<?= $base_url ?>pages/melani/riwayat_tugas.php"
-                    class="<?= $current_page == 'riwayat_tugas.php' ? 'active' : '' ?>">Riwayat Tugas</a>
+            <!-- SARPRAS -->
+            <a href="#menuSarpras" data-bs-toggle="collapse"
+                class="d-flex justify-content-between align-items-center
+               <?= in_array($current_page, ['sarpras.php', 'master_bidang.php', 'master_kategori.php']) ? 'active' : '' ?>">
+                <span><i class="bi bi-tools"></i> Sarpras</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse <?= in_array($current_page, ['sarpras.php', 'master_bidang.php', 'master_kategori.php']) ? 'show' : '' ?> sub-menu"
+                id="menuSarpras">
+                <a href="<?= $base_url ?>MAGANG_DAMKAR/pages/sarpras.php"
+                    class="<?= $current_page == 'sarpras.php' ? 'active' : '' ?>">Data Sarpras</a>
+                <a href="<?= $base_url ?>MAGANG_DAMKAR/pages/master_bidang.php"
+                    class="<?= $current_page == 'master_bidang.php' ? 'active' : '' ?>">Master Bidang</a>
+                <a href="<?= $base_url ?>MAGANG_DAMKAR/pages/master_kategori.php"
+                    class="<?= $current_page == 'master_kategori.php' ? 'active' : '' ?>">Master Kategori</a>
             </div>
+
+            <!-- SARPRAS -->
+            <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-tools"></i> Sarpras</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse <?= in_array($current_page, ['sarpras.php', 'master_bidang.php', 'master_kategori.php']) ? 'show' : '' ?> sub-menu"
+                id="menuSarpras">
+                <a href="<?= $base_url ?>pages/sarpras.php"
+                    class="<?= $current_page == 'sarpras.php' ? 'active' : '' ?>">Data Sarpras</a>
+                <a href="<?= $base_url ?>pages/master_bidang.php"
+                    class="<?= $current_page == 'master_bidang.php' ? 'active' : '' ?>">Master Bidang</a>
+                <a href="<?= $base_url ?>pages/master_kategori.php"
+                    class="<?= $current_page == 'master_kategori.php' ? 'active' : '' ?>">Master Kategori</a>
+            </div>
+
+            <!-- LAPORAN & ANALITIK -->
+            <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-file-earmark-bar-graph"></i> Laporan & Analitik</span>
+                <i class="bi bi-chevron-down small"></i>
+            </a>
+            <div class="collapse <?= in_array($current_page, ['laporan_kejadian.php', 'rekap_statistik.php', 'export_excel.php']) ? 'show' : '' ?> sub-menu"
+                id="menuLaporan">
+                <a href="<?= $base_url ?>pages/laporan_kejadian.php"
+                    class="<?= $current_page == 'laporan_kejadian.php' ? 'active' : '' ?>">Laporan Kejadian</a>
+                <a href="<?= $base_url ?>pages/rekap_statistik.php"
+                    class="<?= $current_page == 'rekap_statistik.php' ? 'active' : '' ?>">Rekap Statistik</a>
+                <a href="<?= $base_url ?>pages/export_excel.php"
+                    class="<?= $current_page == 'export_excel.php' ? 'active' : '' ?>">Cetak & Export</a>
+            </div>
+
+            <!-- MANAJEMEN USER -->
+            <a href="<?= $base_url ?>pages/manajemen_user.php"
+                class="<?= $current_page == 'manajemen_user.php' ? 'active' : '' ?>">
+                <i class="bi bi-person"></i> Manajemen User
+            </a>
+
+            <a href="<?= $base_url ?>pages/pengaturan.php"
+                class="<?= $current_page == 'pengaturan.php' ? 'active' : '' ?>">
+                <i class="bi bi-gear"></i> Pengaturan
+            </a>
+
         </div>
-
-        <!-- SARPRAS -->
-        <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
-            <span><i class="bi bi-tools"></i> Sarpras</span>
-            <i class="bi bi-chevron-down small"></i>
-        </a>
-
-        <div class="collapse <?= in_array($current_page, ['sarpras.php', 'master_bidang.php', 'master_kategori.php']) ? 'show' : '' ?> sub-menu"
-            id="menuSarpras">
-
-            <a href="<?= $base_url ?>pages/sarpras.php"
-                class="<?= $current_page == 'sarpras.php' ? 'active' : '' ?>">Data Sarpras</a>
-
-            <a href="<?= $base_url ?>pages/master_bidang.php"
-                class="<?= $current_page == 'master_bidang.php' ? 'active' : '' ?>">Master Bidang</a>
-
-            <a href="<?= $base_url ?>pages/master_kategori.php"
-                class="<?= $current_page == 'master_kategori.php' ? 'active' : '' ?>">Master Kategori</a>
-        </div>
-
-        <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
-            <span><i class="bi bi-file-earmark-bar-graph"></i> Laporan & Analitik</span>
-            <i class="bi bi-chevron-down small"></i>
-        </a>
-
-        <div class="collapse <?= in_array($current_page, ['laporan_kejadian.php', 'rekap_statistik.php', 'export_excel.php']) ? 'show' : '' ?> sub-menu"
-            id="menuLaporan">
-
-            <a href="<?= $base_url ?>pages/laporan/laporan_kejadian.php"
-                class="<?= $current_page == 'laporan_kejadian.php' ? 'active' : '' ?>">Laporan Kejadian</a>
-
-            <a href="<?= $base_url ?>pages/laporan/rekap_statistik.php"
-                class="<?= $current_page == 'rekap_statistik.php' ? 'active' : '' ?>">Rekap Statistik</a>
-
-            <a href="<?= $base_url ?>pages/laporan/export_excel.php"
-                class="<?= $current_page == 'export_excel.php' ? 'active' : '' ?>">Cetak & Export</a>
-
-        </div>
-
-        <a href="<?= $base_url ?>pages/manajemen_user.php"
-            class="<?= $current_page == 'manajemen_user.php' ? 'active' : '' ?>">
-            <i class="bi bi-person"></i> Manajemen User
-        </a>
-
-        <a href="<?= $base_url ?>logout.php" class="mt-4 text-danger">
-            <i class="bi bi-box-arrow-left"></i> Keluar
-        </a>
-
     </div>
 </div>
-</div>
+
+<script>
+    (function () {
+        // Daftar semua menu accordion yang ada
+        var MENUS = ['menuOperasional', 'menuSarpras', 'menuLaporan'];
+        var STORAGE_KEY = 'damkar_open_menus';
+
+        // Baca state yang tersimpan
+        function getSaved() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch (e) { return []; }
+        }
+
+        // Simpan state
+        function save(openList) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(openList));
+        }
+
+        // Saat DOM siap
+        document.addEventListener('DOMContentLoaded', function () {
+            var saved = getSaved();
+
+            MENUS.forEach(function (id) {
+                var el = document.getElementById(id);
+                if (!el) return;
+
+                var isActiveByPHP = el.classList.contains('show'); // halaman aktif ada di menu ini
+                var isOpenBySave = saved.indexOf(id) !== -1;      // user pernah buka menu ini
+
+                // Buka jika: halaman aktif ada di sini, ATAU user pernah membuka & belum menutupnya
+                if (isActiveByPHP || isOpenBySave) {
+                    el.classList.add('show');
+                    // Pastikan state tersimpan juga
+                    if (saved.indexOf(id) === -1) {
+                        saved.push(id);
+                        save(saved);
+                    }
+                }
+
+                // Pantau setiap kali Bootstrap membuka/menutup menu
+                el.addEventListener('show.bs.collapse', function () {
+                    var s = getSaved();
+                    if (s.indexOf(id) === -1) s.push(id);
+                    save(s);
+                });
+
+                el.addEventListener('hide.bs.collapse', function () {
+                    // Jangan izinkan menutup jika halaman aktif ada di menu ini
+                    if (document.getElementById(id).classList.contains('show') && isActiveByPHP) {
+                        // Sudah ditangani PHP, biarkan
+                    }
+                    var s = getSaved().filter(function (m) { return m !== id; });
+                    save(s);
+                });
+            });
+        });
+    })();
+</script>
