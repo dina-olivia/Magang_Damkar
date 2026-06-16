@@ -1,21 +1,50 @@
 <?php
-// Memanggil file koneksi database Anda
+// ... (Bagian atas file: cukup biarkan koneksi database saja)
 include '../../config/koneksi.php';
 
-// Pastikan koneksi berhasil dibuat sebelum query
 if (!isset($conn) || !$conn) {
     die('Koneksi database tidak tersedia.');
 }
 
-// Ambil data laporan yang statusnya masih 'masuk' dan sudah terverifikasi 'valid'
 $laporan_masuk = mysqli_query($conn, "SELECT * FROM laporan_kejadian WHERE status = 'masuk' AND verifikasi = 'valid'");
-
-// Ambil data SPT yang digabung (JOIN) dengan laporan_kejadian agar info lokasi muncul di tabel
 $query_spt = "SELECT spt.*, laporan_kejadian.nomor_laporan, laporan_kejadian.lokasi, laporan_kejadian.jenis_kejadian 
               FROM spt 
               JOIN laporan_kejadian ON spt.laporan_kejadian_id = laporan_kejadian.id 
               ORDER BY spt.waktu_keberangkatan DESC";
 $tampil_spt = mysqli_query($conn, $query_spt);
+?>
+
+<?php
+// PHP BACKEND SUBMIT FORM (Ganti seluruh bagian bawah ini dengan yang baru)
+if (isset($_POST['kirim_tim'])) {
+    $laporan_id = mysqli_real_escape_string($conn, $_POST['laporan_kejadian_id']);
+    $nama_regu = mysqli_real_escape_string($conn, $_POST['nama_regu']);
+    $today = date('Y-m-d');
+
+    // 1. VALIDASI: Cek apakah regu sedang bertugas hari ini
+    $cek_tugas = mysqli_query($conn, "SELECT id FROM spt WHERE nama_regu = '$nama_regu' AND DATE(waktu_keberangkatan) = '$today' AND status != 'selesai'");
+    
+    if (mysqli_num_rows($cek_tugas) > 0) {
+        echo "<script>alert('Gagal! Regu $nama_regu sedang menjalankan tugas lain hari ini.'); window.location.href=window.location.pathname;</script>";
+    } else {
+        // 2. PROSES INSERT
+        $tahun = date('Y');
+        $query_count = mysqli_query($conn, "SELECT COUNT(*) as total FROM spt");
+        $data_count = mysqli_fetch_assoc($query_count);
+        $next_id = $data_count['total'] + 1;
+        $nomor_spt = "SPT-" . $tahun . "-" . str_pad($next_id, 3, "0", STR_PAD_LEFT);
+
+        $query_insert = "INSERT INTO spt (nomor_spt, laporan_kejadian_id, nama_regu, status) 
+                         VALUES ('$nomor_spt', '$laporan_id', '$nama_regu', 'berangkat')";
+
+        if (mysqli_query($conn, $query_insert)) {
+            mysqli_query($conn, "UPDATE laporan_kejadian SET status = 'proses' WHERE id = '$laporan_id'");
+            echo "<script>alert('Tim Berhasil Ditugaskan!'); window.location.href=window.location.pathname;</script>";
+        } else {
+            echo "<script>alert('Gagal menugaskan tim: " . mysqli_error($conn) . "');</script>";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
