@@ -152,12 +152,12 @@ $tampil_spt = mysqli_query($conn, $query_spt);
             </div>
             <div class="d-flex gap-4 text-end pe-3">
                 <div>
-                    <p class="text-muted fw-bold m-0" style="font-size: 10px; tracking-wider: 0.1em;">PERSONIL</p>
+                    <p class="text-muted fw-bold m-0" style="font-size: 10px; letter-spacing: 0.1em;">PERSONIL</p>
                     <p class="h5 fw-bold text-danger m-0">3 <span class="text-muted fw-normal fs-6">/ 15</span></p>
                     <p class="text-muted m-0" style="font-size: 9px;">Ready</p>
                 </div>
                 <div>
-                    <p class="text-muted fw-bold m-0" style="font-size: 10px; tracking-wider: 0.1em;">ARMADA</p>
+                    <p class="text-muted fw-bold m-0" style="font-size: 10px; letter-spacing: 0.1em;">ARMADA</p>
                     <p class="h5 fw-bold text-warning m-0">1 <span class="text-muted fw-normal fs-6">/ 4</span></p>
                     <p class="text-muted m-0" style="font-size: 9px;">Ready</p>
                 </div>
