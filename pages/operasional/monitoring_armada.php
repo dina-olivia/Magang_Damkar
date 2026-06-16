@@ -35,6 +35,7 @@ if (!empty($_GET['id']) && isset($conn)) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         body {
             background-color: #f4f5f7;
@@ -342,8 +343,7 @@ if (!empty($_GET['id']) && isset($conn)) {
                                 <span>LIVE TRACKING ACTIVE</span>
                                 <span class="text-muted fw-normal">| <?= $armada_jalan ?> Units Out</span>
                             </div>
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Padang_map.svg/1024px-Padang_map.svg.png"
-                                class="dummy-map-bg" alt="Peta Padang">
+                            <div id="map" style="height: 520px; width: 100%; border-radius: 12px;"></div>
 
                             <div class="map-marker" style="top:30%;left:45%;color:#0d6efd" title="Unit Pos Utama">
                                 <i class="bi bi-geo-alt-fill"></i>
@@ -441,6 +441,16 @@ if (!empty($_GET['id']) && isset($conn)) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+    var map = L.map('map').setView([-0.9471, 100.4172], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Marker contoh
+    L.marker([-0.9471, 100.4172]).addTo(map).bindPopup("Pos Utama");
+</script>
 </body>
 
 </html>
