@@ -1,4 +1,23 @@
-<?php include 'config/koneksi.php'; ?>
+<?php 
+require_once 'config/koneksi.php';
+
+if (!isset($conn)) {
+    die("Error: Database connection failed");
+}
+
+$total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian")) ?: ['t' => 0];
+$menunggu = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='menunggu'")) ?: ['t' => 0];
+$proses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='proses'")) ?: ['t' => 0];
+$selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM laporan_kejadian WHERE status='selesai'")) ?: ['t' => 0];
+$armada = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as t FROM armada WHERE status='siaga'")) ?: ['t' => 0];
+
+$stats = [
+    ['Laporan Masuk', $menunggu['t'], 'bi-megaphone'],
+    ['Dalam Proses', $proses['t'], 'bi-exclamation-triangle'],
+    ['Selesai', $selesai['t'], 'bi-check-circle'],
+    ['Armada Siaga', $armada['t'], 'bi-truck']
+];
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -24,7 +43,15 @@
         <div class="sidebar-content">
             <div class="nav flex-column mt-2">
                 <a href="index.php" class="active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+
                 <a href="pages/manajemen_kejadian.php"><i class="bi bi-megaphone"></i> Manajemen Kejadian</a>
+
+                <div class="collapse sub-menu" id="menuManajemenKejadian">
+                    <a href="pages/input_laporan.php">Input Laporan</a>
+                    <a href="pages/monitoring_kejadian.php">Monitoring Kejadian</a>
+                    <a href="pages/detail_kejadian.php">Detail Kejadian</a>
+                
+                </div>
 
                 <a href="#menuOperasional" data-bs-toggle="collapse"
                     class="d-flex justify-content-between align-items-center">
@@ -70,8 +97,19 @@
                     <a href="pages/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <a href="pages/dina/laporan.php"><i class="bi bi-file-earmark-text"></i> Laporan</a>
-                <a href="pages/pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+                <a href="#menuLaporan" data-bs-toggle="collapse"
+                    class="d-flex justify-content-between align-items-center">
+                    <span><i class="bi bi-file-earmark-bar-graph"></i> Laporan & Statistik</span>
+                    <i class="bi bi-chevron-down small"></i>
+                </a>
+                <div class="collapse sub-menu" id="menuLaporan">
+                    <a href="pages/laporan/laporan_kejadian.php">Laporan Kejadian</a>
+
+                    <a href="pages/laporan/rekap_statistik.php">Rekap Statistik & Grafik</a>
+
+                    <a href="pages/laporan/export_excel.php">Cetak & Export Dokumen</a>
+                </div>
+                <a href="pages/manajemen_user.php"><i class="bi bi-person"></i> Manajemen User</a>
 
                 <a href="logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>
