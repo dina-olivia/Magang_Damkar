@@ -13,6 +13,8 @@ $data = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM hydrant WHERE id_h
 </head>
 <body>
 
+    
+
 <div class="container mt-5">
     <div class="card p-4 shadow">
         <h4>Edit Hydrant</h4>
