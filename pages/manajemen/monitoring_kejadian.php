@@ -136,7 +136,6 @@ $total_halaman = ceil($total_data / $limit);
             <div class="nav flex-column mt-2">
                 <a href="../../index.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
 
-                <!-- Manajemen Kejadian -->
                 <a href="#menuManajemenKejadian" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-megaphone"></i> Manajemen Kejadian</span>
                     <i class="bi bi-chevron-down small"></i>
@@ -146,7 +145,6 @@ $total_halaman = ceil($total_data / $limit);
                     <a href="monitoring_kejadian.php">Monitoring Kejadian</a>
                 </div>
 
-                <!-- Operasional (Aktif & Terbuka Otomatis) -->
                 <a href="#menuOperasional" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center" aria-expanded="true">
                     <span><i class="bi bi-clipboard-check"></i> Operasional</span>
                     <i class="bi bi-chevron-down small"></i>
@@ -157,7 +155,6 @@ $total_halaman = ceil($total_data / $limit);
                     <a href="../operasional/status_penanganan.php">Status Penanganan</a>
                 </div>
 
-                <!-- Personil -->
                 <a href="#menuPersonil" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-people"></i> Personil</span>
                     <i class="bi bi-chevron-down small"></i>
@@ -169,8 +166,7 @@ $total_halaman = ceil($total_data / $limit);
                     <a href="../personil/riwayat_tugas.php">Riwayat Tugas</a>
                 </div>
 
-                 <!-- Armada -->
-                <a href="#menuArmada" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
+                 <a href="#menuArmada" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-truck"></i> Armada</span>
                     <i class="bi bi-chevron-down small"></i>
                 </a>
@@ -178,7 +174,6 @@ $total_halaman = ceil($total_data / $limit);
                     <a href="../armada/armada.php">Data Armada</a>
                 </div>
 
-                <!-- Sarpras -->
                 <a href="#menuSarpras" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-tools"></i> Sarpras</span>
                     <i class="bi bi-chevron-down small"></i>
@@ -189,7 +184,6 @@ $total_halaman = ceil($total_data / $limit);
                     <a href="../Sarpras/master_kategori.php">Master Kategori</a>
                 </div>
 
-                <!-- Laporan & Analitik -->
                 <a href="#menuLaporan" data-bs-toggle="collapse" class="d-flex justify-content-between align-items-center">
                     <span><i class="bi bi-file-earmark-text"></i> Laporan & Analitik</span>
                     <i class="bi bi-chevron-down small"></i>
@@ -266,8 +260,8 @@ $total_halaman = ceil($total_data / $limit);
                                 </thead>
                                 <tbody>
                                     <?php
-                                    // Menggunakan LIMIT dan OFFSET untuk memotong data per halaman
-                                    $res = mysqli_query($conn, "SELECT * FROM laporan_kejadian ORDER BY tanggal DESC LIMIT $limit OFFSET $offset");
+                                    // BERUBAH DI SINI: Menggunakan ASC untuk mengurutkan dari data terlama ke terbaru
+                                    $res = mysqli_query($conn, "SELECT * FROM laporan_kejadian ORDER BY tanggal ASC LIMIT $limit OFFSET $offset");
                                     
                                     if (mysqli_num_rows($res) > 0) {
                                         while ($row = mysqli_fetch_assoc($res)) {

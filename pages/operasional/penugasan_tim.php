@@ -6,10 +6,18 @@ if (!isset($conn) || !$conn) {
     die('Koneksi database tidak tersedia.');
 }
 
+$today = date('Y-m-d');
 $laporan_masuk = mysqli_query($conn, "SELECT * FROM laporan_kejadian WHERE status = 'masuk' AND verifikasi = 'valid'");
 // Ambil daftar armada untuk pilihan penugasan
-$armada_list = mysqli_query($conn, "SELECT * FROM armada ORDER BY id ASC");
-$query_spt = "SELECT spt.*, laporan_kejadian.nomor_laporan, laporan_kejadian.lokasi, laporan_kejadian.jenis_kejadian 
+$armada_list = mysqli_query($conn, "SELECT * FROM armada WHERE status = 'Tersedia' ORDER BY id ASC");
+
+// Hitung personil dan armada ready di atas tabel
+$personil_ready = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(DISTINCT nama_personil) AS c FROM jadwal_piket WHERE tanggal = '$today'"))['c'] ?? 0;
+$total_personil = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS c FROM tbl_daftar WHERE status = 'Aktif'"))['c'] ?? 0;
+$armada_ready = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS c FROM armada WHERE status = 'Tersedia'"))['c'] ?? 0;
+$total_armada = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS c FROM armada"))['c'] ?? 0;
+
+$query_spt = "SELECT spt.*, laporan_kejadian.nomor_laporan, laporan_kejadian.lokasi, laporan_kejadian.jenis_kejadian, laporan_kejadian.personil_regu, laporan_kejadian.armada_sarpras, laporan_kejadian.status AS laporan_status
               FROM spt 
               JOIN laporan_kejadian ON spt.laporan_kejadian_id = laporan_kejadian.id 
               ORDER BY spt.waktu_keberangkatan DESC";
@@ -21,7 +29,7 @@ $tampil_spt = mysqli_query($conn, $query_spt);
 if (isset($_POST['kirim_tim'])) {
     $laporan_id = mysqli_real_escape_string($conn, $_POST['laporan_kejadian_id']);
     $nama_regu = mysqli_real_escape_string($conn, $_POST['nama_regu']);
-    $armada_id = mysqli_real_escape_string($conn, $_POST['armada_id'] ?? '');
+    $armada_id = mysqli_real_escape_string($conn, isset($_POST['armada_id']) ? $_POST['armada_id'] : '');
     $today = date('Y-m-d');
 
     // 1. VALIDASI: Cek apakah regu sedang bertugas hari ini
@@ -44,15 +52,15 @@ if (isset($_POST['kirim_tim'])) {
             // Pastikan kolom yang akan diupdate ada di tabel laporan_kejadian
             $cols_check = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'personil_regu'");
             if (mysqli_num_rows($cols_check) == 0) {
-                mysqli_query($conn, "ALTER TABLE laporan_kejadian ADD COLUMN personil_regu VARCHAR(255) DEFAULT '' AFTER personil");
+                mysqli_query($conn, "ALTER TABLE laporan_kejadian ADD COLUMN personil_regu VARCHAR(255) DEFAULT ''");
             }
             $cols_check = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'armada_sarpras'");
             if (mysqli_num_rows($cols_check) == 0) {
-                mysqli_query($conn, "ALTER TABLE laporan_kejadian ADD COLUMN armada_sarpras VARCHAR(255) DEFAULT '' AFTER personil_regu");
+                mysqli_query($conn, "ALTER TABLE laporan_kejadian ADD COLUMN armada_sarpras VARCHAR(255) DEFAULT ''");
             }
             $cols_check = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'waktu_proses'");
             if (mysqli_num_rows($cols_check) == 0) {
-                mysqli_query($conn, "ALTER TABLE laporan_kejadian ADD COLUMN waktu_proses DATETIME NULL AFTER armada_sarpras");
+                mysqli_query($conn, "ALTER TABLE laporan_kejadian ADD COLUMN waktu_proses DATETIME NULL");
             }
 
             // Ambil label armada jika dipilih
@@ -70,10 +78,45 @@ if (isset($_POST['kirim_tim'])) {
                 }
             }
 
-            // Update laporan_kejadian: set personil_regu, armada_sarpras, status dan waktu_proses
+            // Tentukan anggota regu berdasarkan jadwal_piket hari ini jika memungkinkan
             $nr = mysqli_real_escape_string($conn, $nama_regu);
             $ar = mysqli_real_escape_string($conn, $armada_label);
-            mysqli_query($conn, "UPDATE laporan_kejadian SET personil_regu = '$nr', armada_sarpras = '$ar', status = 'proses', waktu_proses = NOW() WHERE id = '$laporan_id'");
+
+            // Pemetaan sederhana regu -> shift (jika organisasi menggunakan mapping ini)
+            $regu_shift_map = [
+                'REGU ALPHA' => 'Pagi',
+                'REGU BRAVO' => 'Siang',
+                'REGU CHARLIE' => 'Malam'
+            ];
+
+            $personil_regu_value = $nr; // default: simpan nama regu
+            $regu_key = strtoupper($nama_regu);
+            if (isset($regu_shift_map[$regu_key])) {
+                $shift_needed = mysqli_real_escape_string($conn, $regu_shift_map[$regu_key]);
+                $q_piket = mysqli_query($conn, "SELECT nama_personil FROM jadwal_piket WHERE tanggal = '$today' AND shift = '$shift_needed'");
+                $members = [];
+                if ($q_piket && mysqli_num_rows($q_piket) > 0) {
+                    while ($m = mysqli_fetch_assoc($q_piket)) {
+                        $members[] = $m['nama_personil'];
+                    }
+                    if (count($members) > 0) {
+                        $personil_regu_value = implode(', ', $members);
+                    }
+                } else {
+                    // Jika tidak ada entri per shift, ambil seluruh personil yang bertugas hari ini
+                    $q_all = mysqli_query($conn, "SELECT nama_personil FROM jadwal_piket WHERE tanggal = '$today'");
+                    $members_all = [];
+                    if ($q_all && mysqli_num_rows($q_all) > 0) {
+                        while ($m2 = mysqli_fetch_assoc($q_all)) { $members_all[] = $m2['nama_personil']; }
+                        if (count($members_all) > 0) $personil_regu_value = implode(', ', $members_all);
+                    }
+                }
+            }
+
+            $personil_regu_value = mysqli_real_escape_string($conn, $personil_regu_value);
+
+            // Update laporan_kejadian: set personil_regu, armada_sarpras, status dan waktu_proses
+            mysqli_query($conn, "UPDATE laporan_kejadian SET personil_regu = '$personil_regu_value', armada_sarpras = '$ar', status = 'proses', waktu_proses = NOW() WHERE id = '$laporan_id'");
 
             echo "<script>alert('Tim Berhasil Ditugaskan!'); window.location.href=window.location.pathname;</script>";
         } else {
@@ -100,7 +143,8 @@ if (isset($_POST['kirim_tim'])) {
         /* Mengembalikan flexbox utilitas tiruan Tailwind khusus untuk komponen layout utama agar tidak rusak */
         .flex-profile { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1.5rem; gap: 1rem; }
         .flex-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .info-regu-box { display: flex; justify-content: space-between; align-items: center; border: 1px solid #c21807; border-radius: 1rem; padding: 1rem; background-color: #fff; margin-bottom: 2rem; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); }
+        .info-card { background-color: #ffffff; border: 1px solid #eef2f7; }
+        .info-card-icon { display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; }
         .table-container { background-color: #fff; border-radius: 1rem; border: 1px solid #f1f1f1; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); overflow: hidden; }
         
         /* Modal Custom Style */
@@ -214,22 +258,39 @@ if (isset($_POST['kirim_tim'])) {
         </div>
 
         <!-- Kartu Informasi Regu Aktif -->
-        <div class="info-regu-box mt-4">
-            <div class="d-flex align-items-center gap-3">
-                <div class="bg-danger-subtle p-3 rounded-3 text-danger border border-danger-subtle fs-3">
-                    <i class="bi bi-shield-check"></i>
+        <div class="row g-3 mt-4">
+            <div class="col-md-6">
+                <div class="info-card shadow-sm border rounded-4 p-4 bg-white h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            <p class="text-uppercase text-muted small mb-1" style="letter-spacing: 0.15em;">Personil Siaga</p>
+                            <h3 class="fw-bold text-danger m-0"><?= number_format($personil_ready); ?></h3>
+                            <small class="text-muted">dari <?= number_format($total_personil); ?> personil aktif</small>
+                        </div>
+                        <div class="info-card-icon bg-danger-subtle text-danger rounded-3 p-3">
+                            <i class="bi bi-people fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 8px; border-radius: 999px;">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $total_personil > 0 ? round($personil_ready / $total_personil * 100) : 0; ?>%" aria-valuenow="<?= $total_personil > 0 ? round($personil_ready / $total_personil * 100) : 0; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
                 </div>
             </div>
-            <div class="d-flex gap-4 text-end pe-3">
-                <div>
-                    <p class="text-muted fw-bold m-0" style="font-size: 10px; letter-spacing: 0.1em;">PERSONIL</p>
-                    <p class="h5 fw-bold text-danger m-0">3 <span class="text-muted fw-normal fs-6">/ 15</span></p>
-                    <p class="text-muted m-0" style="font-size: 9px;">Ready</p>
-                </div>
-                <div>
-                    <p class="text-muted fw-bold m-0" style="font-size: 10px; letter-spacing: 0.1em;">ARMADA</p>
-                    <p class="h5 fw-bold text-warning m-0">1 <span class="text-muted fw-normal fs-6">/ 4</span></p>
-                    <p class="text-muted m-0" style="font-size: 9px;">Ready</p>
+            <div class="col-md-6">
+                <div class="info-card shadow-sm border rounded-4 p-4 bg-white h-100">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div>
+                            <p class="text-uppercase text-muted small mb-1" style="letter-spacing: 0.15em;">Armada Tersedia</p>
+                            <h3 class="fw-bold text-warning m-0"><?= number_format($armada_ready); ?></h3>
+                            <small class="text-muted">dari <?= number_format($total_armada); ?> unit armada</small>
+                        </div>
+                        <div class="info-card-icon bg-warning-subtle text-warning rounded-3 p-3">
+                            <i class="bi bi-truck fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="progress" style="height: 8px; border-radius: 999px;">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: <?= $total_armada > 0 ? round($armada_ready / $total_armada * 100) : 0; ?>%" aria-valuenow="<?= $total_armada > 0 ? round($armada_ready / $total_armada * 100) : 0; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -248,9 +309,9 @@ if (isset($_POST['kirim_tim'])) {
             </div>
             <select id="statusFilter" class="form-select rounded-3 border-light shadow-sm w-auto" style="min-width: 180px;">
                 <option value="">Semua Status</option>
-                <option value="berangkat">berangkat</option>
-                <option value="tiba">tiba</option>
-                <option value="selesai">selesai</option>
+                <option value="masuk">Berangkat</option>
+                <option value="proses">Tiba</option>
+                <option value="selesai">Selesai</option>
             </select>
         </div>
 
@@ -278,7 +339,24 @@ if (isset($_POST['kirim_tim'])) {
                     <?php endif; ?>
 
                     <?php while ($row = mysqli_fetch_assoc($tampil_spt)): ?>
-                        <tr class="spt-row" data-status="<?= $row['status']; ?>">
+                        <?php
+                          // Map laporan_kejadian status to SPT display status
+                          $laporan_status = strtolower($row['laporan_status'] ?? 'masuk');
+                          $display_status = 'berangkat';
+                          $badge_class = 'bg-warning text-dark';
+                          
+                          if ($laporan_status === 'selesai') {
+                            $display_status = 'Selesai';
+                            $badge_class = 'bg-success text-white';
+                          } elseif ($laporan_status === 'proses') {
+                            $display_status = 'Tiba';
+                            $badge_class = 'bg-danger text-white';
+                          } elseif ($laporan_status === 'masuk') {
+                            $display_status = 'Berangkat';
+                            $badge_class = 'bg-warning text-dark';
+                          }
+                        ?>
+                        <tr class="spt-row" data-status="<?= $laporan_status; ?>">
                             <td class="p-3">
                                 <span class="badge bg-danger-subtle text-danger font-bold border border-danger-subtle px-2 py-1.5">
                                     <?= $row['nomor_spt']; ?>
@@ -291,17 +369,26 @@ if (isset($_POST['kirim_tim'])) {
                                 </p>
                             </td>
                             <td class="p-3">
+                                <?php
+                                    $personil_text = !empty($row['personil_regu']) ? $row['personil_regu'] : $row['nama_regu'];
+                                    $personil_count = !empty($row['personil_regu']) ? count(array_filter(array_map('trim', explode(',', $row['personil_regu'])))) : 0;
+                                    $armada_text = !empty($row['armada_sarpras']) ? $row['armada_sarpras'] : $row['nama_regu'];
+                                ?>
                                 <div class="text-muted" style="font-size: 11px; line-height: 1.4;">
-                                    <p class="m-0"><i class="bi bi-people me-1"></i> 4 Petugas (Danru: A. Supriadi)</p>
-                                    <p class="m-0"><i class="bi bi-truck me-1"></i> 1 Armada Unit (🚒 <?= $row['nama_regu']; ?>)</p>
+                                    <p class="m-0"><i class="bi bi-people me-1"></i> <?= $personil_count > 0 ? $personil_count . ' Petugas' : 'Regu ' . htmlspecialchars($row['nama_regu']); ?>
+                                        <?php if (!empty($personil_text) && $personil_count > 0): ?>
+                                            (<?= htmlspecialchars($personil_text); ?>)
+                                        <?php endif; ?>
+                                    </p>
+                                    <p class="m-0"><i class="bi bi-truck me-1"></i> <?= !empty($armada_text) ? htmlspecialchars($armada_text) : 'Belum ada armada'; ?></p>
                                 </div>
                             </td>
                             <td class="p-3 text-muted whitespace-nowrap">
                                 <?= $row['waktu_keberangkatan']; ?>
                             </td>
                             <td class="p-3">
-                                <span class="badge <?= $row['status'] == 'berangkat' ? 'bg-danger text-white' : 'bg-secondary text-white' ?> text-capitalize px-2 py-1">
-                                    <?= $row['status']; ?>
+                                <span class="badge <?= $badge_class ?> text-capitalize px-2 py-1">
+                                    <?= $display_status; ?>
                                 </span>
                             </td>
                             <td class="p-3 text-center">
