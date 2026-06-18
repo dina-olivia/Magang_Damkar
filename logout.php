@@ -1,6 +1,9 @@
 <?php
 session_start();
-include 'config/koneksi.php';
+require_once __DIR__ . '/config/koneksi.php';
+if (!isset($conn)) {
+    die('Database connection not initialized.');
+}
 
 // Catat log sebelum logout
 if (isset($_SESSION['user_id'])) {
