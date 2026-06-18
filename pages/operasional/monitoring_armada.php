@@ -15,6 +15,16 @@ $armada_siap = isset($conn) ? (mysqli_fetch_assoc(mysqli_query($conn, "SELECT CO
 $armada_jalan = isset($conn) ? (mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS n FROM armada WHERE status='Berangkat' OR status='Di Lokasi'"))['n'] ?? 0) : 0;
 $result_armada = isset($conn) ? mysqli_query($conn, "SELECT * FROM armada ORDER BY id ASC") : null;
 
+// Query assigned armada dari spt dengan lokasi kejadian
+$query_spt_armada = isset($conn) ? mysqli_query($conn, "
+  SELECT spt.id, spt.nama_regu, lk.lokasi, lk.jenis_kejadian, lk.nomor_laporan, lk.personil_regu, lk.armada_sarpras, a.plat_no, a.jenis, a.merk
+  FROM spt
+  LEFT JOIN laporan_kejadian lk ON spt.laporan_kejadian_id = lk.id
+  LEFT JOIN armada a ON lk.armada_sarpras = a.plat_no
+  WHERE lk.armada_sarpras IS NOT NULL AND lk.armada_sarpras != ''
+  ORDER BY spt.id DESC
+") : null;
+
 // Laporan terkait jika ada ?id=
 $data_laporan = null;
 if (!empty($_GET['id']) && isset($conn)) {
@@ -344,83 +354,55 @@ if (!empty($_GET['id']) && isset($conn)) {
                             </div>
                             <div class="live-badge">
                                 <div class="pulse-dot"></div>
-                                <span>LIVE TRACKING ACTIVE</span>
+                                <span>LIVE TRACKING PADANG</span>
                                 <span class="text-muted fw-normal">| <?= $armada_jalan ?> Units Out</span>
                             </div>
                             <div id="map" style="height: 520px; width: 100%; border-radius: 12px;"></div>
-
-                            <div class="map-marker" style="top:30%;left:45%;color:#0d6efd" title="Unit Pos Utama">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </div>
-                            <div class="map-marker" style="top:65%;left:48%;color:#dc3545" title="Lokasi Kejadian">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </div>
                         </div>
                     </div>
 
                     <div class="col-lg-4 col-md-5 unit-sidebar p-3">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="fw-bold text-muted small text-uppercase">Daftar Unit Armada</span>
-                            <span class="badge bg-secondary-subtle text-secondary border rounded-pill px-2 py-1"
-                                style="font-size:.7rem"><?= $total_armada ?> Unit</span>
+                            <span class="fw-bold text-muted small text-uppercase">Armada Bertugas</span>
+                            <span class="badge bg-danger-subtle text-danger border rounded-pill px-2 py-1"
+                                style="font-size:.7rem"><?= $query_spt_armada ? mysqli_num_rows(mysqli_query($conn, "SELECT COUNT(*) AS n FROM spt LEFT JOIN laporan_kejadian lk ON spt.laporan_kejadian_id = lk.id WHERE lk.armada_sarpras IS NOT NULL AND lk.armada_sarpras != ''")) : 0 ?> Unit</span>
                         </div>
 
-                        <?php if ($result_armada && mysqli_num_rows($result_armada) > 0):
-                            while ($arm = mysqli_fetch_assoc($result_armada)):
-                                $st = $arm['status'];
-                                if ($st === 'Berangkat' || $st === 'Di Lokasi') {
-                                    $badge_class = $st === 'Di Lokasi' ? 'bg-di-lokasi' : 'bg-berangkat';
-                                    $icon_class = 'text-warning';
-                                } else {
-                                    $badge_class = 'bg-siap';
-                                    $icon_class = 'text-primary';
-                                }
-                                ?>
-                                <?php if ($result_armada && mysqli_num_rows($result_armada) > 0):
-    while ($arm = mysqli_fetch_assoc($result_armada)):
-        $st = $arm['status'] ?? 'Tidak Diketahui';
-        
-        // Gunakan operator ?? '' untuk menghindari Undefined index
-        // Gunakan ?? '' sebelum htmlspecialchars untuk menghindari error null
-        $kode_armada = $arm['kode_armada'] ?? 'N/A';
-        $jenis_armada = $arm['jenis'] ?? 'Unit';
-        $merk_armada  = $arm['merk'] ?? '-';
-        $tahun_armada = $arm['tahun'] ?? '-';
-        $pos_id       = $arm['pos_id'] ?? 'Belum ada pos';
-
-        if ($st === 'Berangkat' || $st === 'Di Lokasi') {
-            $badge_class = $st === 'Di Lokasi' ? 'bg-di-lokasi' : 'bg-berangkat';
-            $icon_class = 'text-warning';
-        } else {
-            $badge_class = 'bg-siap';
-            $icon_class = 'text-primary';
-        }
-        ?>
-        <div class="unit-card">
-            <span class="badge-unit <?= $badge_class ?>"><?= htmlspecialchars($st) ?></span>
-            <div class="d-flex align-items-center gap-3">
-                <div class="fs-3 <?= $icon_class ?>">
-                    <i class="bi bi-<?= ($jenis_armada === 'Rescue' ? 'shield-shaded' : 'truck') ?>"></i>
-                </div>
-                <div>
-                    <h6 class="fw-bold m-0"><?= htmlspecialchars($kode_armada) ?></h6>
-                    <small class="text-muted d-block mb-1" style="font-size:.75rem">
-                        <?= htmlspecialchars($jenis_armada) ?> — <?= htmlspecialchars($merk_armada) ?>
-                        <?= htmlspecialchars($tahun_armada) ?>
-                    </small>
-                    <small class="text-dark d-block fw-medium">
-                        <i class="bi bi-geo-alt text-danger me-1"></i><?= htmlspecialchars($pos_id) ?>
-                    </small>
-                </div>
-            </div>
-        </div>
-    <?php endwhile; 
-endif; ?>
-                            <?php endwhile; else: ?>
-                            <div class="text-center text-muted py-4" style="font-size:.85rem">
-                                <i class="bi bi-truck" style="font-size:2rem;opacity:.3;display:block;margin-bottom:8px"></i>
-                                Belum ada data armada
+                        <?php 
+                          $spt_check = isset($conn) ? mysqli_query($conn, "SELECT spt.*, lk.lokasi, lk.jenis_kejadian, lk.nomor_laporan, lk.armada_sarpras, a.plat_no, a.jenis, a.merk FROM spt LEFT JOIN laporan_kejadian lk ON spt.laporan_kejadian_id = lk.id LEFT JOIN armada a ON lk.armada_sarpras = a.plat_no WHERE lk.armada_sarpras IS NOT NULL AND lk.armada_sarpras != '' ORDER BY spt.id DESC") : null;
+                          if ($spt_check && mysqli_num_rows($spt_check) > 0):
+                            while ($spt = mysqli_fetch_assoc($spt_check)):
+                              $armada_name = $spt['armada_sarpras'] ?? 'Unit tidak diketahui';
+                              $jenis = $spt['jenis'] ?? 'Unit';
+                              $lokasi = $spt['lokasi'] ?? 'Lokasi tidak tersedia';
+                              $no_lp = $spt['nomor_laporan'] ?? 'LP-0000-000';
+                              $jenis_kejadian = $spt['jenis_kejadian'] ?? '-';
+                        ?>
+                        <div class="unit-card">
+                            <span class="badge-unit bg-danger"><?= htmlspecialchars($jenis) ?></span>
+                            <div class="d-flex align-items-center gap-2">
+                              <div class="fs-4 text-danger">
+                                <i class="bi bi-truck-front"></i>
+                              </div>
+                              <div style="flex: 1; min-width: 0;">
+                                <h6 class="fw-bold m-0" style="font-size: 0.9rem;"><?= htmlspecialchars($armada_name) ?></h6>
+                                <small class="text-muted d-block mb-1" style="font-size: 0.7rem; overflow: hidden; text-overflow: ellipsis;">
+                                  <?= htmlspecialchars($jenis_kejadian) ?>
+                                </small>
+                                <small class="text-dark d-block fw-medium" style="font-size: 0.75rem;">
+                                  <i class="bi bi-geo-alt text-danger me-1"></i><span><?= htmlspecialchars(substr($lokasi, 0, 30)) . (strlen($lokasi) > 30 ? '...' : '') ?></span>
+                                </small>
+                                <small class="text-muted d-block" style="font-size: 0.7rem;">
+                                  <i class="bi bi-file-text me-1"></i><?= htmlspecialchars($no_lp) ?>
+                                </small>
+                              </div>
                             </div>
+                        </div>
+                        <?php endwhile; else: ?>
+                        <div class="text-center text-muted py-4" style="font-size:.85rem">
+                            <i class="bi bi-truck" style="font-size:2rem;opacity:.3;display:block;margin-bottom:8px"></i>
+                            Belum ada armada bertugas
+                        </div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -468,14 +450,136 @@ endif; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-    var map = L.map('map').setView([-0.9471, 100.4172], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
-    }).addTo(map);
+      // Initialize map with Padang city bounds
+      var map = L.map('map').setView([-0.9471, 100.4172], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
 
-    // Marker contoh
-    L.marker([-0.9471, 100.4172]).addTo(map).bindPopup("Pos Utama");
-</script>
-</body>
+      // Custom icons
+      var mainPosIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+
+      var activeArmadaIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+
+      var incidentIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+
+      // Main fire station marker
+      L.marker([-0.9471, 100.4172], { icon: mainPosIcon })
+        .addTo(map)
+        .bindPopup("<b>Pos Utama Damkar Padang</b><br/>Jl. Pemuda, Padang");
+
+      // Add markers for assigned armada from penugasan_tim
+      var armadaLocations = [
+        <?php
+          if ($query_spt_armada && mysqli_num_rows($query_spt_armada) > 0) {
+            $markers = [];
+            while ($spt_row = mysqli_fetch_assoc($query_spt_armada)) {
+              $lokasi = $spt_row['lokasi'] ?? 'Lokasi tidak tersedia';
+              $jenis = $spt_row['jenis_kejadian'] ?? 'Kejadian';
+              $armada = $spt_row['armada_sarpras'] ?? 'Unit tidak diketahui';
+              $no_lp = $spt_row['nomor_laporan'] ?? 'LP-0000-000';
+              
+              // Generate sample coordinates based on Padang city areas
+              // In production, these should come from GPS data or geocoding
+              $coords = [
+                ['lat' => -0.9300, 'lon' => 100.3700, 'area' => 'Padang Selatan'],
+                ['lat' => -0.9500, 'lon' => 100.4300, 'area' => 'Padang Tengah'],
+                ['lat' => -0.9600, 'lon' => 100.4000, 'area' => 'Padang Timur'],
+                ['lat' => -0.9400, 'lon' => 100.4500, 'area' => 'Padang Barat'],
+              ];
+              $idx = (int)$spt_row['id'] % count($coords);
+              $coord = $coords[$idx];
+              
+              $markers[] = "{
+                lat: {$coord['lat']},
+                lon: {$coord['lon']},
+                armada: '" . addslashes(htmlspecialchars($armada)) . "',
+                lokasi: '" . addslashes(htmlspecialchars($lokasi)) . "',
+                jenis: '" . addslashes(htmlspecialchars($jenis)) . "',
+                no_lp: '" . addslashes(htmlspecialchars($no_lp)) . "',
+                area: '" . addslashes(htmlspecialchars($coord['area'])) . "'
+              }";
+            }
+            echo implode(',', $markers);
+          }
+        ?>
+      ];
+
+      // Add armada markers
+      armadaLocations.forEach(function(loc) {
+        L.marker([loc.lat, loc.lon], { icon: activeArmadaIcon })
+          .addTo(map)
+          .bindPopup(
+            "<b>" + loc.armada + "</b><br/>" +
+            "<strong>Nomor Laporan:</strong> " + loc.no_lp + "<br/>" +
+            "<strong>Jenis Kejadian:</strong> " + loc.jenis + "<br/>" +
+            "<strong>Lokasi:</strong> " + loc.lokasi + "<br/>" +
+            "<strong>Area Padang:</strong> " + loc.area + "<br/>" +
+            "<small style='color:#666'>Status: Dalam Penugasan</small>"
+          );
+      });
+
+      // Add some reference location markers for Padang
+      var referenceLocations = [
+        { lat: -0.9471, lon: 100.4172, name: "Pos Utama Damkar", type: "pos" },
+        { lat: -0.9300, lon: 100.3700, name: "Padang Selatan", type: "area" },
+        { lat: -0.9500, lon: 100.4300, name: "Padang Tengah", type: "area" },
+        { lat: -0.9600, lon: 100.4000, name: "Padang Timur", type: "area" },
+        { lat: -0.9400, lon: 100.4500, name: "Padang Barat", type: "area" }
+      ];
+
+      // Add circle markers for reference areas
+      referenceLocations.forEach(function(loc) {
+        if (loc.type === "area") {
+          L.circleMarker([loc.lat, loc.lon], {
+            radius: 8,
+            fillColor: "#3388ff",
+            color: "#0051ba",
+            weight: 2,
+            opacity: 0.4,
+            fillOpacity: 0.2
+          }).addTo(map).bindPopup("<small>" + loc.name + "</small>");
+        }
+      });
+
+      // Draw bounds rectangle for Padang city
+      var bounds = L.latLngBounds(
+        [-0.9700, 100.3600],  // SW corner
+        [-0.9200, 100.4600]   // NE corner
+      );
+      L.rectangle(bounds, {
+        color: "#3388ff",
+        weight: 2,
+        opacity: 0.2,
+        fillOpacity: 0.05,
+        dashArray: "5, 5"
+      }).addTo(map);
+
+      // Fit map to city bounds
+      map.fitBounds(bounds, { padding: [50, 50] });
+    </script>
+  </body>
 
 </html>
