@@ -62,12 +62,53 @@ if ($check && mysqli_num_rows($check) > 0) {
     $verifikasi_exists = true;
 }
 
-$where_table = $where_date_clause . " AND status = 'masuk'";
+$where_table = $where_date_clause;
+
+// Periksa keberadaan kolom personil_regu dan armada_sarpras agar kueri aman
+$has_personil_regu = (mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'personil_regu'") && mysqli_num_rows(mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'personil_regu'")) > 0);
+$has_armada_sarpras = (mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'armada_sarpras'") && mysqli_num_rows(mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'armada_sarpras'")) > 0);
+
+// Tampilkan laporan relevan: masuk (pending verifikasi), maupun yang sudah ditugaskan/proses/selesai
+$status_list = "'masuk','proses','selesai','ditolak'";
+$where_table .= " AND (status IN ($status_list)";
+if ($has_personil_regu) {
+    $where_table .= " OR (personil_regu IS NOT NULL AND personil_regu <> '')";
+}
+if ($has_armada_sarpras) {
+    $where_table .= " OR (armada_sarpras IS NOT NULL AND armada_sarpras <> '')";
+}
+// Jika kolom verifikasi ada dan ingin menampilkan yang masih menunggu verifikasi
 if ($verifikasi_exists) {
-    $where_table .= " AND (verifikasi IS NULL OR verifikasi = '' OR verifikasi = 'pending')";
+    $where_table .= " OR (verifikasi IS NULL OR verifikasi = '' OR verifikasi = 'pending')";
+}
+$where_table .= ")";
+
+// Data tabel termasuk data penugasan tim dari SPT apabila kolom laporan_kejadian belum diisi
+$select_columns = "l.*";
+if ($has_personil_regu) {
+    $select_columns .= ", COALESCE(NULLIF(l.personil_regu, ''), s.nama_regu) AS personil_regu";
+} else {
+    $select_columns .= ", COALESCE(s.nama_regu, '') AS personil_regu";
+}
+if ($has_armada_sarpras) {
+    $select_columns .= ", COALESCE(NULLIF(l.armada_sarpras, ''), '') AS armada_sarpras";
+} else {
+    $select_columns .= ", '' AS armada_sarpras";
 }
 
-$result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table ORDER BY id DESC");
+$result_tabel = mysqli_query($conn, "SELECT $select_columns
+    FROM laporan_kejadian l
+    LEFT JOIN (
+        SELECT spt.laporan_kejadian_id, spt.nama_regu, spt.waktu_keberangkatan
+        FROM spt
+        JOIN (
+            SELECT laporan_kejadian_id, MAX(waktu_keberangkatan) AS waktu_keberangkatan
+            FROM spt
+            GROUP BY laporan_kejadian_id
+        ) latest ON spt.laporan_kejadian_id = latest.laporan_kejadian_id AND spt.waktu_keberangkatan = latest.waktu_keberangkatan
+    ) s ON s.laporan_kejadian_id = l.id
+    $where_table
+    ORDER BY l.id DESC");
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -405,12 +446,17 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table
                         <?php if (mysqli_num_rows($result_tabel) > 0): ?>
                             <?php while ($row = mysqli_fetch_assoc($result_tabel)):
                                 $st = strtolower($row['status']);
-                                if ($st === 'selesai')
-                                    $badge = 'bg-success text-white';
-                                elseif ($st === 'proses')
+                                if ($st === 'masuk') {
+                                    $badge = 'bg-primary text-white';
+                                } elseif ($st === 'proses') {
                                     $badge = 'bg-warning text-dark';
-                                else
+                                } elseif ($st === 'ditolak') {
                                     $badge = 'bg-danger text-white';
+                                } elseif ($st === 'selesai') {
+                                    $badge = 'bg-success text-white';
+                                } else {
+                                    $badge = 'bg-secondary text-white';
+                                }
                                 ?>
                                 <tr>
                                     <td class="py-3 px-4">
@@ -443,7 +489,7 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table
                                         <small
                                             class="fw-medium text-dark"><?= date('d M Y', strtotime($row['tanggal'])) ?></small>
                                     </td>
-                                    <td>
+                                        <td>
                                         <span
                                             class="badge <?= $badge ?> rounded-pill px-3 py-2 small text-uppercase"><?= htmlspecialchars($row['status']) ?></span>
                                         <?php if (!empty($row['verifikasi'])): ?>
@@ -452,6 +498,12 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table
                                             <?php elseif ($row['verifikasi'] === 'palsu'): ?>
                                                 <div class="mt-1"><span class="badge bg-danger small">Ditolak</span></div>
                                             <?php endif; ?>
+                                        <?php endif; ?>
+
+                                        <?php if (!empty($row['catatan_verifikasi']) || strtolower($row['verifikasi'] ?? '') === 'palsu' || $st === 'ditolak'): ?>
+                                            <div class="small text-danger mt-1" title="Catatan Verifikasi">
+                                                <?= nl2br(htmlspecialchars($row['catatan_verifikasi'] ?? 'Catatan: Verifikasi menolak laporan ini.')) ?>
+                                            </div>
                                         <?php endif; ?>
                                     </td>
                                     <td class="text-center td-aksi">
@@ -587,6 +639,11 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table
     </div>
 
     <script>
+        function formatVerifikasiLabel(value) {
+            if (!value) return 'Belum';
+            return value.toLowerCase() === 'palsu' ? 'tolak' : value;
+        }
+
         document.querySelectorAll('.btn-open-detail').forEach(btn => {
             btn.addEventListener('click', function () {
                 const id = this.dataset.id || '';
@@ -601,7 +658,7 @@ $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_table
                 document.getElementById('modalArmada').innerText = this.dataset.armadaSarpras || '-';
                 document.getElementById('modalTanggal').innerText = this.dataset.tanggal ? new Date(this.dataset.tanggal).toLocaleString() : '-';
                 document.getElementById('modalStatus').innerText = this.dataset.status || '-';
-                document.getElementById('modalVerifikasi').innerText = this.dataset.verifikasi || 'Belum';
+                document.getElementById('modalVerifikasi').innerText = formatVerifikasiLabel(this.dataset.verifikasi);
                 // show bootstrap modal programmatically
                 const modalEl = document.getElementById('modalDetail');
                 const bsModal = bootstrap.Modal.getOrCreateInstance(modalEl);

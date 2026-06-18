@@ -108,12 +108,12 @@ if (!isset($conn) && isset($koneksi)) {
                     <i class="bi bi-chevron-down small"></i>
                 </a>
                 <div class="collapse sub-menu" id="menuLaporan">
-                    <a href="laporan_kejadian.php">Laporan Kejadian</a>
-                    <a href="rekap_statistik.php">Rekap Statistik & Analisis</a>
-                    <a href="cetak_export.php">Cetak & Export Dokumen</a>
+                    <a href="../laporan/laporan_kejadian.php">Laporan Kejadian</a>
+                    <a href="../laporan/rekap_statistik.php">Rekap Statistik & Analisis</a>
+                    <a href="../laporan/cetak_export.php">Cetak & Export Dokumen</a>
                 </div>
                 
-                <a href="../pengaturan.php"><i class="bi bi-gear"></i> Pengaturan</a>
+                <a href="../manajemen_user.php"><i class="bi bi-gear"></i> Manajemen User</a>
                 <a href="../../logout.php" class="mt-4 text-danger"><i class="bi bi-box-arrow-left"></i> Keluar</a>
             </div>
         </div>

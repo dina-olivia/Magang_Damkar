@@ -272,7 +272,15 @@ $total_halaman = ceil($total_data / $limit);
                                     if (mysqli_num_rows($res) > 0) {
                                         while ($row = mysqli_fetch_assoc($res)) {
                                             $st = strtolower($row['status']);
-                                            $cls = ($st == 'masuk') ? 'bg-primary' : (($st == 'proses') ? 'bg-warning text-dark' : 'bg-success');
+                                            if ($st == 'masuk') {
+                                                $cls = 'bg-primary';
+                                            } elseif ($st == 'proses') {
+                                                $cls = 'bg-warning text-dark';
+                                            } elseif ($st == 'ditolak') {
+                                                $cls = 'bg-danger';
+                                            } else {
+                                                $cls = 'bg-success';
+                                            }
                                     ?>
                                     <tr>
                                         <td class="fw-bold text-muted small">#<?= htmlspecialchars($row['nomor_laporan']) ?></td>
@@ -287,6 +295,13 @@ $total_halaman = ceil($total_data / $limit);
                                             <span class="d-inline-block text-truncate small text-muted" style="max-width: 150px;" title="<?= htmlspecialchars($row['deskripsi']) ?>">
                                                 <?= htmlspecialchars($row['deskripsi'] ?? '-') ?>
                                             </span>
+                                            <?php if (strtolower($row['verifikasi'] ?? '') === 'palsu' || $st === 'ditolak'): ?>
+                                                <?php if (!empty($row['catatan_verifikasi'])): ?>
+                                                    <div class="small text-danger mt-1" title="Catatan Verifikasi">Catatan: <?= nl2br(htmlspecialchars($row['catatan_verifikasi'])) ?></div>
+                                                <?php else: ?>
+                                                    <div class="small text-danger mt-1">Catatan: Verifikasi menolak laporan ini.</div>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
                                         </td>
                                         <td>
                                             <span class="d-block fw-bold small"><?= htmlspecialchars($row['pelapor']) ?></span>

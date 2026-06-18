@@ -2,6 +2,16 @@
 // Form & handler untuk verifikasi laporan (laporan_kejadian)
 include '../../config/koneksi.php';
 
+// Pastikan variabel koneksi tersedia (fallback jika file koneksi menggunakan nama variabel berbeda)
+if (!isset($conn) && isset($koneksi)) { $conn = $koneksi; }
+if (!isset($conn) && isset($db)) { $conn = $db; }
+if (!isset($conn) || !$conn) {
+    $conn = @mysqli_connect('localhost','root','','app_damkar');
+    if (!$conn) {
+        die('Koneksi database tidak tersedia.');
+    }
+}
+
 // Jika method POST -> proses verifikasi
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verifikasi_laporan'])) {
     $id_laporan = intval($_POST['id_laporan']);
@@ -38,7 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verifikasi_laporan'])
             header('Location: ../operasional/penugasan_tim.php?success=verifikasi');
             exit;
         } else {
-            // Jika ditolak, kembali ke halaman monitoring manajemen sehingga bisa dipantau
+            // Jika ditolak, set status laporan menjadi 'ditolak' dan kembali ke monitoring
+            // Pastikan enum status memiliki value 'ditolak' (safe ALTER jika belum ada)
+            @mysqli_query($conn, "ALTER TABLE laporan_kejadian MODIFY COLUMN status ENUM('masuk','proses','selesai','ditolak') NOT NULL DEFAULT 'masuk'");
+            mysqli_query($conn, "UPDATE laporan_kejadian SET status = 'ditolak' WHERE id = $id_laporan");
             header('Location: ../manajemen/monitoring_kejadian.php?success=verifikasi_reject');
             exit;
         }

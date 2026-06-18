@@ -405,6 +405,15 @@ if ($status == 'masuk') {
                                     <?= htmlspecialchars($deskripsi) ?>
                                 </p>
                             </div>
+                            <?php if (strtolower($data['verifikasi'] ?? '') === 'palsu' || $status === 'ditolak'): ?>
+                                <div class="mt-3 p-3 rounded-3" style="background:#fff5f5; border-left:4px solid #dc3545;">
+                                    <h6 class="fw-bold text-danger mb-1"><i class="bi bi-x-circle-fill me-2"></i>Verifikasi: Ditolak</h6>
+                                    <p class="small text-muted mb-0">
+                                        <?= nl2br(htmlspecialchars($data['catatan_verifikasi'] ?? 'Tidak ada catatan tambahan dari operator.')) ?>
+                                    </p>
+                                    <div class="small text-muted mt-2">Diverifikasi pada: <?= htmlspecialchars($data['verifikasi_at'] ?? '-') ?></div>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

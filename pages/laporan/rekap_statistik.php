@@ -13,11 +13,22 @@ if (!isset($conn)) {
 // ── 1. Mengatur Filter Tahun (Gunakan type casting integer untuk keamanan query) ──
 $filter_tahun = isset($_GET['tahun']) ? (int) $_GET['tahun'] : (int) date('Y');
 
-// ── 2. Query Mengambil Data Akumulasi Per Bulan ───────────────────────────────
-$query = "SELECT rk.bulan, rk.jumlah_kebakaran, rk.jumlah_rescue, rk.kerugian 
-          FROM rekap_kejadian rk 
-          WHERE rk.tahun = '$filter_tahun' 
-          ORDER BY rk.bulan ASC";
+// ── 2. Query Mengambil Data Akumulasi Per Bulan dari laporan_kejadian ────────
+$kerugian_exists = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'kerugian'");
+$kerugian_select = ($kerugian_exists && mysqli_num_rows($kerugian_exists) > 0)
+    ? "SUM(COALESCE(kerugian, 0)) AS kerugian"
+    : "0 AS kerugian";
+
+$query = "SELECT MONTH(tanggal) AS bulan, 
+                 SUM(CASE WHEN jenis_kejadian = 'kebakaran' THEN 1 ELSE 0 END) AS jumlah_kebakaran, 
+                 SUM(CASE WHEN jenis_kejadian = 'rescue' THEN 1 ELSE 0 END) AS jumlah_rescue, 
+                 SUM(CASE WHEN jenis_kejadian = 'banjir' THEN 1 ELSE 0 END) AS jumlah_banjir, 
+                 SUM(CASE WHEN jenis_kejadian = 'lainnya' THEN 1 ELSE 0 END) AS jumlah_lainnya, 
+                 $kerugian_select 
+          FROM laporan_kejadian 
+          WHERE YEAR(tanggal) = $filter_tahun 
+          GROUP BY MONTH(tanggal) 
+          ORDER BY MONTH(tanggal) ASC";
 $result = mysqli_query($conn, $query);
 
 // ── 3. Mempersiapkan Wadah Data untuk Grafik & Tabel ──────────────────────────
@@ -39,10 +50,14 @@ $months_name = [
 // Inisialisasi data 12 bulan kosong agar grafik & tabel aman dari Undefined Index Notice
 $kebakaran_chart = array_fill_keys(array_keys($months_name), 0);
 $rescue_chart = array_fill_keys(array_keys($months_name), 0);
+$banjir_chart = array_fill_keys(array_keys($months_name), 0);
+$lainnya_chart = array_fill_keys(array_keys($months_name), 0);
 $kerugian_chart = array_fill_keys(array_keys($months_name), 0);
 
 $total_kebakaran = 0;
 $total_rescue = 0;
+$total_banjir = 0;
+$total_lainnya = 0;
 $total_kerugian = 0;
 
 if ($result) {
@@ -51,11 +66,15 @@ if ($result) {
         if (array_key_exists($bln, $months_name)) {
             $kebakaran_chart[$bln] = (int) $row['jumlah_kebakaran'];
             $rescue_chart[$bln] = (int) $row['jumlah_rescue'];
+            $banjir_chart[$bln] = (int) $row['jumlah_banjir'];
+            $lainnya_chart[$bln] = (int) $row['jumlah_lainnya'];
             $kerugian_chart[$bln] = (float) $row['kerugian'];
 
             // Mengaktifkan kalkulasi penjumlahan total data dari database
             $total_kebakaran += $row['jumlah_kebakaran'];
             $total_rescue += $row['jumlah_rescue'];
+            $total_banjir += $row['jumlah_banjir'];
+            $total_lainnya += $row['jumlah_lainnya'];
             $total_kerugian += $row['kerugian'];
         }
     }
@@ -292,11 +311,27 @@ if ($result) {
                     </h2>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="stat-box border-kerugian">
                     <span class="text-muted text-uppercase small fw-bold d-block mb-1">Total Nilai Kerugian</span>
                     <h2 class="fw-extrabold m-0 text-warning">Rp
                         <?= number_format($total_kerugian, 0, ',', '.') ?>
+                    </h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box border-kebakaran">
+                    <span class="text-muted text-uppercase small fw-bold d-block mb-1">Total Banjir</span>
+                    <h2 class="fw-extrabold m-0 text-primary">
+                        <?= number_format($total_banjir, 0, ',', '.') ?> <small class="fs-6 text-muted fw-normal">Kejadian</small>
+                    </h2>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-box border-rescue">
+                    <span class="text-muted text-uppercase small fw-bold d-block mb-1">Total Lainnya</span>
+                    <h2 class="fw-extrabold m-0 text-info">
+                        <?= number_format($total_lainnya, 0, ',', '.') ?> <small class="fs-6 text-muted fw-normal">Kejadian</small>
                     </h2>
                 </div>
             </div>
@@ -326,6 +361,8 @@ if ($result) {
                                     <th class="text-start ps-3 py-3">Bulan</th>
                                     <th><i class="bi bi-fire text-danger"></i> Kebakaran</th>
                                     <th><i class="bi bi-life-preserver text-info"></i> Rescue</th>
+                                    <th><i class="bi bi-droplet text-primary"></i> Banjir</th>
+                                    <th><i class="bi bi-list-ul text-secondary"></i> Lainnya</th>
                                     <th class="text-end pe-3">Kerugian</th>
                                 </tr>
                             </thead>
@@ -340,6 +377,12 @@ if ($result) {
                                         </td>
                                         <td class="text-info fw-semibold">
                                             <?= $rescue_chart[$code] ?>
+                                        </td>
+                                        <td class="text-primary fw-semibold">
+                                            <?= $banjir_chart[$code] ?>
+                                        </td>
+                                        <td class="text-secondary fw-semibold">
+                                            <?= $lainnya_chart[$code] ?>
                                         </td>
                                         <td class="text-end pe-3 text-muted">Rp
                                             <?= number_format($kerugian_chart[$code], 0, ',', '.') ?>
@@ -361,6 +404,8 @@ if ($result) {
         const labelBulan = <?= json_encode(array_values($months_name)) ?>;
         const dataKebakaran = <?= json_encode(array_values($kebakaran_chart)) ?>;
         const dataRescue = <?= json_encode(array_values($rescue_chart)) ?>;
+        const dataBanjir = <?= json_encode(array_values($banjir_chart)) ?>;
+        const dataLainnya = <?= json_encode(array_values($lainnya_chart)) ?>;
 
         new Chart(ctx, {
             type: 'bar',
@@ -377,6 +422,18 @@ if ($result) {
                         label: 'Rescue / Penyelamatan',
                         data: dataRescue,
                         backgroundColor: '#0dcaf0',
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Banjir',
+                        data: dataBanjir,
+                        backgroundColor: '#0d6efd',
+                        borderRadius: 6
+                    },
+                    {
+                        label: 'Lainnya',
+                        data: dataLainnya,
+                        backgroundColor: '#6c757d',
                         borderRadius: 6
                     }
                 ]
