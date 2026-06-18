@@ -34,6 +34,19 @@ if ($filter_tipe == 'harian') {
     $periode_teks = "Tahun " . $tahun;
 }
 
+// Periksa apakah kolom personil_regu, armada_sarpras, dan verifikasi ada untuk tampilan cetak/Excel
+$personil_exists = false;
+$armada_exists = false;
+$verifikasi_exists = false;
+if ($conn) {
+    $check_personil = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'personil_regu'");
+    $check_armada = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'armada_sarpras'");
+    $check_verifikasi = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'verifikasi'");
+    $personil_exists = $check_personil && mysqli_num_rows($check_personil) > 0;
+    $armada_exists = $check_armada && mysqli_num_rows($check_armada) > 0;
+    $verifikasi_exists = $check_verifikasi && mysqli_num_rows($check_verifikasi) > 0;
+}
+
 // Ambil data utama dari database sesuai filter
 $result_tabel = mysqli_query($conn, "SELECT * FROM laporan_kejadian $where_clause ORDER BY id DESC");
 
@@ -47,7 +60,7 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
     header("Expires: 0");
     ?>
     <h2>DATA REKAP LAPORAN KEJADIAN E-DAMKAR</h2>
-    <p>Filter Periode: <?= strtoupper($filter_tipe) ?></p>
+    <p>Periode: <?= htmlspecialchars($periode_teks) ?></p>
 
     <table border="1">
         <thead>
@@ -58,6 +71,9 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
                 <th>Lokasi</th>
                 <th>Pelapor</th>
                 <th>No. HP</th>
+                <?php if ($personil_exists): ?><th>Personil</th><?php endif; ?>
+                <?php if ($armada_exists): ?><th>Armada</th><?php endif; ?>
+                <?php if ($verifikasi_exists): ?><th>Verifikasi</th><?php endif; ?>
                 <th>Tanggal</th>
                 <th>Status</th>
             </tr>
@@ -68,13 +84,16 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
             while ($row = mysqli_fetch_assoc($result_tabel)): ?>
                 <tr>
                     <td><?= $no++ ?></td>
-                    <td><?= $row['nomor_laporan'] ?></td>
-                    <td><?= strtoupper($row['jenis_kejadian']) ?></td>
-                    <td><?= $row['lokasi'] ?></td>
-                    <td><?= $row['pelapor'] ?></td>
-                    <td>'<?= $row['no_hp'] ?></td>
+                    <td><?= htmlspecialchars($row['nomor_laporan']) ?></td>
+                    <td><?= htmlspecialchars(strtoupper($row['jenis_kejadian'])) ?></td>
+                    <td><?= htmlspecialchars($row['lokasi']) ?></td>
+                    <td><?= htmlspecialchars($row['pelapor']) ?></td>
+                    <td>'<?= htmlspecialchars($row['no_hp']) ?></td>
+                    <?php if ($personil_exists): ?><td><?= htmlspecialchars($row['personil_regu'] ?? '-') ?></td><?php endif; ?>
+                    <?php if ($armada_exists): ?><td><?= htmlspecialchars($row['armada_sarpras'] ?? '-') ?></td><?php endif; ?>
+                    <?php if ($verifikasi_exists): ?><td><?= htmlspecialchars(strtoupper($row['verifikasi'] === 'palsu' ? 'tolak' : ($row['verifikasi'] ?? '-'))) ?></td><?php endif; ?>
                     <td><?= date('d-m-Y', strtotime($row['tanggal'])) ?></td>
-                    <td><?= strtoupper($row['status']) ?></td>
+                    <td><?= htmlspecialchars(strtoupper($row['status'])) ?></td>
                 </tr>
             <?php endwhile; ?>
         </tbody>
@@ -327,11 +346,16 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
                     </div>
                     <div>
                         <button onclick="window.print()" class="btn btn-dark fw-bold px-4 me-2 shadow-sm">
-                            <i class="bi bi-printer me-2"></i> Cetak Dokumen (PDF/Printer)
+                            <i class="bi bi-printer me-2"></i> Cetak Dokumen 
                         </button>
-                        <a href="?unduh=excel&<?= http_build_query($_GET) ?>"
+                        <?php
+                        $excel_params = $_GET;
+                        $excel_params['unduh'] = 'excel';
+                        $excel_query = http_build_query($excel_params);
+                        ?>
+                        <a href="?<?= htmlspecialchars($excel_query) ?>"
                             class="btn btn-success fw-bold px-4 shadow-sm">
-                            <i class="bi bi-file-earmark-excel me-2"></i> Ekspor ke Excel (.xls)
+                            <i class="bi bi-file-earmark-excel me-2"></i> Ekspor ke Excel 
                         </a>
                     </div>
                 </div>
@@ -363,19 +387,26 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
                     <table class="table table-bordered align-middle">
                         <thead class="table-light small text-uppercase">
                             <tr>
-                                <th class="text-center" width="5%">No</th>
-                                <th>No. Laporan</th>
-                                <th>Jenis Kejadian</th>
-                                <th>Lokasi Kejadian</th>
-                                <th>Pelapor</th>
-                                <th>No. HP</th>
-                                <th>Tanggal Lapor</th>
-                                <th class="text-center">Status</th>
+                                                <th class="text-center" width="5%">No</th>
+                                <th class="text-center" width="5%">No. Laporan</th>
+                                <th class="text-center" width="5%">Jenis Kejadian</th>
+                                <th class="text-center" width="5%">Lokasi Kejadian</th>
+                                <th class="text-center" width="5%">Pelapor</th>
+                                <th class="text-center" width="5%">No. HP</th>
+                                <?php if ($personil_exists): ?><th class="text-center" width="5%">Personil</th><?php endif; ?>
+                                <?php if ($armada_exists): ?><th class="text-center" width="5%">Armada</th><?php endif; ?>
+                                <?php if ($verifikasi_exists): ?><th class="text-center" width="5%">Verifikasi</th><?php endif; ?>
+                                <th class="text-center" width="5%">Tanggal Lapor</th>
+                                <th class="text-center" width="5%">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $no = 1;
+                            $colspan = 8;
+                            if ($personil_exists) $colspan++;
+                            if ($armada_exists) $colspan++;
+                            if ($verifikasi_exists) $colspan++;
                             mysqli_data_seek($result_tabel, 0); // Kembalikan pointer baris mysql ke index awal
                             if (mysqli_num_rows($result_tabel) > 0):
                                 while ($row = mysqli_fetch_assoc($result_tabel)):
@@ -389,6 +420,9 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
                                         <td><small class="text-muted"><?= htmlspecialchars($row['lokasi']) ?></small></td>
                                         <td><?= htmlspecialchars($row['pelapor']) ?></td>
                                         <td><?= htmlspecialchars($row['no_hp'] ?? '-') ?></td>
+                                        <?php if ($personil_exists): ?><td><?= htmlspecialchars($row['personil_regu'] ?? '-') ?></td><?php endif; ?>
+                                        <?php if ($armada_exists): ?><td><?= htmlspecialchars($row['armada_sarpras'] ?? '-') ?></td><?php endif; ?>
+                                        <?php if ($verifikasi_exists): ?><td><?= htmlspecialchars(ucfirst($row['verifikasi'] === 'palsu' ? 'tolak' : ($row['verifikasi'] ?? '-'))) ?></td><?php endif; ?>
                                         <td><?= date('d-m-Y', strtotime($row['tanggal'])) ?></td>
                                         <td class="text-center text-uppercase fw-bold small">
                                             <?= htmlspecialchars($row['status']) ?>
@@ -399,7 +433,7 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
                             else:
                                 ?>
                                 <tr>
-                                    <td colspan="8" class="py-5 text-center text-muted fw-bold">
+                                    <td colspan="<?= $colspan ?>" class="py-5 text-center text-muted fw-bold">
                                         TIDAK ADA DATA LAPORAN PADA PERIODE INI
                                     </td>
                                 </tr>

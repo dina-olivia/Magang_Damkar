@@ -7,6 +7,8 @@ if (!isset($conn) || !$conn) {
 }
 
 $laporan_masuk = mysqli_query($conn, "SELECT * FROM laporan_kejadian WHERE status = 'masuk' AND verifikasi = 'valid'");
+// Ambil daftar armada untuk pilihan penugasan
+$armada_list = mysqli_query($conn, "SELECT * FROM armada ORDER BY id ASC");
 $query_spt = "SELECT spt.*, laporan_kejadian.nomor_laporan, laporan_kejadian.lokasi, laporan_kejadian.jenis_kejadian 
               FROM spt 
               JOIN laporan_kejadian ON spt.laporan_kejadian_id = laporan_kejadian.id 
@@ -19,11 +21,12 @@ $tampil_spt = mysqli_query($conn, $query_spt);
 if (isset($_POST['kirim_tim'])) {
     $laporan_id = mysqli_real_escape_string($conn, $_POST['laporan_kejadian_id']);
     $nama_regu = mysqli_real_escape_string($conn, $_POST['nama_regu']);
+    $armada_id = mysqli_real_escape_string($conn, $_POST['armada_id'] ?? '');
     $today = date('Y-m-d');
 
     // 1. VALIDASI: Cek apakah regu sedang bertugas hari ini
     $cek_tugas = mysqli_query($conn, "SELECT id FROM spt WHERE nama_regu = '$nama_regu' AND DATE(waktu_keberangkatan) = '$today' AND status != 'selesai'");
-    
+
     if (mysqli_num_rows($cek_tugas) > 0) {
         echo "<script>alert('Gagal! Regu $nama_regu sedang menjalankan tugas lain hari ini.'); window.location.href=window.location.pathname;</script>";
     } else {
@@ -38,7 +41,40 @@ if (isset($_POST['kirim_tim'])) {
                          VALUES ('$nomor_spt', '$laporan_id', '$nama_regu', 'berangkat')";
 
         if (mysqli_query($conn, $query_insert)) {
-            mysqli_query($conn, "UPDATE laporan_kejadian SET status = 'proses' WHERE id = '$laporan_id'");
+            // Pastikan kolom yang akan diupdate ada di tabel laporan_kejadian
+            $cols_check = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'personil_regu'");
+            if (mysqli_num_rows($cols_check) == 0) {
+                mysqli_query($conn, "ALTER TABLE laporan_kejadian ADD COLUMN personil_regu VARCHAR(255) DEFAULT '' AFTER personil");
+            }
+            $cols_check = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'armada_sarpras'");
+            if (mysqli_num_rows($cols_check) == 0) {
+                mysqli_query($conn, "ALTER TABLE laporan_kejadian ADD COLUMN armada_sarpras VARCHAR(255) DEFAULT '' AFTER personil_regu");
+            }
+            $cols_check = mysqli_query($conn, "SHOW COLUMNS FROM laporan_kejadian LIKE 'waktu_proses'");
+            if (mysqli_num_rows($cols_check) == 0) {
+                mysqli_query($conn, "ALTER TABLE laporan_kejadian ADD COLUMN waktu_proses DATETIME NULL AFTER armada_sarpras");
+            }
+
+            // Ambil label armada jika dipilih
+            $armada_label = '';
+            if (!empty($armada_id)) {
+                $ra_q = mysqli_query($conn, "SELECT * FROM armada WHERE id = '$armada_id' LIMIT 1");
+                $ra = $ra_q ? mysqli_fetch_assoc($ra_q) : null;
+                if ($ra) {
+                    // Gabungkan beberapa kolom yang ada untuk label (aman terhadap skema berbeda)
+                    $parts = [];
+                    if (!empty($ra['kode_armada'])) $parts[] = $ra['kode_armada'];
+                    if (!empty($ra['jenis'])) $parts[] = $ra['jenis'];
+                    if (!empty($ra['status'])) $parts[] = '(' . $ra['status'] . ')';
+                    $armada_label = implode(' ', $parts);
+                }
+            }
+
+            // Update laporan_kejadian: set personil_regu, armada_sarpras, status dan waktu_proses
+            $nr = mysqli_real_escape_string($conn, $nama_regu);
+            $ar = mysqli_real_escape_string($conn, $armada_label);
+            mysqli_query($conn, "UPDATE laporan_kejadian SET personil_regu = '$nr', armada_sarpras = '$ar', status = 'proses', waktu_proses = NOW() WHERE id = '$laporan_id'");
+
             echo "<script>alert('Tim Berhasil Ditugaskan!'); window.location.href=window.location.pathname;</script>";
         } else {
             echo "<script>alert('Gagal menugaskan tim: " . mysqli_error($conn) . "');</script>";
@@ -319,6 +355,18 @@ if (isset($_POST['kirim_tim'])) {
                         </select>
                     </div>
 
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-secondary">Pilih Armada (opsional)</label>
+                            <select name="armada_id" class="form-select rounded-3">
+                                <option value="">-- Pilih Armada --</option>
+                                <?php if ($armada_list && mysqli_num_rows($armada_list) > 0): ?>
+                                    <?php mysqli_data_seek($armada_list, 0); while ($a = mysqli_fetch_assoc($armada_list)): ?>
+                                        <option value="<?= $a['id'] ?>"><?= htmlspecialchars((isset($a['kode_armada']) ? $a['kode_armada'] . ' ' : '') . (isset($a['jenis']) ? $a['jenis'] : '') . (isset($a['status']) ? ' (' . $a['status'] . ')' : '')) ?></option>
+                                    <?php endwhile; ?>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+
                     <div class="d-flex justify-content-end gap-2 border-top pt-3">
                         <button type="button" onclick="tutupModal()" class="btn btn-sm btn-outline-secondary px-3 rounded-3">Batal</button>
                         <button type="submit" name="kirim_tim" class="btn btn-sm btn-danger px-3 rounded-3">Kirim Tim</button>
@@ -378,27 +426,3 @@ if (isset($_POST['kirim_tim'])) {
     </script>
 </body>
 </html>
-
-<?php
-// PHP BACKEND SUBMIT FORM
-if (isset($_POST['kirim_tim'])) {
-    $laporan_id = $_POST['laporan_kejadian_id'];
-    $nama_regu = $_POST['nama_regu'];
-
-    $tahun = date('Y');
-    $query_count = mysqli_query($conn, "SELECT COUNT(*) as total FROM spt");
-    $data_count = mysqli_fetch_assoc($query_count);
-    $next_id = $data_count['total'] + 1;
-    $nomor_spt = "SPT-" . $tahun . "-" . str_pad($next_id, 3, "0", STR_PAD_LEFT);
-
-    $query_insert = "INSERT INTO spt (nomor_spt, laporan_kejadian_id, nama_regu, status) 
-                     VALUES ('$nomor_spt', '$laporan_id', '$nama_regu', 'berangkat')";
-
-    if (mysqli_query($conn, $query_insert)) {
-        mysqli_query($conn, "UPDATE laporan_kejadian SET status = 'proses' WHERE id = '$laporan_id'");
-        echo "<script>alert('Tim Berhasil Ditugaskan!'); window.location.href=window.location.pathname;</script>";
-    } else {
-        echo "<script>alert('Gagal menugaskan tim: " . mysqli_error($conn) . "');</script>";
-    }
-}
-?>
