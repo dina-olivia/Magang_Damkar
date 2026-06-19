@@ -349,7 +349,7 @@ if (isset($_POST['kirim_tim'])) {
                             $display_status = 'Selesai';
                             $badge_class = 'bg-success text-white';
                           } elseif ($laporan_status === 'proses') {
-                            $display_status = 'Tiba';
+                            $display_status = 'Berangkat';
                             $badge_class = 'bg-danger text-white';
                           } elseif ($laporan_status === 'masuk') {
                             $display_status = 'Berangkat';
