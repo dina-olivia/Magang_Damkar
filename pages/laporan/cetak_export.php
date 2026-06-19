@@ -393,8 +393,6 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
                                 <th class="text-center" width="5%">Lokasi Kejadian</th>
                                 <th class="text-center" width="5%">Pelapor</th>
                                 <th class="text-center" width="5%">No. HP</th>
-                                <?php if ($personil_exists): ?><th class="text-center" width="5%">Personil</th><?php endif; ?>
-                                <?php if ($armada_exists): ?><th class="text-center" width="5%">Armada</th><?php endif; ?>
                                 <?php if ($verifikasi_exists): ?><th class="text-center" width="5%">Verifikasi</th><?php endif; ?>
                                 <th class="text-center" width="5%">Tanggal Lapor</th>
                                 <th class="text-center" width="5%">Status</th>
@@ -420,8 +418,6 @@ if (isset($_GET['unduh']) && $_GET['unduh'] === 'excel') {
                                         <td><small class="text-muted"><?= htmlspecialchars($row['lokasi']) ?></small></td>
                                         <td><?= htmlspecialchars($row['pelapor']) ?></td>
                                         <td><?= htmlspecialchars($row['no_hp'] ?? '-') ?></td>
-                                        <?php if ($personil_exists): ?><td><?= htmlspecialchars($row['personil_regu'] ?? '-') ?></td><?php endif; ?>
-                                        <?php if ($armada_exists): ?><td><?= htmlspecialchars($row['armada_sarpras'] ?? '-') ?></td><?php endif; ?>
                                         <?php if ($verifikasi_exists): ?><td><?= htmlspecialchars(ucfirst($row['verifikasi'] === 'palsu' ? 'tolak' : ($row['verifikasi'] ?? '-'))) ?></td><?php endif; ?>
                                         <td><?= date('d-m-Y', strtotime($row['tanggal'])) ?></td>
                                         <td class="text-center text-uppercase fw-bold small">
